@@ -14,22 +14,23 @@ namespace BlockBrawl
         Play play;
 
         public GameHandler(GraphicsDeviceManager graphicsDeviceManager, GraphicsDevice graphicsDevice, ContentManager contentManager)
-        {            
-            //Construct stuff;                        
-            this.graphicsDevice = graphicsDevice;
-
-            new FontManager(contentManager);
-            new TextureManager(contentManager);
-
+        {
             //Settings, where to put?
             graphicsDeviceManager.PreferredBackBufferWidth = 1920;
             graphicsDeviceManager.PreferredBackBufferHeight = 1080;
             graphicsDeviceManager.ApplyChanges();
 
+            //Construct stuff;                        
+            this.graphicsDevice = graphicsDevice;
+
+            new FontManager(contentManager);
+            new TextureManager(contentManager);
+            new SettingsManager(graphicsDeviceManager);
+                        
             spriteBatch = new SpriteBatch(graphicsDevice);
 
             //Management
-            play = new Play(20,graphicsDeviceManager.PreferredBackBufferHeight / TextureManager.transBlock.Height - 1, new Vector2(TextureManager.transBlock.Width, TextureManager.transBlock.Height), graphicsDeviceManager.PreferredBackBufferWidth);
+            play = new Play(SettingsManager.tiles.X, SettingsManager.tiles.Y, new Vector2(TextureManager.transBlock.Width, TextureManager.transBlock.Height), graphicsDeviceManager.PreferredBackBufferWidth, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
             //Removing the hardcoding at some point soon with a settings class.
         }
         public void Draw()

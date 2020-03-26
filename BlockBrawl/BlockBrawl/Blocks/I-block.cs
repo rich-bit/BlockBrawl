@@ -23,7 +23,7 @@ namespace BlockBrawl.Blocks
         public I(Texture2D color, Vector2 startPos)
         {
             this.color = color;
-            //this.startPos = startPos;
+            
             iMatrix = new TetrisObject[4, 4];
 
             //Contents of the I, looping through the dubbelarray setting positions and textures

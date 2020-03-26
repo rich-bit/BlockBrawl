@@ -12,6 +12,8 @@ namespace BlockBrawl
         GameTime gameTime;
 
         GameObject[,] playfield;
+        int marginRight = 3; // to Avoid spawn outside map.
+
         Vector2 tileSize;
 
         //Each block has its own class. The array will use index 1, 2 for player 1 and 2. Index 0 is not used atm.
@@ -27,15 +29,19 @@ namespace BlockBrawl
         //Our own inputmanager, for the NES replicas used (other gamepads will work i think).
         InputManager iM;
 
-        public Play(int tilesX, int tilesY, Vector2 tileSize, int gameWidth)
+        int playerOneIndex, playerTwoIndex;
+
+        public Play(int tilesX, int tilesY, Vector2 tileSize, int gameWidth, int playerOneIndex, int playerTwoIndex)
         {
             this.tileSize = tileSize;
+            this.playerOneIndex = playerOneIndex;
+            this.playerTwoIndex = playerTwoIndex;
 
             playfield = new GameObject[tilesX, tilesY];
             PopulatePlayfield(tilesX, tilesY, tileSize, gameWidth);
 
             //Im
-            iM = new InputManager();
+            iM = new InputManager(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
 
             nextBlock = new string[3];
             nextBlock[1] = RandomBlock();
@@ -61,10 +67,10 @@ namespace BlockBrawl
         {
             this.gameTime = gameTime;
             iM.Update();
-            PlayerStearing(gameTime, 1);
-            PlayerStearing(gameTime, 2);
-            GetBlocks(1);
-            GetBlocks(2);
+            PlayerSteering(gameTime, playerOneIndex);
+            PlayerSteering(gameTime, playerTwoIndex);
+            GetBlocks(playerOneIndex);
+            GetBlocks(playerTwoIndex);
         }
         private void GetBlocks(int playerIndex)
         {
@@ -74,11 +80,11 @@ namespace BlockBrawl
                 switch (nextBlock[playerIndex])
                 {//Here we need to also check if gamover == true ( not implemented yet )
                     case "J":
-                        jArray[playerIndex] = new J(TextureManager.blueBlock, playfield[rnd.Next(0, playfield.GetLength(0) - 3), 0].Pos);
+                        jArray[playerIndex] = new J(TextureManager.blueBlock, playfield[rnd.Next(0, playfield.GetLength(0) - marginRight), 0].Pos);
                         nextBlock[playerIndex] = null;
                         break;
                     case "I":
-                        iArray[playerIndex] = new I(TextureManager.lightgreenBlock, playfield[rnd.Next(0, playfield.GetLength(0) - 3), 0].Pos);
+                        iArray[playerIndex] = new I(TextureManager.lightgreenBlock, playfield[rnd.Next(0, playfield.GetLength(0) - marginRight), 0].Pos);
                         nextBlock[playerIndex] = null;
                         break;
                 }
@@ -199,7 +205,7 @@ namespace BlockBrawl
                 }
             }
         }
-        private void PlayerStearing(GameTime gameTime, int playerIndex)//unfortunately not a very practical/nice method but it works ( we will se what can be done later about this )
+        private void PlayerSteering(GameTime gameTime, int playerIndex)//unfortunately not a very practical/nice method but it works ( we will se what can be done later about this )
         {
             if (jArray[playerIndex] != null && CheckFloor(jArray[playerIndex].jMatrix))
             {
