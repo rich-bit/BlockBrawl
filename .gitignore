@@ -55,3 +55,4 @@ monodroid*.msi
 /CompiledContent/Windows/IgnoreMe.dll
 *.cachefile
 *.dll
+BlockBrawl/.vs/BlockBrawl/v16/Server/sqlite3/storage.ide-wal
