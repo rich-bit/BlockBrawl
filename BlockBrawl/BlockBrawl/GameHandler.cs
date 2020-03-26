@@ -30,6 +30,7 @@ namespace BlockBrawl
 
             //Management
             play = new Play(20,graphicsDeviceManager.PreferredBackBufferHeight / TextureManager.transBlock.Height - 1, new Vector2(TextureManager.transBlock.Width, TextureManager.transBlock.Height), graphicsDeviceManager.PreferredBackBufferWidth);
+            //Removing the hardcoding at some point soon with a settings class.
         }
         public void Draw()
         {

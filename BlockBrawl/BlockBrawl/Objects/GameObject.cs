@@ -6,7 +6,7 @@ namespace BlockBrawl
     class GameObject
     {
         protected Vector2 pos;
-        public Texture2D tex { get; set; }
+        public Texture2D tex;
         protected Rectangle rect;
         public float transparency { get; set; }
         public float time { get; set; }

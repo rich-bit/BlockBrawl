@@ -14,17 +14,17 @@ namespace BlockBrawl
         GameObject[,] playfield;
         Vector2 tileSize;
 
-        //Alla olika blocks hamnar i resp array. Insert görs i array med playerIndex för att igenkänna vems som är vems.
+        //Each block has its own class. The array will use index 1, 2 for player 1 and 2. Index 0 is not used atm.
         I[] iArray;
         J[] jArray;
 
-        //Nextblock
+        //Nextblock, will switch this array for spawn.
         string[] nextBlock;
 
-        //Blocks på spelplanen hamnar i en lista
-        TetrisObject[,] stoppedblocks;
+        //Will be the stack of stopped blockes.
+        TetrisObject[,] stackedBlocks;
 
-        //Hemmagjort inputManager
+        //Our own inputmanager, for the NES replicas used (other gamepads will work i think).
         InputManager iM;
 
         public Play(int tilesX, int tilesY, Vector2 tileSize, int gameWidth)
@@ -37,19 +37,16 @@ namespace BlockBrawl
             //Im
             iM = new InputManager();
 
-            //Nextblock med playerindex som karta för nästa block (plats 0 används aldrig i praktiken).
             nextBlock = new string[3];
             nextBlock[1] = RandomBlock();
             nextBlock[2] = RandomBlock();
 
-            //Alla blocks som gått hela vägen ner ska delas upp och hamna i en lista.
-            stoppedblocks = new TetrisObject[playfield.GetLength(0), playfield.GetLength(1)];
+            stackedBlocks = new TetrisObject[playfield.GetLength(0), playfield.GetLength(1)];
 
-            //Initierar Arrayer, plats 0 används inte i praktiken
-            jArray = new J[3];
+            jArray = new J[3];//Again, index 0 is not used atm.
             iArray = new I[3];
         }
-        private void PopulatePlayfield(int tilesX, int tilesY, Vector2 tileSize, int gameWidth)
+        private void PopulatePlayfield(int tilesX, int tilesY, Vector2 tileSize, int gameWidth)//Get drawable textures and pos for the playfield
         {
             float startPointX = gameWidth / 2 - tilesX * tileSize.X / 2;
             for (int i = 0; i < tilesX; i++)
@@ -75,7 +72,7 @@ namespace BlockBrawl
             if (jArray[playerIndex] == null && iArray[playerIndex] == null)
             {
                 switch (nextBlock[playerIndex])
-                {
+                {//Here we need to also check if gamover == true ( not implemented yet )
                     case "J":
                         jArray[playerIndex] = new J(TextureManager.blueBlock, playfield[rnd.Next(0, playfield.GetLength(0) - 3), 0].Pos);
                         nextBlock[playerIndex] = null;
@@ -99,6 +96,23 @@ namespace BlockBrawl
             }
             return false;
         }
+        private bool CheckOnStack(TetrisObject[,] tetrisobjects)
+        {
+            foreach (TetrisObject aliveblock in tetrisobjects)
+            {
+                foreach (TetrisObject stackblock in stackedBlocks)
+                {
+                    if (stackblock != null)
+                    {
+                        if (aliveblock.PosY + tileSize.Y == stackblock.PosY && aliveblock.PosX == stackblock.PosX && aliveblock.alive)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
         private bool CheckLeftSide(TetrisObject[,] tetrisObjects)
         {
             foreach (TetrisObject item in tetrisObjects)
@@ -118,26 +132,76 @@ namespace BlockBrawl
             }
             return false;
         }
-
+        private bool CheckStackLeft(TetrisObject[,] tetrisObjects)
+        {
+            foreach (TetrisObject aliveblock in tetrisObjects)
+            {
+                foreach (TetrisObject stackblock in stackedBlocks)
+                {
+                    if (stackblock != null)
+                    {
+                        if (aliveblock.PosX - tileSize.X == stackblock.PosX && aliveblock.PosY == stackblock.PosY && aliveblock.alive)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        private bool CheckStackRight(TetrisObject[,] tetrisObjects)
+        {
+            foreach (TetrisObject aliveblock in tetrisObjects)
+            {
+                foreach (TetrisObject stackblock in stackedBlocks)
+                {
+                    if (stackblock != null)
+                    {
+                        if (aliveblock.PosX + tileSize.X == stackblock.PosX && aliveblock.PosY == stackblock.PosY && aliveblock.alive)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        private bool StackIntersect(TetrisObject[,] tetrisObjects)
+        {
+            foreach (TetrisObject aliveblock in tetrisObjects)
+            {
+                foreach (TetrisObject stackblock in stackedBlocks)
+                {
+                    if (stackblock != null)
+                    {
+                        if (aliveblock.Pos == stackblock.Pos && aliveblock.alive)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
         private void AddDeadBlock(TetrisObject[,] tetrisObjects)
         {
             foreach (TetrisObject item in tetrisObjects)
             {
-                for (int i = 0; i < stoppedblocks.GetLength(0); i++)
+                for (int i = 0; i < stackedBlocks.GetLength(0); i++)
                 {
-                    for (int j = 0; j < stoppedblocks.GetLength(1); j++)
+                    for (int j = 0; j < stackedBlocks.GetLength(1); j++)
                     {
                         if (item.Pos == playfield[i, j].Pos && item.alive)
                         {
-                            stoppedblocks[i, j] = new TetrisObject(item.Pos, item.tex);
+                            stackedBlocks[i, j] = new TetrisObject(item.Pos, item.tex);
                         }
                     }
                 }
             }
         }
-        private void PlayerStearing(GameTime gameTime, int playerIndex)//Massa JustPressed tyvärr
+        private void PlayerStearing(GameTime gameTime, int playerIndex)//unfortunately not a very practical/nice method but it works ( we will se what can be done later about this )
         {
-            if (jArray[playerIndex] != null && CheckFloor(jArray[playerIndex].jMatrix))//Bryt ut till metod när den funkar[2 dagar senare->] FAN GÅR JU INTE!!!!!!!!!!!
+            if (jArray[playerIndex] != null && CheckFloor(jArray[playerIndex].jMatrix))
             {
                 AddDeadBlock(jArray[playerIndex].jMatrix);
                 jArray[playerIndex] = null;
@@ -149,20 +213,30 @@ namespace BlockBrawl
                 {
                     jArray[playerIndex].Fall(tileSize.X); jArray[playerIndex].time = 0f;
                 }
-                if (iM.JustPressed(Buttons.B, playerIndex) && jArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos))
+                if (iM.JustPressed(Buttons.B, playerIndex) && jArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos) && !StackIntersect(jArray[playerIndex].NextRotatePosition(true)))
                 {
                     jArray[playerIndex].Rotate(true);
                 }
-                if (iM.JustPressed(Buttons.Y, playerIndex) && jArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos))
+                if (iM.JustPressed(Buttons.Y, playerIndex) && jArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos) && !StackIntersect(jArray[playerIndex].NextRotatePosition(false)))
                 { jArray[playerIndex].Rotate(false); }
-                if (iM.JustPressed(Buttons.DPadLeft, playerIndex) && !CheckLeftSide(jArray[playerIndex].jMatrix))
+                if (iM.JustPressed(Buttons.DPadLeft, playerIndex) && !CheckLeftSide(jArray[playerIndex].jMatrix) && !CheckStackLeft(jArray[playerIndex].jMatrix))
                 { jArray[playerIndex].Move(-tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadRight, playerIndex) && !CheckRightSide(jArray[playerIndex].jMatrix))
+                if (iM.JustPressed(Buttons.DPadRight, playerIndex) && !CheckRightSide(jArray[playerIndex].jMatrix) && !CheckStackRight(jArray[playerIndex].jMatrix))
                 { jArray[playerIndex].Move(tileSize.X); }
                 if (iM.JustPressed(Buttons.DPadDown, playerIndex) || iM.IsHeld(Buttons.DPadDown, playerIndex))
                 { if (!CheckFloor(jArray[playerIndex].jMatrix)) { jArray[playerIndex].Fall(tileSize.Y); } }
+
+
+                if (jArray[playerIndex] != null && jArray[playerIndex].jMatrix != null && stackedBlocks.Length > 0)
+                {
+                    if (CheckOnStack(jArray[playerIndex].jMatrix))
+                    {
+                        AddDeadBlock(jArray[playerIndex].jMatrix);
+                        jArray[playerIndex] = null;
+                    }
+                }
             }
-            if (iArray[playerIndex] != null && CheckFloor(iArray[playerIndex].iMatrix))//Bryt ut till metod när den funkar
+            if (iArray[playerIndex] != null && CheckFloor(iArray[playerIndex].iMatrix))
             {
                 AddDeadBlock(iArray[playerIndex].iMatrix);
                 iArray[playerIndex] = null;
@@ -176,18 +250,27 @@ namespace BlockBrawl
                     iArray[playerIndex].Fall(tileSize.X); iArray[playerIndex].time = 0f;
                 }
 
-                if (iM.JustPressed(Buttons.B, playerIndex) && iArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos))
+                if (iM.JustPressed(Buttons.B, playerIndex) && iArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos) && !StackIntersect(iArray[playerIndex].NextRotatePosition(true)))
                 {
                     iArray[playerIndex].Rotate(true);
                 }
-                if (iM.JustPressed(Buttons.Y, playerIndex) && iArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos))
+                if (iM.JustPressed(Buttons.Y, playerIndex) && iArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos) && !StackIntersect(iArray[playerIndex].NextRotatePosition(false)))
                 { iArray[playerIndex].Rotate(false); }
-                if (iM.JustPressed(Buttons.DPadLeft, playerIndex) && !CheckLeftSide(iArray[playerIndex].iMatrix))
+                if (iM.JustPressed(Buttons.DPadLeft, playerIndex) && !CheckLeftSide(iArray[playerIndex].iMatrix) && !CheckStackLeft(iArray[playerIndex].iMatrix))
                 { iArray[playerIndex].Move(-tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadRight, playerIndex) && !CheckRightSide(iArray[playerIndex].iMatrix))
+                if (iM.JustPressed(Buttons.DPadRight, playerIndex) && !CheckRightSide(iArray[playerIndex].iMatrix) && !CheckStackRight(iArray[playerIndex].iMatrix))
                 { iArray[playerIndex].Move(tileSize.X); }
                 if (iM.JustPressed(Buttons.DPadDown, playerIndex) || iM.IsHeld(Buttons.DPadDown, playerIndex))
                 { if (!CheckFloor(iArray[playerIndex].iMatrix)) { iArray[playerIndex].Fall(tileSize.Y); } }
+
+                if (iArray[playerIndex] != null && iArray[playerIndex].iMatrix != null && stackedBlocks.Length > 0)
+                {
+                    if (CheckOnStack(iArray[playerIndex].iMatrix))
+                    {
+                        AddDeadBlock(iArray[playerIndex].iMatrix);
+                        iArray[playerIndex] = null;
+                    }
+                }
             }
         }
         private string RandomBlock()
@@ -206,7 +289,7 @@ namespace BlockBrawl
             if (iArray[1] != null) { iArray[1].Draw(spriteBatch); }
             if (jArray[2] != null) { jArray[2].Draw(spriteBatch); }
             if (iArray[2] != null) { iArray[2].Draw(spriteBatch); }
-            if (stoppedblocks.Length > 0) { foreach (TetrisObject item in stoppedblocks) { if (item != null) { item.Draw(spriteBatch); } } }
+            if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch); } } }
         }
     }
 }
