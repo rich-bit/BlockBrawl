@@ -30,7 +30,7 @@ namespace BlockBrawl
             spriteBatch = new SpriteBatch(graphicsDevice);
 
             //Management
-            play = new Play(SettingsManager.tiles.X, SettingsManager.tiles.Y, new Vector2(TextureManager.transBlock.Width, TextureManager.transBlock.Height), graphicsDeviceManager.PreferredBackBufferWidth, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
+            play = new Play(SettingsManager.tiles, new Vector2(TextureManager.transBlock.Width, TextureManager.transBlock.Height), graphicsDeviceManager.PreferredBackBufferWidth, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
             //Removing the hardcoding at some point soon with a settings class.
         }
         public void Draw()

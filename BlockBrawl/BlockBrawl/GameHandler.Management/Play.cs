@@ -31,14 +31,14 @@ namespace BlockBrawl
 
         int playerOneIndex, playerTwoIndex;
 
-        public Play(int tilesX, int tilesY, Vector2 tileSize, int gameWidth, int playerOneIndex, int playerTwoIndex)
+        public Play(Point tiles, Vector2 tileSize, int gameWidth, int playerOneIndex, int playerTwoIndex)
         {
             this.tileSize = tileSize;
             this.playerOneIndex = playerOneIndex;
             this.playerTwoIndex = playerTwoIndex;
 
-            playfield = new GameObject[tilesX, tilesY];
-            PopulatePlayfield(tilesX, tilesY, tileSize, gameWidth);
+            playfield = new GameObject[tiles.X, tiles.Y];
+            PopulatePlayfield(tiles.X, tiles.Y, tileSize, gameWidth);
 
             //Im
             iM = new InputManager(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
