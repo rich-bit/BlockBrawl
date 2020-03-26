@@ -4,20 +4,20 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/blueblock.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/emptyblock.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/gameText.spritefont</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/lightblue.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/lightgreenblock.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/MenuFont.spritefont</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/menuText.spritefont</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/newround.spritefont</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/orangeblock.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/purpleblock.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/scoreText.spritefont</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/transparentblock.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/whiteblock.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/vt20/BlockBrawl/BlockBrawl/Content/yellowblock.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/blueblock.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/emptyblock.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/gameText.spritefont</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/lightblue.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/lightgreenblock.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/MenuFont.spritefont</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/menuText.spritefont</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/newround.spritefont</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/orangeblock.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/purpleblock.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/scoreText.spritefont</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/transparentblock.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/whiteblock.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/yellowblock.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

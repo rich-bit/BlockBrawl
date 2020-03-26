@@ -99,6 +99,23 @@ namespace BlockBrawl
             }
             return false;
         }
+        private bool CheckOnStack(TetrisObject[,] tetrisobjects)
+        {
+            foreach (TetrisObject aliveblock in tetrisobjects)
+            {
+                foreach (TetrisObject stackblock in stoppedblocks)
+                {
+                    if (stackblock != null)
+                    {
+                        if (aliveblock.PosY + tileSize.Y == stackblock.PosY && aliveblock.PosX == stackblock.PosX && aliveblock.alive)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
         private bool CheckLeftSide(TetrisObject[,] tetrisObjects)
         {
             foreach (TetrisObject item in tetrisObjects)
@@ -161,6 +178,16 @@ namespace BlockBrawl
                 { jArray[playerIndex].Move(tileSize.X); }
                 if (iM.JustPressed(Buttons.DPadDown, playerIndex) || iM.IsHeld(Buttons.DPadDown, playerIndex))
                 { if (!CheckFloor(jArray[playerIndex].jMatrix)) { jArray[playerIndex].Fall(tileSize.Y); } }
+
+
+                if (jArray[playerIndex] != null && jArray[playerIndex].jMatrix != null && stoppedblocks.Length > 0)
+                {
+                    if (CheckOnStack(jArray[playerIndex].jMatrix))
+                    {
+                        AddDeadBlock(jArray[playerIndex].jMatrix);
+                        jArray[playerIndex] = null;
+                    }
+                }
             }
             if (iArray[playerIndex] != null && CheckFloor(iArray[playerIndex].iMatrix))//Bryt ut till metod när den funkar
             {
@@ -188,6 +215,15 @@ namespace BlockBrawl
                 { iArray[playerIndex].Move(tileSize.X); }
                 if (iM.JustPressed(Buttons.DPadDown, playerIndex) || iM.IsHeld(Buttons.DPadDown, playerIndex))
                 { if (!CheckFloor(iArray[playerIndex].iMatrix)) { iArray[playerIndex].Fall(tileSize.Y); } }
+
+                if (iArray[playerIndex] != null && iArray[playerIndex].iMatrix != null && stoppedblocks.Length > 0)
+                {
+                    if (CheckOnStack(iArray[playerIndex].iMatrix))
+                    {
+                        AddDeadBlock(iArray[playerIndex].iMatrix);
+                        iArray[playerIndex] = null;
+                    }
+                }
             }
         }
         private string RandomBlock()
