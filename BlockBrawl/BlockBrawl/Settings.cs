@@ -12,7 +12,6 @@ namespace BlockBrawl.Blocks
         public static bool fullScreen;
         public static int tileSize;
         public static Point resolution;
-
-        //Borde också finnas difficulty här.
+        //Not yet thought through, will use this class to avoid hardcoding. Possible a config file will be generated/read here. Might be a static class.
     }
 }
