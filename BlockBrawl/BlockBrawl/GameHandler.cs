@@ -15,11 +15,6 @@ namespace BlockBrawl
 
         public GameHandler(GraphicsDeviceManager graphicsDeviceManager, GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
-            //Settings, where to put?
-            graphicsDeviceManager.PreferredBackBufferWidth = 1920;
-            graphicsDeviceManager.PreferredBackBufferHeight = 1080;
-            graphicsDeviceManager.ApplyChanges();
-
             //Construct stuff;                        
             this.graphicsDevice = graphicsDevice;
 
@@ -30,8 +25,9 @@ namespace BlockBrawl
             spriteBatch = new SpriteBatch(graphicsDevice);
 
             //Management
-            play = new Play(SettingsManager.tiles, new Vector2(TextureManager.transBlock.Width, TextureManager.transBlock.Height), graphicsDeviceManager.PreferredBackBufferWidth, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
-            //Removing the hardcoding at some point soon with a settings class.
+            play = new Play(SettingsManager.tiles, SettingsManager.tileSize, graphicsDeviceManager.PreferredBackBufferWidth, 
+                SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo, 
+                SettingsManager.playerOneColor, SettingsManager.playerTwoColor);
         }
         public void Draw()
         {
