@@ -114,7 +114,7 @@ namespace BlockBrawl
                 for (int x = 0; x < stackedBlocks.GetLength(0); x++)
                 {
                     if (stackedBlocks[x, y] == null) { break; }
-                    else if(x == stackedBlocks.GetLength(0) - 1)
+                    else if (x == stackedBlocks.GetLength(0) - 1)
                     {
                         int i = 0;
                         do
@@ -122,9 +122,25 @@ namespace BlockBrawl
                             stackedBlocks[i, y] = null;
                             i++;
                         } while (i != x + 1);
+                        UpdateStack(y);
                     }
                 }
             }
+        }
+        private TetrisObject[,] UpdateStack(int deletedRow)
+        {
+            for (int x = 0; x < stackedBlocks.GetLength(0); x++)
+            {
+                for (int y = stackedBlocks.GetLength(1); y > 0; y--)
+                {
+                    if (stackedBlocks[x, y - 1] != null && y <= deletedRow)
+                    {
+                        stackedBlocks[x, y] = new TetrisObject(playfield[x, y].Pos, stackedBlocks[x, y - 1].tex);
+                        stackedBlocks[x, y - 1] = null;
+                    }
+                }
+            }
+            return stackedBlocks;
         }
         private Vector2 GetSpawnPos(int playerIndex)
         {
@@ -542,8 +558,7 @@ namespace BlockBrawl
             if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
             if (currentPlayState == PlayState.gameover) { spriteBatch.DrawString(FontManager.menuText, "GameOver!", Vector2.Zero, Color.IndianRed); }
             if (currentPlayState == PlayState.pause) { spriteBatch.DrawString(FontManager.menuText, "Pause!", Vector2.Zero, Color.IndianRed); }
-
-            spriteBatch.DrawString(FontManager.menuText, "DubbleSpawn\nAvoided:\n" + spawnChanged.ToString() + "\nTimes", new Vector2(0, 60), Color.Chartreuse);
+            //spriteBatch.DrawString(FontManager.menuText, "DubbleSpawn\nAvoided:\n" + spawnChanged.ToString() + "\nTimes", new Vector2(0, 60), Color.Chartreuse);
         }
     }
 }
