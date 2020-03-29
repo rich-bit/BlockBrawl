@@ -217,6 +217,20 @@ namespace BlockBrawl.Blocks
                 item.PosX += lenght;
             }
         }
+        public Vector2 MinValues()
+        {
+            float x = float.MaxValue;
+            float y = float.MaxValue;
+            for (int i = 0; i < iMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < iMatrix.GetLength(1); j++)
+                {
+                    if (iMatrix[i, j].PosX < x && iMatrix[i, j].alive) { x = iMatrix[i, j].PosX; }
+                    if (iMatrix[i, j].PosY < y && iMatrix[i, j].alive) { y = iMatrix[i, j].PosY; }
+                }
+            }
+            return new Vector2(x, y);
+        }
         public Vector2 MinValues(TetrisObject[,] tetrisObjects)
         {
             float x = float.MaxValue;
@@ -227,6 +241,20 @@ namespace BlockBrawl.Blocks
                 {
                     if (tetrisObjects[i, j].PosX < x && tetrisObjects[i, j].alive) { x = tetrisObjects[i, j].PosX; }
                     if (tetrisObjects[i, j].PosY < y && tetrisObjects[i, j].alive) { y = tetrisObjects[i, j].PosY; }
+                }
+            }
+            return new Vector2(x, y);
+        }
+        public Vector2 MaxValues()
+        {
+            float x = float.MinValue;
+            float y = float.MinValue;
+            for (int i = 0; i < iMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < iMatrix.GetLength(1); j++)
+                {
+                    if (iMatrix[i, j].PosX > x && iMatrix[i, j].alive) { x = iMatrix[i, j].PosX; }
+                    if (iMatrix[i, j].PosY > y && iMatrix[i, j].alive) { y = iMatrix[i, j].PosY; }
                 }
             }
             return new Vector2(x, y);
