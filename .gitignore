@@ -4,8 +4,12 @@
 
 # User-specific files
 *.suo
+.suo
 *.user
 *.sln.docstates
+
+#Dont want it
+*.csprojAssemblyReference.cache
 
 # Build results
 [Dd]ebug/
