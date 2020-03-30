@@ -578,21 +578,18 @@ namespace BlockBrawl
             if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
             if (currentPlayState == PlayState.gameover) { spriteBatch.DrawString(FontManager.menuText, "GameOver!", Vector2.Zero, Color.IndianRed); }
             if (currentPlayState == PlayState.pause) { spriteBatch.DrawString(FontManager.menuText, "Pause!", Vector2.Zero, Color.IndianRed); }
-            if (score[playerOneIndex] != 0)
-            {
-                spriteBatch.DrawString(FontManager.menuText,
-                $"{SettingsManager.playerOneName.ToString()}\nscore: " + score[playerOneIndex].ToString(),
-                new Vector2(0, 80),
-                Color.Black);
-            }
-            if (score[playerTwoIndex] != 0)
-            {
-                spriteBatch.DrawString(FontManager.menuText,
-                $"{SettingsManager.playerTwoName.ToString()}\nscore: " + score[playerTwoIndex].ToString(),
-                new Vector2(SettingsManager.windowSize.X - FontManager.scoreText.MeasureString($"{SettingsManager.playerTwoName.ToString()}\nscore: ").X - 160,
-                80),
-                Color.Black);
-            }
+
+            spriteBatch.DrawString(FontManager.menuText,
+            $"{SettingsManager.playerOneName.ToString()}\nscore: " + score[playerOneIndex].ToString(),
+            new Vector2(0, 80),
+            Color.Black);
+
+            spriteBatch.DrawString(FontManager.menuText,
+            $"{SettingsManager.playerTwoName.ToString()}\nscore: " + score[playerTwoIndex].ToString(),
+            new Vector2(SettingsManager.windowSize.X - FontManager.scoreText.MeasureString($"{SettingsManager.playerTwoName.ToString()}\nscore: ").X - 160,
+            80),
+            Color.Black);
+
         }
     }
 }
