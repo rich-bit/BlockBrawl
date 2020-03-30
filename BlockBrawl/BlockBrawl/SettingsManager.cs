@@ -6,7 +6,7 @@ namespace BlockBrawl
     class SettingsManager
     {
         //public static bool fullScreen;
-        //public static Point resolution;
+        public static Point windowSize;
         public static Vector2 tileSize;
         public static float speed;
         public static Texture2D playerOneColor, playerTwoColor;
@@ -18,7 +18,10 @@ namespace BlockBrawl
             graphicsDeviceManager.PreferredBackBufferWidth = 1920;
             graphicsDeviceManager.PreferredBackBufferHeight = 1080;
             graphicsDeviceManager.ApplyChanges();
-            
+
+            windowSize.X = graphicsDeviceManager.PreferredBackBufferWidth;
+            windowSize.Y = graphicsDeviceManager.PreferredBackBufferHeight;
+
             speed = tileSize.X;
 
             playerOneColor = TextureManager.whiteBlock;

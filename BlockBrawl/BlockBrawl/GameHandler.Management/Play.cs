@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using BlockBrawl.Blocks;
 using BlockBrawl.Objects;
+using System.Collections.Generic;
 
 namespace BlockBrawl
 {
@@ -15,8 +16,9 @@ namespace BlockBrawl
         Texture2D[] playerColors;
 
         GameObject[,] playfield;
-        int marginRight = 3; // to Avoid spawn outside map.
-        int spawnChanged;//Temporary, for study purposes.
+        int marginRight = 3; // to Avoid spawn outside map, will be changed.
+
+        int[] score;
 
         Vector2 tileSize;
         Vector2[] spawnPositions;
@@ -72,6 +74,8 @@ namespace BlockBrawl
             jArray = new J[3];//Again, index 0 is not used atm.
             iArray = new I[3];
 
+            score = new int[3];
+
             currentPlayState = PlayState.play;
         }
         private void PopulatePlayfield(int tilesX, int tilesY, Vector2 tileSize, int gameWidth)//Get drawable textures and pos for the playfield
@@ -92,7 +96,7 @@ namespace BlockBrawl
             switch (currentPlayState)
             {
                 case PlayState.play:
-                    CheckStackRows(gameTime);
+                    CheckStackRows();
                     AvoidDubbleSpawn();
                     PlayerSteering(gameTime, playerOneIndex);
                     PlayerSteering(gameTime, playerTwoIndex);
@@ -107,7 +111,7 @@ namespace BlockBrawl
                     break;
             }
         }
-        private void CheckStackRows(GameTime gameTime)//Här
+        private void CheckStackRows()
         {
             for (int y = 0; y < stackedBlocks.GetLength(1); y++)
             {
@@ -116,6 +120,8 @@ namespace BlockBrawl
                     if (stackedBlocks[x, y] == null) { break; }
                     else if (x == stackedBlocks.GetLength(0) - 1)
                     {
+                        score[playerOneIndex] += RowScore(playerOneIndex, y);
+                        score[playerTwoIndex] += RowScore(playerTwoIndex, y);
                         int i = 0;
                         do
                         {
@@ -126,6 +132,20 @@ namespace BlockBrawl
                     }
                 }
             }
+        }
+        private int RowScore(int playerIndex, int row)
+        {
+            List<Texture2D> colors = new List<Texture2D>();
+            int score = 0;
+            for (int x = 0; x < stackedBlocks.GetLength(0); x++)
+            {
+                colors.Add(stackedBlocks[x, row].tex);
+            }
+            foreach (Texture2D color in colors)
+            {
+                if (playerColors[playerIndex] == color) { score += 10; }
+            }
+            return score;
         }
         private TetrisObject[,] UpdateStack(int deletedRow)
         {
@@ -247,14 +267,14 @@ namespace BlockBrawl
         }
         private void AvoidDubbleSpawn()
         {
-            if (spawnPositions[playerOneIndex].X == spawnPositions[playerTwoIndex].X) { spawnPositions[playerOneIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; spawnChanged++; }
-            if (spawnPositions[playerOneIndex].X + tileSize.X == spawnPositions[playerTwoIndex].X) { spawnPositions[playerOneIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; spawnChanged++; }
-            if (spawnPositions[playerOneIndex].X + tileSize.X + tileSize.X == spawnPositions[playerTwoIndex].X) { spawnPositions[playerOneIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; spawnChanged++; }
-            if (spawnPositions[playerOneIndex].X + tileSize.X + tileSize.X + tileSize.X == spawnPositions[playerTwoIndex].X) { spawnPositions[playerOneIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; spawnChanged++; }
-            if (spawnPositions[playerTwoIndex].X == spawnPositions[playerOneIndex].X) { spawnPositions[playerTwoIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; spawnChanged++; }
-            if (spawnPositions[playerTwoIndex].X + tileSize.X == spawnPositions[playerOneIndex].X) { spawnPositions[playerTwoIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; spawnChanged++; }
-            if (spawnPositions[playerTwoIndex].X + tileSize.X + tileSize.X == spawnPositions[playerOneIndex].X) { spawnPositions[playerTwoIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; spawnChanged++; }
-            if (spawnPositions[playerTwoIndex].X + tileSize.X + tileSize.X + tileSize.X == spawnPositions[playerOneIndex].X) { spawnPositions[playerTwoIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; spawnChanged++; }
+            if (spawnPositions[playerOneIndex].X == spawnPositions[playerTwoIndex].X) { spawnPositions[playerOneIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; }
+            if (spawnPositions[playerOneIndex].X + tileSize.X == spawnPositions[playerTwoIndex].X) { spawnPositions[playerOneIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; }
+            if (spawnPositions[playerOneIndex].X + tileSize.X + tileSize.X == spawnPositions[playerTwoIndex].X) { spawnPositions[playerOneIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; }
+            if (spawnPositions[playerOneIndex].X + tileSize.X + tileSize.X + tileSize.X == spawnPositions[playerTwoIndex].X) { spawnPositions[playerOneIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; }
+            if (spawnPositions[playerTwoIndex].X == spawnPositions[playerOneIndex].X) { spawnPositions[playerTwoIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; }
+            if (spawnPositions[playerTwoIndex].X + tileSize.X == spawnPositions[playerOneIndex].X) { spawnPositions[playerTwoIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; }
+            if (spawnPositions[playerTwoIndex].X + tileSize.X + tileSize.X == spawnPositions[playerOneIndex].X) { spawnPositions[playerTwoIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; }
+            if (spawnPositions[playerTwoIndex].X + tileSize.X + tileSize.X + tileSize.X == spawnPositions[playerOneIndex].X) { spawnPositions[playerTwoIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; }
         }
         private void GetBlocks(int playerIndex)
         {
@@ -558,7 +578,21 @@ namespace BlockBrawl
             if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
             if (currentPlayState == PlayState.gameover) { spriteBatch.DrawString(FontManager.menuText, "GameOver!", Vector2.Zero, Color.IndianRed); }
             if (currentPlayState == PlayState.pause) { spriteBatch.DrawString(FontManager.menuText, "Pause!", Vector2.Zero, Color.IndianRed); }
-            //spriteBatch.DrawString(FontManager.menuText, "DubbleSpawn\nAvoided:\n" + spawnChanged.ToString() + "\nTimes", new Vector2(0, 60), Color.Chartreuse);
+            if (score[playerOneIndex] != 0)
+            {
+                spriteBatch.DrawString(FontManager.menuText,
+                $"{SettingsManager.playerOneName.ToString()}\nscore: " + score[playerOneIndex].ToString(),
+                new Vector2(0, 80),
+                Color.Black);
+            }
+            if (score[playerTwoIndex] != 0)
+            {
+                spriteBatch.DrawString(FontManager.menuText,
+                $"{SettingsManager.playerTwoName.ToString()}\nscore: " + score[playerTwoIndex].ToString(),
+                new Vector2(SettingsManager.windowSize.X - FontManager.scoreText.MeasureString($"{SettingsManager.playerTwoName.ToString()}\nscore: ").X - 160,
+                80),
+                Color.Black);
+            }
         }
     }
 }
