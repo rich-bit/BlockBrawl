@@ -190,11 +190,14 @@ namespace BlockBrawl
             {
                 foreach (TetrisObject newPosition in iArray[playerIndex].NextRotatePosition(clockwise))
                 {
-                    foreach (TetrisObject otherPlayer in LocateOtherPlayer(playerIndex))
+                    if (LocateOtherPlayer(playerIndex) != null)
                     {
-                        if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayer(playerIndex))
                         {
-                            return true;
+                            if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -203,11 +206,14 @@ namespace BlockBrawl
             {
                 foreach (TetrisObject newPosition in jArray[playerIndex].NextRotatePosition(clockwise))
                 {
-                    foreach (TetrisObject otherPlayer in LocateOtherPlayer(playerIndex))
+                    if (LocateOtherPlayer(playerIndex) != null)
                     {
-                        if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayer(playerIndex))
                         {
-                            return true;
+                            if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
