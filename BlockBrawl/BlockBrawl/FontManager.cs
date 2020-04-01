@@ -5,14 +5,17 @@ namespace BlockBrawl
 {
     class FontManager
     {
-        public static SpriteFont gameText, scoreText, menuText, newRoundText;
-
         public FontManager(ContentManager content)
         {
-            gameText = content.Load<SpriteFont>(@"gameText");
-            scoreText = content.Load<SpriteFont>(@"scoreText");
-            menuText = content.Load<SpriteFont>(@"menuText");
-            newRoundText = content.Load<SpriteFont>(@"newround");
+            GameText = content.Load<SpriteFont>(@"gameText");
+            ScoreText = content.Load<SpriteFont>(@"scoreText");
+            MenuText = content.Load<SpriteFont>(@"menuText");
+            NewRoundText = content.Load<SpriteFont>(@"newround");
         }
+
+        public static SpriteFont GameText { get; set; }
+        public static SpriteFont ScoreText { get; set; }
+        public static SpriteFont MenuText { get; set; }
+        public static SpriteFont NewRoundText { get; set; }
     }
 }

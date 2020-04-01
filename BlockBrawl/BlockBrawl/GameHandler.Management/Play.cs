@@ -452,7 +452,8 @@ namespace BlockBrawl
                 jArray[playerIndex].time += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (jArray[playerIndex].time > 1f && !CheckFloor(jArray[playerIndex].jMatrix) && !PlayerMovementDownIntersect(playerIndex, jArray[playerIndex].jMatrix))
                 {
-                    jArray[playerIndex].Fall(tileSize.X); jArray[playerIndex].time = 0f;
+                    jArray[playerIndex].Fall(tileSize.X); 
+                    jArray[playerIndex].time = 0f;
                 }
                 if (iM.JustPressed(Buttons.B, playerIndex)
                     && jArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
@@ -510,10 +511,10 @@ namespace BlockBrawl
             else if (iArray[playerIndex] != null)
             {
 
-                iArray[playerIndex].time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (iArray[playerIndex].time > 1f && !CheckFloor(iArray[playerIndex].iMatrix) && !PlayerMovementDownIntersect(playerIndex, iArray[playerIndex].iMatrix))
+                iArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (iArray[playerIndex].Time > 1f && !CheckFloor(iArray[playerIndex].iMatrix) && !PlayerMovementDownIntersect(playerIndex, iArray[playerIndex].iMatrix))
                 {
-                    iArray[playerIndex].Fall(tileSize.X); iArray[playerIndex].time = 0f;
+                    iArray[playerIndex].Fall(tileSize.X); iArray[playerIndex].Time = 0f;
                 }
 
                 if (iM.JustPressed(Buttons.B, playerIndex)
@@ -546,11 +547,11 @@ namespace BlockBrawl
                 {
                     if (!CheckFloor(iArray[playerIndex].iMatrix))
                     {
-                        iArray[playerIndex].time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                        if (iArray[playerIndex].time > 0.4f)
+                        iArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (iArray[playerIndex].Time > 0.4f)
                         {
                             iArray[playerIndex].Fall(tileSize.Y);
-                            iArray[playerIndex].time = 0f;
+                            iArray[playerIndex].Time = 0f;
                         }
                     }
                 }
@@ -582,17 +583,17 @@ namespace BlockBrawl
             if (jArray[playerTwoIndex] != null) { jArray[playerTwoIndex].Draw(spriteBatch); }
             if (iArray[playerTwoIndex] != null) { iArray[playerTwoIndex].Draw(spriteBatch); }
             if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
-            if (currentPlayState == PlayState.gameover) { spriteBatch.DrawString(FontManager.menuText, "GameOver!", Vector2.Zero, Color.IndianRed); }
-            if (currentPlayState == PlayState.pause) { spriteBatch.DrawString(FontManager.menuText, "Pause!", Vector2.Zero, Color.IndianRed); }
+            if (currentPlayState == PlayState.gameover) { spriteBatch.DrawString(FontManager.MenuText, "GameOver!", Vector2.Zero, Color.IndianRed); }
+            if (currentPlayState == PlayState.pause) { spriteBatch.DrawString(FontManager.MenuText, "Pause!", Vector2.Zero, Color.IndianRed); }
 
-            spriteBatch.DrawString(FontManager.menuText,
+            spriteBatch.DrawString(FontManager.MenuText,
             $"{SettingsManager.playerOneName.ToString()}\nscore: " + score[playerOneIndex].ToString(),
             new Vector2(0, 80),
             Color.Black);
 
-            spriteBatch.DrawString(FontManager.menuText,
+            spriteBatch.DrawString(FontManager.MenuText,
             $"{SettingsManager.playerTwoName.ToString()}\nscore: " + score[playerTwoIndex].ToString(),
-            new Vector2(SettingsManager.windowSize.X - FontManager.scoreText.MeasureString($"{SettingsManager.playerTwoName.ToString()}\nscore: ").X - 160,
+            new Vector2(SettingsManager.windowSize.X - FontManager.ScoreText.MeasureString($"{SettingsManager.playerTwoName.ToString()}\nscore: ").X - 160,
             80),
             Color.Black);
 

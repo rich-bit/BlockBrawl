@@ -9,7 +9,7 @@ namespace BlockBrawl
         public Texture2D tex;
         protected Rectangle rect;
         public float transparency;
-        public float time { get; set; }
+        public float Time { get; set; }
         public GameObject(Vector2 pos, Texture2D tex)
         {
             this.pos = pos;
