@@ -12,7 +12,7 @@ namespace BlockBrawl.Blocks
         Vector2 startPos;
 
         public Texture2D color { get; set; }
-        public float time { get; set; }
+        public float Time { get; set; }
         enum iblockState
         {
             one,
@@ -27,7 +27,7 @@ namespace BlockBrawl.Blocks
             this.startPos = startPos;
             jMatrix = new TetrisObject[3, 3];
 
-            ////Contents of the I, looping through the dubbelarray setting positions and textures
+            ////Contents of the I, looping through the matrix setting positions and textures
             for (int i = 0; i < jMatrix.GetLength(0); i++)
             {
                 for (int j = 0; j < jMatrix.GetLength(1); j++)

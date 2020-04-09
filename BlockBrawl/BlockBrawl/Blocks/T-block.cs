@@ -5,9 +5,9 @@ using BlockBrawl.Objects;
 
 namespace BlockBrawl.Blocks
 {
-    class I//This class will basically just contain a matrix and handle the textures of each element in it, amongst other usefull things.
+    class T//This class will basically just contain a matrix and handle the textures of each element in it, amongst other usefull things.
     {
-        public TetrisObject[,] iMatrix;
+        public TetrisObject[,] tMatrix;
 
 
         public Texture2D Color { get; set; }
@@ -20,25 +20,25 @@ namespace BlockBrawl.Blocks
             four,
         }
         IblockState formation;
-        public I(Texture2D color, Vector2 startPos)
+        public T(Texture2D color, Vector2 startPos)
         {
             Color = color;
-            
-            iMatrix = new TetrisObject[4, 4];
+
+            tMatrix = new TetrisObject[3, 3];
 
             //Contents of the I, looping through the matrix setting positions and textures
-            for (int i = 0; i < iMatrix.GetLength(0); i++)
+            for (int i = 0; i < tMatrix.GetLength(0); i++)
             {
-                for (int j = 0; j < iMatrix.GetLength(1); j++)
+                for (int j = 0; j < tMatrix.GetLength(1); j++)
                 {
-                    iMatrix[i, j] = new TetrisObject(Vector2.Zero, color)
+                    tMatrix[i, j] = new TetrisObject(Vector2.Zero, color)
                     {
                         PosX = startPos.X + i * color.Width,
                         PosY = startPos.Y + j * color.Height
                     };
                 }
             }
-            formation = IblockState.one;//Default formation of the I figure
+            formation = IblockState.one;//Default formation of the T figure
             UpdateFormation();
         }
         private void UpdateFormation()
@@ -46,32 +46,32 @@ namespace BlockBrawl.Blocks
             switch (formation)
             {
                 case IblockState.one:
-                    foreach (TetrisObject item in iMatrix) { item.ChangeState(true); }
-                    iMatrix[0, 1].ChangeState(false);
-                    iMatrix[1, 1].ChangeState(false);
-                    iMatrix[2, 1].ChangeState(false);
-                    iMatrix[3, 1].ChangeState(false);
+                    foreach (TetrisObject item in tMatrix) { item.ChangeState(true); }
+                    tMatrix[1, 0].ChangeState(false);
+                    tMatrix[0, 1].ChangeState(false);
+                    tMatrix[1, 1].ChangeState(false);
+                    tMatrix[2, 1].ChangeState(false);
                     break;
                 case IblockState.two:
-                    foreach (TetrisObject item in iMatrix) { item.ChangeState(true); }
-                    iMatrix[2, 0].ChangeState(false);
-                    iMatrix[2, 1].ChangeState(false);
-                    iMatrix[2, 2].ChangeState(false);
-                    iMatrix[2, 3].ChangeState(false);
+                    foreach (TetrisObject item in tMatrix) { item.ChangeState(true); }
+                    tMatrix[1, 0].ChangeState(false);
+                    tMatrix[1, 1].ChangeState(false);
+                    tMatrix[2, 1].ChangeState(false);
+                    tMatrix[1, 2].ChangeState(false);
                     break;
                 case IblockState.three:
-                    foreach (TetrisObject item in iMatrix) { item.ChangeState(true); }
-                    iMatrix[0, 2].ChangeState(false);
-                    iMatrix[1, 2].ChangeState(false);
-                    iMatrix[2, 2].ChangeState(false);
-                    iMatrix[3, 2].ChangeState(false);
+                    foreach (TetrisObject item in tMatrix) { item.ChangeState(true); }
+                    tMatrix[0, 1].ChangeState(false);
+                    tMatrix[1, 1].ChangeState(false);
+                    tMatrix[2, 1].ChangeState(false);
+                    tMatrix[1, 2].ChangeState(false);
                     break;
                 case IblockState.four:
-                    foreach (TetrisObject item in iMatrix) { item.ChangeState(true); }
-                    iMatrix[1, 0].ChangeState(false);
-                    iMatrix[1, 1].ChangeState(false);
-                    iMatrix[1, 2].ChangeState(false);
-                    iMatrix[1, 3].ChangeState(false);
+                    foreach (TetrisObject item in tMatrix) { item.ChangeState(true); }
+                    tMatrix[1, 0].ChangeState(false);
+                    tMatrix[0, 1].ChangeState(false);
+                    tMatrix[1, 1].ChangeState(false);
+                    tMatrix[1, 2].ChangeState(false);
                     break;
             }
         }
@@ -124,14 +124,14 @@ namespace BlockBrawl.Blocks
         }
         public bool AllowRotation(bool clockwise, Vector2 maxValues, Vector2 minValues)
         {
-            TetrisObject[,] newPosition = new TetrisObject[iMatrix.GetLength(0), iMatrix.GetLength(1)];
+            TetrisObject[,] newPosition = new TetrisObject[tMatrix.GetLength(0), tMatrix.GetLength(1)];
             for (int i = 0; i < newPosition.GetLength(0); i++)
             {
                 for (int j = 0; j < newPosition.GetLength(1); j++)
                 {
                     newPosition[i, j] = new TetrisObject(Vector2.Zero, Color);
-                    newPosition[i, j].PosX = iMatrix[0,0].PosX + i * Color.Width;
-                    newPosition[i, j].PosY = iMatrix[0,0].PosY + j * Color.Height;
+                    newPosition[i, j].PosX = tMatrix[0, 0].PosX + i * Color.Width;
+                    newPosition[i, j].PosY = tMatrix[0, 0].PosY + j * Color.Height;
                 }
             }
 
@@ -141,31 +141,31 @@ namespace BlockBrawl.Blocks
                 {
                     case IblockState.one:
                         foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
-                        newPosition[2, 0].ChangeState(false);
-                        newPosition[2, 1].ChangeState(false);
-                        newPosition[2, 2].ChangeState(false);
-                        newPosition[2, 3].ChangeState(false);
-                        break;
-                    case IblockState.two:
-                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
-                        newPosition[0, 2].ChangeState(false);
-                        newPosition[1, 2].ChangeState(false);
-                        newPosition[2, 2].ChangeState(false);
-                        newPosition[3, 2].ChangeState(false);
-                        break;
-                    case IblockState.three:
-                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
                         newPosition[1, 0].ChangeState(false);
                         newPosition[1, 1].ChangeState(false);
                         newPosition[1, 2].ChangeState(false);
-                        newPosition[1, 3].ChangeState(false);
+                        newPosition[2, 1].ChangeState(false);
                         break;
-                    case IblockState.four:
+                    case IblockState.two:
                         foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
                         newPosition[0, 1].ChangeState(false);
                         newPosition[1, 1].ChangeState(false);
                         newPosition[2, 1].ChangeState(false);
-                        newPosition[3, 1].ChangeState(false);
+                        newPosition[1, 2].ChangeState(false);
+                        break;
+                    case IblockState.three:
+                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
+                        newPosition[1, 0].ChangeState(false);
+                        newPosition[0, 1].ChangeState(false);
+                        newPosition[1, 1].ChangeState(false);
+                        newPosition[1, 2].ChangeState(false);
+                        break;
+                    case IblockState.four:
+                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
+                        newPosition[1, 0].ChangeState(false);
+                        newPosition[0, 1].ChangeState(false);
+                        newPosition[1, 1].ChangeState(false);
+                        newPosition[2, 1].ChangeState(false);
                         break;
                 }
             }
@@ -176,45 +176,45 @@ namespace BlockBrawl.Blocks
                     case IblockState.one:
                         foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
                         newPosition[1, 0].ChangeState(false);
+                        newPosition[0, 1].ChangeState(false);
                         newPosition[1, 1].ChangeState(false);
                         newPosition[1, 2].ChangeState(false);
-                        newPosition[1, 3].ChangeState(false);
                         break;
                     case IblockState.two:
+                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
+                        newPosition[1, 0].ChangeState(false);
+                        newPosition[0, 1].ChangeState(false);
+                        newPosition[1, 1].ChangeState(false);
+                        newPosition[2, 1].ChangeState(false);
+                        break;
+                    case IblockState.three:
+                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
+                        newPosition[1, 0].ChangeState(false);
+                        newPosition[1, 1].ChangeState(false);
+                        newPosition[2, 1].ChangeState(false);
+                        newPosition[1, 2].ChangeState(false);
+                        break;
+                    case IblockState.four:
                         foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
                         newPosition[0, 1].ChangeState(false);
                         newPosition[1, 1].ChangeState(false);
                         newPosition[2, 1].ChangeState(false);
-                        newPosition[3, 1].ChangeState(false);
-                        break;
-                    case IblockState.three:
-                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
-                        newPosition[2, 0].ChangeState(false);
-                        newPosition[2, 1].ChangeState(false);
-                        newPosition[2, 2].ChangeState(false);
-                        newPosition[2, 3].ChangeState(false);
-                        break;
-                    case IblockState.four:
-                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
-                        newPosition[0, 2].ChangeState(false);
                         newPosition[1, 2].ChangeState(false);
-                        newPosition[2, 2].ChangeState(false);
-                        newPosition[3, 2].ChangeState(false);
                         break;
                 }
             }
-            return minValues.X <= MinValues(newPosition).X && maxValues.X >= MaxValues(newPosition).X && maxValues.Y >= MaxValues(newPosition).Y; 
+            return minValues.X <= MinValues(newPosition).X && maxValues.X >= MaxValues(newPosition).X && maxValues.Y >= MaxValues(newPosition).Y;
         }
         public void Fall(float lenght)
         {
-            foreach (TetrisObject item in iMatrix)
+            foreach (TetrisObject item in tMatrix)
             {
                 item.PosY += lenght;
             }
         }
         public void Move(float lenght)
         {
-            foreach (TetrisObject item in iMatrix)
+            foreach (TetrisObject item in tMatrix)
             {
                 item.PosX += lenght;
             }
@@ -223,12 +223,12 @@ namespace BlockBrawl.Blocks
         {
             float x = float.MaxValue;
             float y = float.MaxValue;
-            for (int i = 0; i < iMatrix.GetLength(0); i++)
+            for (int i = 0; i < tMatrix.GetLength(0); i++)
             {
-                for (int j = 0; j < iMatrix.GetLength(1); j++)
+                for (int j = 0; j < tMatrix.GetLength(1); j++)
                 {
-                    if (iMatrix[i, j].PosX < x && iMatrix[i, j].alive) { x = iMatrix[i, j].PosX; }
-                    if (iMatrix[i, j].PosY < y && iMatrix[i, j].alive) { y = iMatrix[i, j].PosY; }
+                    if (tMatrix[i, j].PosX < x && tMatrix[i, j].alive) { x = tMatrix[i, j].PosX; }
+                    if (tMatrix[i, j].PosY < y && tMatrix[i, j].alive) { y = tMatrix[i, j].PosY; }
                 }
             }
             return new Vector2(x, y);
@@ -251,12 +251,12 @@ namespace BlockBrawl.Blocks
         {
             float x = float.MinValue;
             float y = float.MinValue;
-            for (int i = 0; i < iMatrix.GetLength(0); i++)
+            for (int i = 0; i < tMatrix.GetLength(0); i++)
             {
-                for (int j = 0; j < iMatrix.GetLength(1); j++)
+                for (int j = 0; j < tMatrix.GetLength(1); j++)
                 {
-                    if (iMatrix[i, j].PosX > x && iMatrix[i, j].alive) { x = iMatrix[i, j].PosX; }
-                    if (iMatrix[i, j].PosY > y && iMatrix[i, j].alive) { y = iMatrix[i, j].PosY; }
+                    if (tMatrix[i, j].PosX > x && tMatrix[i, j].alive) { x = tMatrix[i, j].PosX; }
+                    if (tMatrix[i, j].PosY > y && tMatrix[i, j].alive) { y = tMatrix[i, j].PosY; }
                 }
             }
             return new Vector2(x, y);
@@ -277,14 +277,14 @@ namespace BlockBrawl.Blocks
         }
         public TetrisObject[,] NextRotatePosition(bool clockwise)
         {
-            TetrisObject[,] newPosition = new TetrisObject[iMatrix.GetLength(0), iMatrix.GetLength(1)];
+            TetrisObject[,] newPosition = new TetrisObject[tMatrix.GetLength(0), tMatrix.GetLength(1)];
             for (int i = 0; i < newPosition.GetLength(0); i++)
             {
                 for (int j = 0; j < newPosition.GetLength(1); j++)
                 {
                     newPosition[i, j] = new TetrisObject(Vector2.Zero, Color);
-                    newPosition[i, j].PosX = iMatrix[0, 0].PosX + i * Color.Width;
-                    newPosition[i, j].PosY = iMatrix[0, 0].PosY + j * Color.Height;
+                    newPosition[i, j].PosX = tMatrix[0, 0].PosX + i * Color.Width;
+                    newPosition[i, j].PosY = tMatrix[0, 0].PosY + j * Color.Height;
                 }
             }
 
@@ -294,31 +294,31 @@ namespace BlockBrawl.Blocks
                 {
                     case IblockState.one:
                         foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
-                        newPosition[2, 0].ChangeState(false);
-                        newPosition[2, 1].ChangeState(false);
-                        newPosition[2, 2].ChangeState(false);
-                        newPosition[2, 3].ChangeState(false);
-                        break;
-                    case IblockState.two:
-                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
-                        newPosition[0, 2].ChangeState(false);
-                        newPosition[1, 2].ChangeState(false);
-                        newPosition[2, 2].ChangeState(false);
-                        newPosition[3, 2].ChangeState(false);
-                        break;
-                    case IblockState.three:
-                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
                         newPosition[1, 0].ChangeState(false);
                         newPosition[1, 1].ChangeState(false);
                         newPosition[1, 2].ChangeState(false);
-                        newPosition[1, 3].ChangeState(false);
+                        newPosition[2, 1].ChangeState(false);
                         break;
-                    case IblockState.four:
+                    case IblockState.two:
                         foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
                         newPosition[0, 1].ChangeState(false);
                         newPosition[1, 1].ChangeState(false);
                         newPosition[2, 1].ChangeState(false);
-                        newPosition[3, 1].ChangeState(false);
+                        newPosition[1, 2].ChangeState(false);
+                        break;
+                    case IblockState.three:
+                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
+                        newPosition[1, 0].ChangeState(false);
+                        newPosition[0, 1].ChangeState(false);
+                        newPosition[1, 1].ChangeState(false);
+                        newPosition[1, 2].ChangeState(false);
+                        break;
+                    case IblockState.four:
+                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
+                        newPosition[1, 0].ChangeState(false);
+                        newPosition[0, 1].ChangeState(false);
+                        newPosition[1, 1].ChangeState(false);
+                        newPosition[2, 1].ChangeState(false);
                         break;
                 }
             }
@@ -329,30 +329,30 @@ namespace BlockBrawl.Blocks
                     case IblockState.one:
                         foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
                         newPosition[1, 0].ChangeState(false);
+                        newPosition[0, 1].ChangeState(false);
                         newPosition[1, 1].ChangeState(false);
                         newPosition[1, 2].ChangeState(false);
-                        newPosition[1, 3].ChangeState(false);
                         break;
                     case IblockState.two:
+                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
+                        newPosition[1, 0].ChangeState(false);
+                        newPosition[0, 1].ChangeState(false);
+                        newPosition[1, 1].ChangeState(false);
+                        newPosition[2, 1].ChangeState(false);
+                        break;
+                    case IblockState.three:
+                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
+                        newPosition[1, 0].ChangeState(false);
+                        newPosition[1, 1].ChangeState(false);
+                        newPosition[2, 1].ChangeState(false);
+                        newPosition[1, 2].ChangeState(false);
+                        break;
+                    case IblockState.four:
                         foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
                         newPosition[0, 1].ChangeState(false);
                         newPosition[1, 1].ChangeState(false);
                         newPosition[2, 1].ChangeState(false);
-                        newPosition[3, 1].ChangeState(false);
-                        break;
-                    case IblockState.three:
-                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
-                        newPosition[2, 0].ChangeState(false);
-                        newPosition[2, 1].ChangeState(false);
-                        newPosition[2, 2].ChangeState(false);
-                        newPosition[2, 3].ChangeState(false);
-                        break;
-                    case IblockState.four:
-                        foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
-                        newPosition[0, 2].ChangeState(false);
                         newPosition[1, 2].ChangeState(false);
-                        newPosition[2, 2].ChangeState(false);
-                        newPosition[3, 2].ChangeState(false);
                         break;
                 }
             }
@@ -360,7 +360,7 @@ namespace BlockBrawl.Blocks
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (TetrisObject item in iMatrix)
+            foreach (TetrisObject item in tMatrix)
             {
                 item.Draw(spriteBatch);
             }

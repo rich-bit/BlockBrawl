@@ -44,17 +44,18 @@
   <ItemGroup>
     <Compile Include="Blocks\I-block.cs" />
     <Compile Include="Blocks\J-block.cs" />
-    <Compile Include="FontManager.cs" />
+    <Compile Include="Blocks\T-block.cs" />
+    <Compile Include="Management\FontManager.cs" />
     <Compile Include="Objects\TetrisObject.cs" />
-    <Compile Include="InputManager.cs" />
-    <Compile Include="SettingsManager.cs" />
+    <Compile Include="Management\InputManager.cs" />
+    <Compile Include="Management\SettingsManager.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameHandler.cs" />
     <Compile Include="Objects\GameObject.cs" />
-    <Compile Include="GameHandler.Management\Play.cs" />
+    <Compile Include="GameHandler.Classes\Play.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TextureManager.cs" />
+    <Compile Include="Management\TextureManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework">
