@@ -14,3 +14,5 @@ Player One:
 Left: A, Right: D, Down: S, RotateClockWise: Space, RotateCounterClockwise: Shift.
 PlayerTwo:
 Left: LeftArrow, Right: RightArrow, Down: DownArrow, RotateClockWise: NUM0, RotateCounterClockwise: Enter.
+
+Note: Keyboard steering is for testing purposes, we might decide to remove it again.
