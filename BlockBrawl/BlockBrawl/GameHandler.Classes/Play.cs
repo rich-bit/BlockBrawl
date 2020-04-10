@@ -197,6 +197,7 @@ namespace BlockBrawl
         {
             if (iArray[OtherPlayerIndex(playerIndex)] != null && iArray[OtherPlayerIndex(playerIndex)].iMatrix != null) { return iArray[OtherPlayerIndex(playerIndex)].iMatrix; }
             else if (jArray[OtherPlayerIndex(playerIndex)] != null && jArray[OtherPlayerIndex(playerIndex)].jMatrix != null) { return jArray[OtherPlayerIndex(playerIndex)].jMatrix; }
+            else if (tArray[OtherPlayerIndex(playerIndex)] != null && tArray[OtherPlayerIndex(playerIndex)].tMatrix != null) { return tArray[OtherPlayerIndex(playerIndex)].tMatrix; }
             else return null;
         }
         private bool PlayerIntersect(int playerIndex, bool clockwise)
@@ -220,6 +221,22 @@ namespace BlockBrawl
             if (jArray[playerIndex] != null)
             {
                 foreach (TetrisObject newPosition in jArray[playerIndex].NextRotatePosition(clockwise))
+                {
+                    if (LocateOtherPlayer(playerIndex) != null)
+                    {
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayer(playerIndex))
+                        {
+                            if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            if (tArray[playerIndex] != null)
+            {
+                foreach (TetrisObject newPosition in tArray[playerIndex].NextRotatePosition(clockwise))
                 {
                     if (LocateOtherPlayer(playerIndex) != null)
                     {
