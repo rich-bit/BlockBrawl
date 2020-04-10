@@ -15,4 +15,4 @@ Left: A, Right: D, Down: S, RotateClockWise: Space, RotateCounterClockwise: Shif
 PlayerTwo:
 Left: LeftArrow, Right: RightArrow, Down: DownArrow, RotateClockWise: NUM0, RotateCounterClockwise: Enter.
 
-Note: Keyboard steering is for testing purposes, we might decide to remove it again.
+Note: We havent decided to offer keyboard steering in final version, but for testing purposes we need it.
