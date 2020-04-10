@@ -2,7 +2,7 @@ This game is under development, feel free to take a look. Working on fixing the 
 
 Runs okay right now though.
 
-The gamepads we are using ( cool [+..••] NES-replicas ) don't map correctly in monogame. Y = B, B = A
+The gamepads we are using ( cool [+..••] NES-replicas ) map like this: Buttons.back = NES select, Buttons.Y = NES B, Buttons.B = NES A, the rest is correct.
 
 Added keyboard steering:
 
