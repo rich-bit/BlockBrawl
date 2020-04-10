@@ -25,7 +25,9 @@ namespace BlockBrawl
             spriteBatch = new SpriteBatch(graphicsDevice);
 
             //Management
-            play = new Play(SettingsManager.tiles, SettingsManager.tileSize, graphicsDeviceManager.PreferredBackBufferWidth, 
+            play = new Play(SettingsManager.gamePadVersion, 
+                SettingsManager.tiles, SettingsManager.tileSize, 
+                graphicsDeviceManager.PreferredBackBufferWidth, 
                 SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo, 
                 SettingsManager.playerOneColor, SettingsManager.playerTwoColor);
         }

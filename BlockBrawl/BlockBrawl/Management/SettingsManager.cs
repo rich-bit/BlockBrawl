@@ -12,6 +12,7 @@ namespace BlockBrawl
         public static Texture2D playerOneColor, playerTwoColor;
         public static string playerOneName, playerTwoName;
         public static int playerIndexOne, playerIndexTwo;
+        public static bool gamePadVersion;
         public static Point tiles;
         public SettingsManager(GraphicsDeviceManager graphicsDeviceManager)
         {
@@ -26,6 +27,8 @@ namespace BlockBrawl
 
             playerOneColor = TextureManager.whiteBlock;
             playerTwoColor = TextureManager.purpleBlock;
+
+            gamePadVersion = false;
 
             playerIndexOne = 1;
             playerIndexTwo = 0;

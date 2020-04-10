@@ -39,6 +39,8 @@ namespace BlockBrawl
 
         int playerOneIndex, playerTwoIndex;
 
+        bool gamePadVersion;
+
         enum PlayState
         {
             play,
@@ -47,11 +49,12 @@ namespace BlockBrawl
         }
         PlayState currentPlayState;
 
-        public Play(Point tiles, Vector2 tileSize, int gameWidth, int playerOneIndex, int playerTwoIndex, Texture2D playerOneColor, Texture2D playerTwoColor)
+        public Play(bool gamePadVersion, Point tiles, Vector2 tileSize, int gameWidth, int playerOneIndex, int playerTwoIndex, Texture2D playerOneColor, Texture2D playerTwoColor)
         {
             this.tileSize = tileSize;
             this.playerOneIndex = playerOneIndex;
             this.playerTwoIndex = playerTwoIndex;
+            this.gamePadVersion = gamePadVersion;
 
             playerColors = new Texture2D[3];
             playerColors[playerOneIndex] = playerOneColor;
@@ -100,10 +103,16 @@ namespace BlockBrawl
                 case PlayState.play:
                     CheckStackRows();
                     AvoidDubbleSpawn();
-                    //GamePadSteering(gameTime, playerOneIndex);
-                    //GamePadSteering(gameTime, playerTwoIndex);
-                    TemporaryKeyboardSteering(playerOneIndex);
-                    TemporaryKeyboardSteering(playerTwoIndex);
+                    if (gamePadVersion)
+                    {
+                        GamePadSteering(gameTime, playerOneIndex);
+                        GamePadSteering(gameTime, playerTwoIndex);
+                    }
+                    else
+                    {
+                        KeyboardSteering(playerOneIndex);
+                        KeyboardSteering(playerTwoIndex);
+                    }
                     FallDownAddStack(playerOneIndex);
                     FallDownAddStack(playerTwoIndex);
                     GetBlocks(playerOneIndex);
@@ -498,7 +507,7 @@ namespace BlockBrawl
                 }
             }
         }
-        private void TemporaryKeyboardSteering(int playerIndex)
+        private void KeyboardSteering(int playerIndex)
         {
             Keys rotateClockWise = Keys.NumPad0;
             Keys rotateCounterClockWise = Keys.Enter;
