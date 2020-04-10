@@ -6,7 +6,7 @@ The gamepads we are using ( cool [+..••] NES-replicas ) map like this: Butto
 
 Added keyboard steering:
 
-How to use: Comment out GamePadSteering, and remove comment from TemporaryKeyboardSteering. Warning:  Do not use both of these methods at the same time, it might lag the game abit.
+How to use: Change gamePadVersion to false in settingsmanager to keyboard version.
 
 Keyboard mapping: 
 
