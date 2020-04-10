@@ -6,7 +6,7 @@ The gamepads we are using ( cool [+..••] NES-replicas ) map like this: Butto
 
 Added keyboard steering:
 
-How to use: Change gamePadVersion to false in settingsmanager to keyboard version.
+How to use: Change gamePadVersion to false in settingsmanager for keyboard version.
 
 Keyboard mapping: 
 
