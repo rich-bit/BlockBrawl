@@ -23,7 +23,6 @@ namespace BlockBrawl
         Vector2 tileSize;
         Vector2[] spawnPositions;
 
-        //Each block has its own class. The array will use index 1, 2 for player 1 and 2. Index 0 is not used atm.
         I[] iArray;
         J[] jArray;
         T[] tArray;
@@ -57,31 +56,30 @@ namespace BlockBrawl
             this.playerTwoIndex = playerTwoIndex;
             this.gamePadVersion = gamePadVersion;
 
-            playerColors = new Texture2D[3];
+            playerColors = new Texture2D[2];
             playerColors[playerOneIndex] = playerOneColor;
-            playerColors[playerTwoIndex] = playerTwoColor;//[0] not used atm, 1 and 2 as a playerindex.
+            playerColors[playerTwoIndex] = playerTwoColor;//player 1 = playercolors[0], player 1 = playercolors[1], same with other arrays
 
             playfield = new GameObject[tiles.X, tiles.Y];
             PopulatePlayfield(tiles.X, tiles.Y, tileSize, gameWidth);
 
             iM = new InputManager(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
 
-            nextBlock = new string[3];
+            nextBlock = new string[2];
             nextBlock[playerOneIndex] = RandomBlock();
             nextBlock[playerTwoIndex] = RandomBlock();
 
-            spawnPositions = new Vector2[3];
+            spawnPositions = new Vector2[2];
             spawnPositions[playerOneIndex] = GetSpawnPos(playerOneIndex);
             spawnPositions[playerTwoIndex] = GetSpawnPos(playerTwoIndex);
 
             stackedBlocks = new TetrisObject[playfield.GetLength(0), playfield.GetLength(1)];
 
-            jArray = new J[3];//Again, index 0 is not used atm.
-            iArray = new I[3];
-            tArray = new T[3];
-            oArray = new O[3];
+            jArray = new J[2];//Again: player 1 = jArray[0], player 1 = jArray[1], same with other arrays
+            iArray = new I[2];
+            tArray = new T[2];
 
-            score = new int[3];
+            score = new int[2];
 
             currentPlayState = PlayState.play;
         }
@@ -146,6 +144,22 @@ namespace BlockBrawl
                             i++;
                         } while (i != x + 1);
                         UpdateStack(y);
+                    }
+                }
+            }
+        }
+        private void AddDeadBlock(TetrisObject[,] tetrisObjects)
+        {
+            foreach (TetrisObject item in tetrisObjects)
+            {
+                for (int i = 0; i < stackedBlocks.GetLength(0); i++)
+                {
+                    for (int j = 0; j < stackedBlocks.GetLength(1); j++)
+                    {
+                        if (item.Pos == playfield[i, j].Pos && item.alive)
+                        {
+                            stackedBlocks[i, j] = new TetrisObject(item.Pos, item.tex);
+                        }
                     }
                 }
             }
@@ -305,7 +319,7 @@ namespace BlockBrawl
             }
             return false;
         }
-        private void AvoidDubbleSpawn()
+        private void AvoidDubbleSpawn()//Fixa
         {
             if (spawnPositions[playerOneIndex].X == spawnPositions[playerTwoIndex].X) { spawnPositions[playerOneIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; }
             if (spawnPositions[playerOneIndex].X + tileSize.X == spawnPositions[playerTwoIndex].X) { spawnPositions[playerOneIndex] = playfield[rnd.Next(playfield.GetLength(0) - marginRight), 0].Pos; }
@@ -466,22 +480,6 @@ namespace BlockBrawl
                 }
             }
             return false;
-        }
-        private void AddDeadBlock(TetrisObject[,] tetrisObjects)
-        {
-            foreach (TetrisObject item in tetrisObjects)
-            {
-                for (int i = 0; i < stackedBlocks.GetLength(0); i++)
-                {
-                    for (int j = 0; j < stackedBlocks.GetLength(1); j++)
-                    {
-                        if (item.Pos == playfield[i, j].Pos && item.alive)
-                        {
-                            stackedBlocks[i, j] = new TetrisObject(item.Pos, item.tex);
-                        }
-                    }
-                }
-            }
         }
         private void FallDownAddStack(int playerIndex)
         {
