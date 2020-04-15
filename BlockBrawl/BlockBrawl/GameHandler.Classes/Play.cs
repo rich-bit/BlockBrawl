@@ -26,6 +26,7 @@ namespace BlockBrawl
         I[] iArray;
         J[] jArray;
         T[] tArray;
+        O[] oArray;
 
         //Nextblock, will switch this array for spawn.
         string[] nextBlock;
