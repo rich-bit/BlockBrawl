@@ -27,6 +27,7 @@ namespace BlockBrawl
         I[] iArray;
         J[] jArray;
         T[] tArray;
+        O[] oArray;
 
         //Nextblock, will switch this array for spawn.
         string[] nextBlock;
@@ -78,6 +79,7 @@ namespace BlockBrawl
             jArray = new J[3];//Again, index 0 is not used atm.
             iArray = new I[3];
             tArray = new T[3];
+            oArray = new O[3];
 
             score = new int[3];
 
