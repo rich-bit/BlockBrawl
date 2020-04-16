@@ -991,7 +991,7 @@ namespace BlockBrawl
         private string RandomBlock()
         {
             Random rnd = new Random();
-            string[] feedRandomMachine = new string[] { "J", "I", "T" };
+            string[] feedRandomMachine = new string[] { "J", "I", "T", "O" };
             return feedRandomMachine[rnd.Next(0, feedRandomMachine.Length)];
         }
         public void Draw(SpriteBatch spriteBatch)
