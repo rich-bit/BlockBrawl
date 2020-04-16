@@ -44,6 +44,8 @@
   <ItemGroup>
     <Compile Include="Blocks\I-block.cs" />
     <Compile Include="Blocks\J-block.cs" />
+    <Compile Include="Blocks\S-block.cs" />
+    <Compile Include="Blocks\L-block.cs" />
     <Compile Include="Blocks\O-block.cs" />
     <Compile Include="Blocks\T-block.cs" />
     <Compile Include="Management\FontManager.cs" />
