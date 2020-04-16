@@ -1003,7 +1003,7 @@ namespace BlockBrawl
             if (jArray[playerOneIndex] != null) { jArray[playerOneIndex].Draw(spriteBatch); }
             if (iArray[playerOneIndex] != null) { iArray[playerOneIndex].Draw(spriteBatch); }
             if (tArray[playerOneIndex] != null) { tArray[playerOneIndex].Draw(spriteBatch); }
-            if (oArray[playerTwoIndex] != null) { oArray[playerOneIndex].Draw(spriteBatch); }
+            if (oArray[playerOneIndex] != null) { oArray[playerOneIndex].Draw(spriteBatch); }
             if (jArray[playerTwoIndex] != null) { jArray[playerTwoIndex].Draw(spriteBatch); }
             if (iArray[playerTwoIndex] != null) { iArray[playerTwoIndex].Draw(spriteBatch); }
             if (tArray[playerTwoIndex] != null) { tArray[playerTwoIndex].Draw(spriteBatch); }
