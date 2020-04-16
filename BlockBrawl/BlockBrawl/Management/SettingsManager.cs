@@ -28,10 +28,10 @@ namespace BlockBrawl
             playerOneColor = TextureManager.whiteBlock;
             playerTwoColor = TextureManager.purpleBlock;
 
-            gamePadVersion = false;
+            gamePadVersion = true;
 
-            playerIndexOne = 1;
-            playerIndexTwo = 0;
+            playerIndexOne = 0;
+            playerIndexTwo = 1;
             tileSize = new Vector2(TextureManager.transBlock.Width, TextureManager.transBlock.Height);
             tiles = new Point(20, graphicsDeviceManager.PreferredBackBufferHeight / TextureManager.transBlock.Height - 1);
 
