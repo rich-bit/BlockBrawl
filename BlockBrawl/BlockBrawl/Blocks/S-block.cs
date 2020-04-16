@@ -11,7 +11,7 @@ namespace BlockBrawl.Blocks
 {
     class S
     {
-        public TetrisObject[,] tMatrix;
+        public TetrisObject[,] sMatrix;
 
 
         public Texture2D Color { get; set; }
@@ -28,14 +28,14 @@ namespace BlockBrawl.Blocks
         {
             Color = color;
 
-            tMatrix = new TetrisObject[3, 3];
+            sMatrix = new TetrisObject[3, 3];
 
             //Contents of the I, looping through the matrix setting positions and textures
-            for (int i = 0; i < tMatrix.GetLength(0); i++)
+            for (int i = 0; i < sMatrix.GetLength(0); i++)
             {
-                for (int j = 0; j < tMatrix.GetLength(1); j++)
+                for (int j = 0; j < sMatrix.GetLength(1); j++)
                 {
-                    tMatrix[i, j] = new TetrisObject(Vector2.Zero, color)
+                    sMatrix[i, j] = new TetrisObject(Vector2.Zero, color)
                     {
                         PosX = startPos.X + i * color.Width,
                         PosY = startPos.Y + j * color.Height
@@ -50,32 +50,32 @@ namespace BlockBrawl.Blocks
             switch (formation)
             {
                 case IblockState.one:
-                    foreach (TetrisObject item in tMatrix) { item.ChangeState(true); }
-                    tMatrix[0, 1].ChangeState(false);
-                    tMatrix[1, 0].ChangeState(false);
-                    tMatrix[1, 1].ChangeState(false);
-                    tMatrix[0, 2].ChangeState(false);
+                    foreach (TetrisObject item in sMatrix) { item.ChangeState(true); }
+                    sMatrix[0, 1].ChangeState(false);
+                    sMatrix[1, 0].ChangeState(false);
+                    sMatrix[1, 1].ChangeState(false);
+                    sMatrix[0, 2].ChangeState(false);
                     break;
                 case IblockState.two:
-                    foreach (TetrisObject item in tMatrix) { item.ChangeState(true); }
-                    tMatrix[1, 0].ChangeState(false);
-                    tMatrix[1, 1].ChangeState(false);
-                    tMatrix[2, 1].ChangeState(false);
-                    tMatrix[2, 2].ChangeState(false);
+                    foreach (TetrisObject item in sMatrix) { item.ChangeState(true); }
+                    sMatrix[1, 0].ChangeState(false);
+                    sMatrix[1, 1].ChangeState(false);
+                    sMatrix[2, 1].ChangeState(false);
+                    sMatrix[2, 2].ChangeState(false);
                     break;
                 case IblockState.three:
-                    foreach (TetrisObject item in tMatrix) { item.ChangeState(true); }
-                    tMatrix[1, 1].ChangeState(false);
-                    tMatrix[2, 1].ChangeState(false);
-                    tMatrix[0, 2].ChangeState(false);
-                    tMatrix[1, 2].ChangeState(false);
+                    foreach (TetrisObject item in sMatrix) { item.ChangeState(true); }
+                    sMatrix[1, 1].ChangeState(false);
+                    sMatrix[2, 1].ChangeState(false);
+                    sMatrix[0, 2].ChangeState(false);
+                    sMatrix[1, 2].ChangeState(false);
                     break;
                 case IblockState.four:
-                    foreach (TetrisObject item in tMatrix) { item.ChangeState(true); }
-                    tMatrix[0, 0].ChangeState(false);
-                    tMatrix[0, 1].ChangeState(false);
-                    tMatrix[1, 1].ChangeState(false);
-                    tMatrix[1, 2].ChangeState(false);
+                    foreach (TetrisObject item in sMatrix) { item.ChangeState(true); }
+                    sMatrix[0, 0].ChangeState(false);
+                    sMatrix[0, 1].ChangeState(false);
+                    sMatrix[1, 1].ChangeState(false);
+                    sMatrix[1, 2].ChangeState(false);
                     break;
             }
         }
@@ -128,14 +128,14 @@ namespace BlockBrawl.Blocks
         }
         public bool AllowRotation(bool clockwise, Vector2 maxValues, Vector2 minValues)
         {
-            TetrisObject[,] newPosition = new TetrisObject[tMatrix.GetLength(0), tMatrix.GetLength(1)];
+            TetrisObject[,] newPosition = new TetrisObject[sMatrix.GetLength(0), sMatrix.GetLength(1)];
             for (int i = 0; i < newPosition.GetLength(0); i++)
             {
                 for (int j = 0; j < newPosition.GetLength(1); j++)
                 {
                     newPosition[i, j] = new TetrisObject(Vector2.Zero, Color);
-                    newPosition[i, j].PosX = tMatrix[0, 0].PosX + i * Color.Width;
-                    newPosition[i, j].PosY = tMatrix[0, 0].PosY + j * Color.Height;
+                    newPosition[i, j].PosX = sMatrix[0, 0].PosX + i * Color.Width;
+                    newPosition[i, j].PosY = sMatrix[0, 0].PosY + j * Color.Height;
                 }
             }
 
@@ -211,14 +211,14 @@ namespace BlockBrawl.Blocks
         }
         public void Fall(float lenght)
         {
-            foreach (TetrisObject item in tMatrix)
+            foreach (TetrisObject item in sMatrix)
             {
                 item.PosY += lenght;
             }
         }
         public void Move(float lenght)
         {
-            foreach (TetrisObject item in tMatrix)
+            foreach (TetrisObject item in sMatrix)
             {
                 item.PosX += lenght;
             }
@@ -227,12 +227,12 @@ namespace BlockBrawl.Blocks
         {
             float x = float.MaxValue;
             float y = float.MaxValue;
-            for (int i = 0; i < tMatrix.GetLength(0); i++)
+            for (int i = 0; i < sMatrix.GetLength(0); i++)
             {
-                for (int j = 0; j < tMatrix.GetLength(1); j++)
+                for (int j = 0; j < sMatrix.GetLength(1); j++)
                 {
-                    if (tMatrix[i, j].PosX < x && tMatrix[i, j].alive) { x = tMatrix[i, j].PosX; }
-                    if (tMatrix[i, j].PosY < y && tMatrix[i, j].alive) { y = tMatrix[i, j].PosY; }
+                    if (sMatrix[i, j].PosX < x && sMatrix[i, j].alive) { x = sMatrix[i, j].PosX; }
+                    if (sMatrix[i, j].PosY < y && sMatrix[i, j].alive) { y = sMatrix[i, j].PosY; }
                 }
             }
             return new Vector2(x, y);
@@ -255,12 +255,12 @@ namespace BlockBrawl.Blocks
         {
             float x = float.MinValue;
             float y = float.MinValue;
-            for (int i = 0; i < tMatrix.GetLength(0); i++)
+            for (int i = 0; i < sMatrix.GetLength(0); i++)
             {
-                for (int j = 0; j < tMatrix.GetLength(1); j++)
+                for (int j = 0; j < sMatrix.GetLength(1); j++)
                 {
-                    if (tMatrix[i, j].PosX > x && tMatrix[i, j].alive) { x = tMatrix[i, j].PosX; }
-                    if (tMatrix[i, j].PosY > y && tMatrix[i, j].alive) { y = tMatrix[i, j].PosY; }
+                    if (sMatrix[i, j].PosX > x && sMatrix[i, j].alive) { x = sMatrix[i, j].PosX; }
+                    if (sMatrix[i, j].PosY > y && sMatrix[i, j].alive) { y = sMatrix[i, j].PosY; }
                 }
             }
             return new Vector2(x, y);
@@ -281,14 +281,14 @@ namespace BlockBrawl.Blocks
         }
         public TetrisObject[,] NextRotatePosition(bool clockwise)
         {
-            TetrisObject[,] newPosition = new TetrisObject[tMatrix.GetLength(0), tMatrix.GetLength(1)];
+            TetrisObject[,] newPosition = new TetrisObject[sMatrix.GetLength(0), sMatrix.GetLength(1)];
             for (int i = 0; i < newPosition.GetLength(0); i++)
             {
                 for (int j = 0; j < newPosition.GetLength(1); j++)
                 {
                     newPosition[i, j] = new TetrisObject(Vector2.Zero, Color);
-                    newPosition[i, j].PosX = tMatrix[0, 0].PosX + i * Color.Width;
-                    newPosition[i, j].PosY = tMatrix[0, 0].PosY + j * Color.Height;
+                    newPosition[i, j].PosX = sMatrix[0, 0].PosX + i * Color.Width;
+                    newPosition[i, j].PosY = sMatrix[0, 0].PosY + j * Color.Height;
                 }
             }
 
@@ -364,7 +364,7 @@ namespace BlockBrawl.Blocks
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (TetrisObject item in tMatrix)
+            foreach (TetrisObject item in sMatrix)
             {
                 item.Draw(spriteBatch);
             }
