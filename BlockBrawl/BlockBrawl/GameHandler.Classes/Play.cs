@@ -937,6 +937,56 @@ namespace BlockBrawl
                     }
                 }
             }
+            if (oArray[playerIndex] != null)
+            {
+                if (iM.JustPressed(Buttons.B, playerIndex)
+                    && oArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                    && !StackIntersect(oArray[playerIndex].NextRotatePosition(true))
+                    && !PlayerIntersect(playerIndex, true))
+                {
+                    oArray[playerIndex].Rotate(true);
+                }
+                if (iM.JustPressed(Buttons.Y, playerIndex)
+                    && oArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                    && !StackIntersect(oArray[playerIndex].NextRotatePosition(false))
+                    && !PlayerIntersect(playerIndex, false))
+                { oArray[playerIndex].Rotate(false); }
+                if (iM.JustPressed(Buttons.DPadLeft, playerIndex)
+                    && !CheckLeftSide(oArray[playerIndex].oMatrix)
+                    && !CheckStackLeft(oArray[playerIndex].oMatrix)
+                    && !PlayerMovementLeftIntersect(playerIndex, oArray[playerIndex].oMatrix))
+                { oArray[playerIndex].Move(-tileSize.X); }
+                if (iM.JustPressed(Buttons.DPadRight, playerIndex)
+                    && !CheckRightSide(oArray[playerIndex].oMatrix)
+                    && !CheckStackRight(oArray[playerIndex].oMatrix)
+                    && !PlayerMovementRightIntersect(playerIndex, oArray[playerIndex].oMatrix))
+                { oArray[playerIndex].Move(tileSize.X); }
+                if (iM.JustPressed(Buttons.DPadDown, playerIndex)
+                    && !PlayerMovementDownIntersect(playerIndex, oArray[playerIndex].oMatrix))
+                { if (!CheckFloor(oArray[playerIndex].oMatrix)) { oArray[playerIndex].Fall(tileSize.Y); } }
+                if (iM.IsHeld(Buttons.DPadDown, playerIndex)
+                    && !PlayerMovementDownIntersect(playerIndex, oArray[playerIndex].oMatrix))
+                {
+                    if (!CheckFloor(oArray[playerIndex].oMatrix))
+                    {
+                        oArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (oArray[playerIndex].Time > 0.4f)
+                        {
+                            oArray[playerIndex].Fall(tileSize.Y);
+                            oArray[playerIndex].Time = 0f;
+                        }
+                    }
+                }
+
+                if (oArray[playerIndex] != null && oArray[playerIndex].oMatrix != null && stackedBlocks.Length > 0)
+                {
+                    if (CheckOnStack(oArray[playerIndex].oMatrix))
+                    {
+                        AddDeadBlock(oArray[playerIndex].oMatrix);
+                        oArray[playerIndex] = null;
+                    }
+                }
+            }
         }
         private string RandomBlock()
         {
@@ -953,9 +1003,11 @@ namespace BlockBrawl
             if (jArray[playerOneIndex] != null) { jArray[playerOneIndex].Draw(spriteBatch); }
             if (iArray[playerOneIndex] != null) { iArray[playerOneIndex].Draw(spriteBatch); }
             if (tArray[playerOneIndex] != null) { tArray[playerOneIndex].Draw(spriteBatch); }
+            if (oArray[playerTwoIndex] != null) { oArray[playerOneIndex].Draw(spriteBatch); }
             if (jArray[playerTwoIndex] != null) { jArray[playerTwoIndex].Draw(spriteBatch); }
             if (iArray[playerTwoIndex] != null) { iArray[playerTwoIndex].Draw(spriteBatch); }
             if (tArray[playerTwoIndex] != null) { tArray[playerTwoIndex].Draw(spriteBatch); }
+            if (oArray[playerTwoIndex] != null) { oArray[playerTwoIndex].Draw(spriteBatch); }
             if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
             if (currentPlayState == PlayState.gameover) { spriteBatch.DrawString(FontManager.MenuText, "GameOver!", Vector2.Zero, Color.IndianRed); }
             if (currentPlayState == PlayState.pause) { spriteBatch.DrawString(FontManager.MenuText, "Pause!", Vector2.Zero, Color.IndianRed); }
