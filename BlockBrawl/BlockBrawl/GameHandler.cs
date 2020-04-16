@@ -21,15 +21,15 @@ namespace BlockBrawl
             new FontManager(contentManager);
             new TextureManager(contentManager);
             new SettingsManager(graphicsDeviceManager);
-                        
+
             spriteBatch = new SpriteBatch(graphicsDevice);
 
             //Management
-            play = new Play(SettingsManager.gamePadVersion, 
-                SettingsManager.tiles, SettingsManager.tileSize, 
-                graphicsDeviceManager.PreferredBackBufferWidth, 
-                SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo, 
-                SettingsManager.playerOneColor, SettingsManager.playerTwoColor);
+            play = new Play(SettingsManager.gamePadVersion,
+                SettingsManager.tiles, SettingsManager.tileSize,
+                graphicsDeviceManager.PreferredBackBufferWidth,
+                SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo,
+                SettingsManager.playerOneColor, SettingsManager.playerTwoColor);           
         }
         public void Draw()
         {
