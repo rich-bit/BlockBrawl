@@ -28,7 +28,7 @@ namespace BlockBrawl
                 Directory.CreateDirectory(rootPath + directoryOtherSounds);
             }
             noCopySoundsPath = rootPath + directoryNoCopySounds;
-            otherSoundsPath = rootPath + otherSoundsPath;
+            otherSoundsPath = rootPath + directoryOtherSounds;
         }
         public List<string> NoCopySounds()
         {
