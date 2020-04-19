@@ -51,10 +51,10 @@ namespace BlockBrawl.Blocks
             {
                 case IblockState.one:
                     foreach (TetrisObject item in sMatrix) { item.ChangeState(true); }
-                    sMatrix[0, 1].ChangeState(false);
                     sMatrix[1, 0].ChangeState(false);
+                    sMatrix[2, 0].ChangeState(false);
+                    sMatrix[0, 1].ChangeState(false);
                     sMatrix[1, 1].ChangeState(false);
-                    sMatrix[0, 2].ChangeState(false);
                     break;
                 case IblockState.two:
                     foreach (TetrisObject item in sMatrix) { item.ChangeState(true); }
@@ -147,7 +147,7 @@ namespace BlockBrawl.Blocks
                         foreach (TetrisObject item in newPosition) { item.ChangeState(true); }
                         newPosition[1, 0].ChangeState(false);
                         newPosition[1, 1].ChangeState(false);
-                        newPosition[1, 2].ChangeState(false);
+                        newPosition[2, 1].ChangeState(false);
                         newPosition[2, 2].ChangeState(false);
                         break;
                     case IblockState.two:
