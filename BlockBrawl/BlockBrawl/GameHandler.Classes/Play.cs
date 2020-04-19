@@ -108,7 +108,6 @@ namespace BlockBrawl
             switch (currentPlayState)
             {
                 case PlayState.play:
-                    //CheckStackRows();
                     DrawBonus();
                     AvoidDubbleSpawn();
                     if (gamePadVersion)
@@ -572,28 +571,6 @@ namespace BlockBrawl
             }
             return false;
         }
-        //private void CheckStackRows()
-        //{
-        //    for (int y = 0; y < stackedBlocks.GetLength(1); y++)
-        //    {
-        //        for (int x = 0; x < stackedBlocks.GetLength(0); x++)
-        //        {
-        //            if (stackedBlocks[x, y] == null) { break; }
-        //            else if (x == stackedBlocks.GetLength(0) - 1)
-        //            {
-        //                score[playerOneIndex] += RowScore(playerOneIndex, y);
-        //                score[playerTwoIndex] += RowScore(playerTwoIndex, y);
-        //                int i = 0;
-        //                do
-        //                {
-        //                    stackedBlocks[i, y] = null;
-        //                    i++;
-        //                } while (i != x + 1);
-        //                UpdateStack(y);
-        //            }
-        //        }
-        //    }
-        //}
         private void UpdateStack()
         {
             for (int y = 0; y < stackedBlocks.GetLength(1); y++)
@@ -782,7 +759,6 @@ namespace BlockBrawl
                 steerRight = Keys.D;
                 steerDown = Keys.S;
             }
-
             if (jArray[playerIndex] != null)
             {
                 if (iM.JustPressed(rotateClockWise)
@@ -835,8 +811,6 @@ namespace BlockBrawl
                     }
                 }
             }
-
-
             if (iArray[playerIndex] != null)
             {
 
@@ -889,8 +863,6 @@ namespace BlockBrawl
                     }
                 }
             }
-
-
             if (tArray[playerIndex] != null)
             {
 
@@ -945,7 +917,6 @@ namespace BlockBrawl
             }
             if (oArray[playerIndex] != null)
             {
-
                 if (iM.JustPressed(rotateClockWise)
                 && oArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                 && !StackIntersect(oArray[playerIndex].NextRotatePosition(true))
@@ -997,7 +968,6 @@ namespace BlockBrawl
             }
             if (lArray[playerIndex] != null)
             {
-
                 if (iM.JustPressed(rotateClockWise)
                 && lArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                 && !StackIntersect(lArray[playerIndex].NextRotatePosition(true))
@@ -1194,7 +1164,6 @@ namespace BlockBrawl
                         }
                     }
                 }
-
                 if (iArray[playerIndex] != null && iArray[playerIndex].iMatrix != null && stackedBlocks.Length > 0)
                 {
                     if (CheckOnStack(iArray[playerIndex].iMatrix))
@@ -1246,7 +1215,6 @@ namespace BlockBrawl
                         }
                     }
                 }
-
                 if (tArray[playerIndex] != null && tArray[playerIndex].tMatrix != null && stackedBlocks.Length > 0)
                 {
                     if (CheckOnStack(tArray[playerIndex].tMatrix))
@@ -1298,7 +1266,6 @@ namespace BlockBrawl
                         }
                     }
                 }
-
                 if (oArray[playerIndex] != null && oArray[playerIndex].oMatrix != null && stackedBlocks.Length > 0)
                 {
                     if (CheckOnStack(oArray[playerIndex].oMatrix))
@@ -1350,7 +1317,6 @@ namespace BlockBrawl
                         }
                     }
                 }
-
                 if (lArray[playerIndex] != null && lArray[playerIndex].lMatrix != null && stackedBlocks.Length > 0)
                 {
                     if (CheckOnStack(lArray[playerIndex].lMatrix))
@@ -1402,7 +1368,6 @@ namespace BlockBrawl
                         }
                     }
                 }
-
                 if (sArray[playerIndex] != null && sArray[playerIndex].sMatrix != null && stackedBlocks.Length > 0)
                 {
                     if (CheckOnStack(sArray[playerIndex].sMatrix))
