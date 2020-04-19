@@ -19,6 +19,7 @@ namespace BlockBrawl
         int marginRight = 3; // to Avoid spawn outside map, will be changed.
 
         int[] score;
+        int[,] bonusRecieved;
 
         Vector2 tileSize;
         Vector2[] spawnPositions;
@@ -27,6 +28,8 @@ namespace BlockBrawl
         J[] jArray;
         T[] tArray;
         O[] oArray;
+        L[] lArray;
+        S[] sArray;
 
         //Nextblock, will switch this array for spawn.
         string[] nextBlock;
@@ -79,8 +82,11 @@ namespace BlockBrawl
             iArray = new I[2];
             tArray = new T[2];
             oArray = new O[2];
+            lArray = new L[2];
+            sArray = new S[2];
 
             score = new int[2];
+            bonusRecieved = new int[2, stackedBlocks.GetLength(1)];
 
             currentPlayState = PlayState.play;
         }
@@ -102,7 +108,8 @@ namespace BlockBrawl
             switch (currentPlayState)
             {
                 case PlayState.play:
-                    CheckStackRows();
+                    //CheckStackRows();
+                    DrawBonus();
                     AvoidDubbleSpawn();
                     if (gamePadVersion)
                     {
@@ -127,51 +134,53 @@ namespace BlockBrawl
                     break;
             }
         }
-        private void CheckStackRows()
+        private void DrawBonus()
         {
-            for (int y = 0; y < stackedBlocks.GetLength(1); y++)
+            for (int playerIndex = 0; playerIndex < bonusRecieved.GetLength(0); playerIndex++)
             {
-                for (int x = 0; x < stackedBlocks.GetLength(0); x++)
+                for (int bonusRow = 0; bonusRow < bonusRecieved.GetLength(1); bonusRow++)
                 {
-                    if (stackedBlocks[x, y] == null) { break; }
-                    else if (x == stackedBlocks.GetLength(0) - 1)
+                    if (bonusRecieved[playerIndex, bonusRow] != 0)
                     {
-                        score[playerOneIndex] += RowScore(playerOneIndex, y);
-                        score[playerTwoIndex] += RowScore(playerTwoIndex, y);
-                        int i = 0;
-                        do
+                        if (playerIndex == playerOneIndex)
                         {
-                            stackedBlocks[i, y] = null;
-                            i++;
-                        } while (i != x + 1);
-                        UpdateStack(y);
-                    }
-                }
-            }
-        }
-        private void AddDeadBlock(TetrisObject[,] tetrisObjects)
-        {
-            foreach (TetrisObject item in tetrisObjects)
-            {
-                for (int i = 0; i < stackedBlocks.GetLength(0); i++)
-                {
-                    for (int j = 0; j < stackedBlocks.GetLength(1); j++)
-                    {
-                        if (item.Pos == playfield[i, j].Pos && item.alive)
+                            playfield[playerIndex, bonusRow].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                            if (playfield[playerIndex, bonusRow].Time > 2f)
+                            {
+                                bonusRecieved[playerIndex, bonusRow] = 0;
+                                playfield[playerIndex, bonusRow].Time = 0f;
+                            }
+                        }
+                        else if (playerIndex == playerTwoIndex)
                         {
-                            stackedBlocks[i, j] = new TetrisObject(item.Pos, item.tex);
+                            playfield[playerIndex, bonusRow].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                            if (playfield[playerIndex, bonusRow].Time > 2f)
+                            {
+                                bonusRecieved[playerIndex, bonusRow] = 0;
+                                playfield[playerIndex, bonusRow].Time = 0f;
+                            }
                         }
                     }
                 }
             }
         }
-        private int RowScore(int playerIndex, int row)
+        private int RowScore(int playerIndex, int row, TetrisObject[,] tetrisObjects)
         {
             List<Texture2D> colors = new List<Texture2D>();
             int score = 0;
             for (int x = 0; x < stackedBlocks.GetLength(0); x++)
             {
-                colors.Add(stackedBlocks[x, row].tex);
+                if (stackedBlocks[x, row] != null)
+                {
+                    colors.Add(stackedBlocks[x, row].tex);
+                }
+            }
+            foreach (TetrisObject item in tetrisObjects)
+            {
+                if (playerColors[playerIndex] == item.tex)
+                {
+                    colors.Add(item.tex);
+                }
             }
             foreach (Texture2D color in colors)
             {
@@ -216,6 +225,8 @@ namespace BlockBrawl
             else if (jArray[OtherPlayerIndex(playerIndex)] != null && jArray[OtherPlayerIndex(playerIndex)].jMatrix != null) { return jArray[OtherPlayerIndex(playerIndex)].jMatrix; }
             else if (tArray[OtherPlayerIndex(playerIndex)] != null && tArray[OtherPlayerIndex(playerIndex)].tMatrix != null) { return tArray[OtherPlayerIndex(playerIndex)].tMatrix; }
             else if (oArray[OtherPlayerIndex(playerIndex)] != null && oArray[OtherPlayerIndex(playerIndex)].oMatrix != null) { return oArray[OtherPlayerIndex(playerIndex)].oMatrix; }
+            else if (lArray[OtherPlayerIndex(playerIndex)] != null && lArray[OtherPlayerIndex(playerIndex)].lMatrix != null) { return lArray[OtherPlayerIndex(playerIndex)].lMatrix; }
+            else if (sArray[OtherPlayerIndex(playerIndex)] != null && sArray[OtherPlayerIndex(playerIndex)].sMatrix != null) { return sArray[OtherPlayerIndex(playerIndex)].sMatrix; }
             else return null;
         }
         private bool PlayerIntersect(int playerIndex, bool clockwise)
@@ -271,6 +282,38 @@ namespace BlockBrawl
             if (oArray[playerIndex] != null)
             {
                 foreach (TetrisObject newPosition in oArray[playerIndex].NextRotatePosition(clockwise))
+                {
+                    if (LocateOtherPlayer(playerIndex) != null)
+                    {
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayer(playerIndex))
+                        {
+                            if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            if (lArray[playerIndex] != null)
+            {
+                foreach (TetrisObject newPosition in lArray[playerIndex].NextRotatePosition(clockwise))
+                {
+                    if (LocateOtherPlayer(playerIndex) != null)
+                    {
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayer(playerIndex))
+                        {
+                            if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            if (sArray[playerIndex] != null)
+            {
+                foreach (TetrisObject newPosition in sArray[playerIndex].NextRotatePosition(clockwise))
                 {
                     if (LocateOtherPlayer(playerIndex) != null)
                     {
@@ -351,7 +394,8 @@ namespace BlockBrawl
         private void GetBlocks(int playerIndex)
         {
             Random rnd = new Random();
-            if (jArray[playerIndex] == null && iArray[playerIndex] == null && tArray[playerIndex] == null && oArray[playerIndex] == null)
+            if (jArray[playerIndex] == null && iArray[playerIndex] == null && tArray[playerIndex] == null && oArray[playerIndex] == null 
+                && lArray[playerIndex] == null && sArray[playerIndex] == null)
             {
                 switch (nextBlock[playerIndex])
                 {
@@ -388,6 +432,24 @@ namespace BlockBrawl
                         {
                             oArray[playerIndex] = new O(playerColors[playerIndex], spawnPositions[playerIndex]);
                             if (GameOver(oArray[playerIndex].oMatrix)) { currentPlayState = PlayState.gameover; }
+                            spawnPositions[playerIndex] = GetSpawnPos(playerIndex);
+                            nextBlock[playerIndex] = null;
+                        }
+                        break;
+                    case "L":
+                        if (VerifySpawn())
+                        {
+                            lArray[playerIndex] = new L(playerColors[playerIndex], spawnPositions[playerIndex]);
+                            if (GameOver(lArray[playerIndex].lMatrix)) { currentPlayState = PlayState.gameover; }
+                            spawnPositions[playerIndex] = GetSpawnPos(playerIndex);
+                            nextBlock[playerIndex] = null;
+                        }
+                        break;
+                    case "S":
+                        if (VerifySpawn())
+                        {
+                            sArray[playerIndex] = new S(playerColors[playerIndex], spawnPositions[playerIndex]);
+                            if (GameOver(sArray[playerIndex].sMatrix)) { currentPlayState = PlayState.gameover; }
                             spawnPositions[playerIndex] = GetSpawnPos(playerIndex);
                             nextBlock[playerIndex] = null;
                         }
@@ -508,11 +570,114 @@ namespace BlockBrawl
             }
             return false;
         }
+        //private void CheckStackRows()
+        //{
+        //    for (int y = 0; y < stackedBlocks.GetLength(1); y++)
+        //    {
+        //        for (int x = 0; x < stackedBlocks.GetLength(0); x++)
+        //        {
+        //            if (stackedBlocks[x, y] == null) { break; }
+        //            else if (x == stackedBlocks.GetLength(0) - 1)
+        //            {
+        //                score[playerOneIndex] += RowScore(playerOneIndex, y);
+        //                score[playerTwoIndex] += RowScore(playerTwoIndex, y);
+        //                int i = 0;
+        //                do
+        //                {
+        //                    stackedBlocks[i, y] = null;
+        //                    i++;
+        //                } while (i != x + 1);
+        //                UpdateStack(y);
+        //            }
+        //        }
+        //    }
+        //}
+        private void UpdateStack()
+        {
+            for (int y = 0; y < stackedBlocks.GetLength(1); y++)
+            {
+                for (int x = 0; x < stackedBlocks.GetLength(0); x++)
+                {
+                    if (stackedBlocks[x, y] == null) { break; }
+                    else if (x == stackedBlocks.GetLength(0) - 1)
+                    {
+                        int i = 0;
+                        do
+                        {
+                            stackedBlocks[i, y] = null;
+                            i++;
+                        } while (i != x + 1);
+                        UpdateStack(y);
+                    }
+                }
+            }
+        }
+        private void CheckClearedRow(TetrisObject[,] tetrisObjects, int playerIndex)
+        {
+            TetrisObject[,] cloneArray = stackedBlocks;
+            for (int x = 0; x < playfield.GetLength(0); x++)
+            {
+                for (int y = 0; y < playfield.GetLength(1); y++)
+                {
+                    foreach (TetrisObject tetrisobject in tetrisObjects)
+                    {
+                        if (tetrisobject.Pos == playfield[x, y].Pos && tetrisobject.alive)
+                        {
+                            cloneArray[x, y] = tetrisobject;
+                        }
+                    }
+                }
+            }
+            for (int y = 0; y < cloneArray.GetLength(1); y++)
+            {
+                for (int x = 0; x < cloneArray.GetLength(0); x++)
+                {
+                    if (cloneArray[x, y] == null)
+                    {
+                        break;
+                    }
+                    else if (x == cloneArray.GetLength(0) - 1)
+                    {
+                        score[playerOneIndex] += RowScore(playerOneIndex, y, tetrisObjects);
+                        score[playerTwoIndex] += RowScore(playerTwoIndex, y, tetrisObjects);
+                        if (playerIndex == playerOneIndex)
+                        {
+                            score[playerOneIndex] += RowScore(playerOneIndex, y, tetrisObjects);
+                            bonusRecieved[playerOneIndex, y] = RowScore(playerOneIndex, y, tetrisObjects);
+                        }
+                        else if (playerIndex == playerTwoIndex)
+                        {
+                            score[playerTwoIndex] += RowScore(playerTwoIndex, y, tetrisObjects);
+                            bonusRecieved[playerTwoIndex, y] = RowScore(playerTwoIndex, y, tetrisObjects);
+                        }
+                    }
+                }
+            }
+        }
+        private void AddDeadBlock(TetrisObject[,] tetrisObjects)
+        {
+            foreach (TetrisObject item in tetrisObjects)
+            {
+                for (int i = 0; i < stackedBlocks.GetLength(0); i++)
+                {
+                    for (int j = 0; j < stackedBlocks.GetLength(1); j++)
+                    {
+                        if (item.Pos == playfield[i, j].Pos && item.alive)
+                        {
+                            stackedBlocks[i, j] = new TetrisObject(item.Pos, item.tex);
+                        }
+                    }
+                }
+            }
+        }
+
         private void FallDownAddStack(int playerIndex)
         {
             if (jArray[playerIndex] != null && CheckFloor(jArray[playerIndex].jMatrix))
             {
+                CheckClearedRow(jArray[playerIndex].jMatrix, playerIndex);
                 AddDeadBlock(jArray[playerIndex].jMatrix);
+                UpdateStack();
                 jArray[playerIndex] = null;
             }
             if (jArray[playerIndex] != null)
@@ -526,7 +691,9 @@ namespace BlockBrawl
             }
             if (iArray[playerIndex] != null && CheckFloor(iArray[playerIndex].iMatrix))
             {
+                CheckClearedRow(iArray[playerIndex].iMatrix, playerIndex);
                 AddDeadBlock(iArray[playerIndex].iMatrix);
+                UpdateStack();
                 iArray[playerIndex] = null;
             }
             if (iArray[playerIndex] != null)
@@ -539,7 +706,9 @@ namespace BlockBrawl
             }
             if (tArray[playerIndex] != null && CheckFloor(tArray[playerIndex].tMatrix))
             {
+                CheckClearedRow(tArray[playerIndex].tMatrix, playerIndex);
                 AddDeadBlock(tArray[playerIndex].tMatrix);
+                UpdateStack();
                 tArray[playerIndex] = null;
             }
             if (tArray[playerIndex] != null)
@@ -552,7 +721,9 @@ namespace BlockBrawl
             }
             if (oArray[playerIndex] != null && CheckFloor(oArray[playerIndex].oMatrix))
             {
+                CheckClearedRow(oArray[playerIndex].oMatrix, playerIndex);
                 AddDeadBlock(oArray[playerIndex].oMatrix);
+                UpdateStack();
                 oArray[playerIndex] = null;
             }
             if (oArray[playerIndex] != null)
@@ -561,6 +732,36 @@ namespace BlockBrawl
                 if (oArray[playerIndex].Time > 1f && !CheckFloor(oArray[playerIndex].oMatrix) && !PlayerMovementDownIntersect(playerIndex, oArray[playerIndex].oMatrix))
                 {
                     oArray[playerIndex].Fall(tileSize.X); oArray[playerIndex].Time = 0f;
+                }
+            }
+            if (lArray[playerIndex] != null && CheckFloor(lArray[playerIndex].lMatrix))
+            {
+                CheckClearedRow(lArray[playerIndex].lMatrix, playerIndex);
+                AddDeadBlock(lArray[playerIndex].lMatrix);
+                UpdateStack();
+                lArray[playerIndex] = null;
+            }
+            if (lArray[playerIndex] != null)
+            {
+                lArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (lArray[playerIndex].Time > 1f && !CheckFloor(lArray[playerIndex].lMatrix) && !PlayerMovementDownIntersect(playerIndex, lArray[playerIndex].lMatrix))
+                {
+                    lArray[playerIndex].Fall(tileSize.X); lArray[playerIndex].Time = 0f;
+                }
+            }
+            if (sArray[playerIndex] != null && CheckFloor(sArray[playerIndex].sMatrix))
+            {
+                CheckClearedRow(sArray[playerIndex].sMatrix, playerIndex);
+                AddDeadBlock(sArray[playerIndex].sMatrix);
+                UpdateStack();
+                sArray[playerIndex] = null;
+            }
+            if (sArray[playerIndex] != null)
+            {
+                sArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (sArray[playerIndex].Time > 1f && !CheckFloor(sArray[playerIndex].sMatrix) && !PlayerMovementDownIntersect(playerIndex, sArray[playerIndex].sMatrix))
+                {
+                    sArray[playerIndex].Fall(tileSize.X); sArray[playerIndex].Time = 0f;
                 }
             }
         }
@@ -625,7 +826,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(jArray[playerIndex].jMatrix))
                     {
+                        CheckClearedRow(jArray[playerIndex].jMatrix, playerIndex);
                         AddDeadBlock(jArray[playerIndex].jMatrix);
+                        UpdateStack();
                         jArray[playerIndex] = null;
                     }
                 }
@@ -677,7 +880,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(iArray[playerIndex].iMatrix))
                     {
+                        CheckClearedRow(iArray[playerIndex].iMatrix, playerIndex);
                         AddDeadBlock(iArray[playerIndex].iMatrix);
+                        UpdateStack();
                         iArray[playerIndex] = null;
                     }
                 }
@@ -729,7 +934,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(tArray[playerIndex].tMatrix))
                     {
+                        CheckClearedRow(tArray[playerIndex].tMatrix, playerIndex);
                         AddDeadBlock(tArray[playerIndex].tMatrix);
+                        UpdateStack();
                         tArray[playerIndex] = null;
                     }
                 }
@@ -779,8 +986,114 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(oArray[playerIndex].oMatrix))
                     {
+                        CheckClearedRow(oArray[playerIndex].oMatrix, playerIndex);
                         AddDeadBlock(oArray[playerIndex].oMatrix);
+                        UpdateStack();
                         oArray[playerIndex] = null;
+                    }
+                }
+            }
+            if (lArray[playerIndex] != null)
+            {
+
+                if (iM.JustPressed(rotateClockWise)
+                && lArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                && !StackIntersect(lArray[playerIndex].NextRotatePosition(true))
+                && !PlayerIntersect(playerIndex, true))
+                {
+                    lArray[playerIndex].Rotate(true);
+                }
+                if (iM.JustPressed(rotateCounterClockWise)
+                && lArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                && !StackIntersect(lArray[playerIndex].NextRotatePosition(false))
+                && !PlayerIntersect(playerIndex, false))
+                { lArray[playerIndex].Rotate(false); }
+                if (iM.JustPressed(steerLeft)
+                && !CheckLeftSide(lArray[playerIndex].lMatrix)
+                && !CheckStackLeft(lArray[playerIndex].lMatrix)
+                && !PlayerMovementLeftIntersect(playerIndex, lArray[playerIndex].lMatrix))
+                { lArray[playerIndex].Move(-tileSize.X); }
+                if (iM.JustPressed(steerRight)
+                && !CheckRightSide(lArray[playerIndex].lMatrix)
+                && !CheckStackRight(lArray[playerIndex].lMatrix)
+                && !PlayerMovementRightIntersect(playerIndex, lArray[playerIndex].lMatrix))
+                { lArray[playerIndex].Move(tileSize.X); }
+                if (iM.JustPressed(steerDown)
+                && !PlayerMovementDownIntersect(playerIndex, lArray[playerIndex].lMatrix))
+                { if (!CheckFloor(lArray[playerIndex].lMatrix)) { lArray[playerIndex].Fall(tileSize.Y); } }
+                if (iM.IsHeld(steerDown)
+                && !PlayerMovementDownIntersect(playerIndex, lArray[playerIndex].lMatrix))
+                {
+                    if (!CheckFloor(lArray[playerIndex].lMatrix))
+                    {
+                        lArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (lArray[playerIndex].Time > 0.4f)
+                        {
+                            lArray[playerIndex].Fall(tileSize.Y);
+                            lArray[playerIndex].Time = 0f;
+                        }
+                    }
+                }
+                if (lArray[playerIndex] != null && lArray[playerIndex].lMatrix != null && stackedBlocks.Length > 0)
+                {
+                    if (CheckOnStack(lArray[playerIndex].lMatrix))
+                    {
+                        CheckClearedRow(lArray[playerIndex].lMatrix, playerIndex);
+                        AddDeadBlock(lArray[playerIndex].lMatrix);
+                        UpdateStack();
+                        lArray[playerIndex] = null;
+                    }
+                }
+            }
+            if (sArray[playerIndex] != null)
+            {
+
+                if (iM.JustPressed(rotateClockWise)
+                && sArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                && !StackIntersect(sArray[playerIndex].NextRotatePosition(true))
+                && !PlayerIntersect(playerIndex, true))
+                {
+                    sArray[playerIndex].Rotate(true);
+                }
+                if (iM.JustPressed(rotateCounterClockWise)
+                && sArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                && !StackIntersect(sArray[playerIndex].NextRotatePosition(false))
+                && !PlayerIntersect(playerIndex, false))
+                { sArray[playerIndex].Rotate(false); }
+                if (iM.JustPressed(steerLeft)
+                && !CheckLeftSide(sArray[playerIndex].sMatrix)
+                && !CheckStackLeft(sArray[playerIndex].sMatrix)
+                && !PlayerMovementLeftIntersect(playerIndex, sArray[playerIndex].sMatrix))
+                { sArray[playerIndex].Move(-tileSize.X); }
+                if (iM.JustPressed(steerRight)
+                && !CheckRightSide(sArray[playerIndex].sMatrix)
+                && !CheckStackRight(sArray[playerIndex].sMatrix)
+                && !PlayerMovementRightIntersect(playerIndex, sArray[playerIndex].sMatrix))
+                { sArray[playerIndex].Move(tileSize.X); }
+                if (iM.JustPressed(steerDown)
+                && !PlayerMovementDownIntersect(playerIndex, sArray[playerIndex].sMatrix))
+                { if (!CheckFloor(sArray[playerIndex].sMatrix)) { sArray[playerIndex].Fall(tileSize.Y); } }
+                if (iM.IsHeld(steerDown)
+                && !PlayerMovementDownIntersect(playerIndex, sArray[playerIndex].sMatrix))
+                {
+                    if (!CheckFloor(sArray[playerIndex].sMatrix))
+                    {
+                        sArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (sArray[playerIndex].Time > 0.4f)
+                        {
+                            sArray[playerIndex].Fall(tileSize.Y);
+                            sArray[playerIndex].Time = 0f;
+                        }
+                    }
+                }
+                if (sArray[playerIndex] != null && sArray[playerIndex].sMatrix != null && stackedBlocks.Length > 0)
+                {
+                    if (CheckOnStack(sArray[playerIndex].sMatrix))
+                    {
+                        CheckClearedRow(sArray[playerIndex].sMatrix, playerIndex);
+                        AddDeadBlock(sArray[playerIndex].sMatrix);
+                        UpdateStack();
+                        sArray[playerIndex] = null;
                     }
                 }
             }
@@ -832,7 +1145,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(jArray[playerIndex].jMatrix))
                     {
+                        CheckClearedRow(jArray[playerIndex].jMatrix, playerIndex);
                         AddDeadBlock(jArray[playerIndex].jMatrix);
+                        UpdateStack();
                         jArray[playerIndex] = null;
                     }
                 }
@@ -882,7 +1197,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(iArray[playerIndex].iMatrix))
                     {
+                        CheckClearedRow(iArray[playerIndex].iMatrix, playerIndex);
                         AddDeadBlock(iArray[playerIndex].iMatrix);
+                        UpdateStack();
                         iArray[playerIndex] = null;
                     }
                 }
@@ -932,7 +1249,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(tArray[playerIndex].tMatrix))
                     {
+                        CheckClearedRow(tArray[playerIndex].tMatrix, playerIndex);
                         AddDeadBlock(tArray[playerIndex].tMatrix);
+                        UpdateStack();
                         tArray[playerIndex] = null;
                     }
                 }
@@ -982,8 +1301,114 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(oArray[playerIndex].oMatrix))
                     {
+                        CheckClearedRow(oArray[playerIndex].oMatrix, playerIndex);
                         AddDeadBlock(oArray[playerIndex].oMatrix);
+                        UpdateStack();
                         oArray[playerIndex] = null;
+                    }
+                }
+            }
+            if (lArray[playerIndex] != null)
+            {
+                if (iM.JustPressed(Buttons.B, playerIndex)
+                    && lArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                    && !StackIntersect(lArray[playerIndex].NextRotatePosition(true))
+                    && !PlayerIntersect(playerIndex, true))
+                {
+                    lArray[playerIndex].Rotate(true);
+                }
+                if (iM.JustPressed(Buttons.Y, playerIndex)
+                    && lArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                    && !StackIntersect(lArray[playerIndex].NextRotatePosition(false))
+                    && !PlayerIntersect(playerIndex, false))
+                { lArray[playerIndex].Rotate(false); }
+                if (iM.JustPressed(Buttons.DPadLeft, playerIndex)
+                    && !CheckLeftSide(lArray[playerIndex].lMatrix)
+                    && !CheckStackLeft(lArray[playerIndex].lMatrix)
+                    && !PlayerMovementLeftIntersect(playerIndex, lArray[playerIndex].lMatrix))
+                { lArray[playerIndex].Move(-tileSize.X); }
+                if (iM.JustPressed(Buttons.DPadRight, playerIndex)
+                    && !CheckRightSide(lArray[playerIndex].lMatrix)
+                    && !CheckStackRight(lArray[playerIndex].lMatrix)
+                    && !PlayerMovementRightIntersect(playerIndex, lArray[playerIndex].lMatrix))
+                { lArray[playerIndex].Move(tileSize.X); }
+                if (iM.JustPressed(Buttons.DPadDown, playerIndex)
+                    && !PlayerMovementDownIntersect(playerIndex, lArray[playerIndex].lMatrix))
+                { if (!CheckFloor(lArray[playerIndex].lMatrix)) { lArray[playerIndex].Fall(tileSize.Y); } }
+                if (iM.IsHeld(Buttons.DPadDown, playerIndex)
+                    && !PlayerMovementDownIntersect(playerIndex, lArray[playerIndex].lMatrix))
+                {
+                    if (!CheckFloor(lArray[playerIndex].lMatrix))
+                    {
+                        lArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (lArray[playerIndex].Time > 0.4f)
+                        {
+                            lArray[playerIndex].Fall(tileSize.Y);
+                            lArray[playerIndex].Time = 0f;
+                        }
+                    }
+                }
+
+                if (lArray[playerIndex] != null && lArray[playerIndex].lMatrix != null && stackedBlocks.Length > 0)
+                {
+                    if (CheckOnStack(lArray[playerIndex].lMatrix))
+                    {
+                        CheckClearedRow(lArray[playerIndex].lMatrix, playerIndex);
+                        AddDeadBlock(lArray[playerIndex].lMatrix);
+                        UpdateStack();
+                        lArray[playerIndex] = null;
+                    }
+                }
+            }
+            if (sArray[playerIndex] != null)
+            {
+                if (iM.JustPressed(Buttons.B, playerIndex)
+                    && sArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                    && !StackIntersect(sArray[playerIndex].NextRotatePosition(true))
+                    && !PlayerIntersect(playerIndex, true))
+                {
+                    sArray[playerIndex].Rotate(true);
+                }
+                if (iM.JustPressed(Buttons.Y, playerIndex)
+                    && sArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                    && !StackIntersect(sArray[playerIndex].NextRotatePosition(false))
+                    && !PlayerIntersect(playerIndex, false))
+                { sArray[playerIndex].Rotate(false); }
+                if (iM.JustPressed(Buttons.DPadLeft, playerIndex)
+                    && !CheckLeftSide(sArray[playerIndex].sMatrix)
+                    && !CheckStackLeft(sArray[playerIndex].sMatrix)
+                    && !PlayerMovementLeftIntersect(playerIndex, sArray[playerIndex].sMatrix))
+                { sArray[playerIndex].Move(-tileSize.X); }
+                if (iM.JustPressed(Buttons.DPadRight, playerIndex)
+                    && !CheckRightSide(sArray[playerIndex].sMatrix)
+                    && !CheckStackRight(sArray[playerIndex].sMatrix)
+                    && !PlayerMovementRightIntersect(playerIndex, sArray[playerIndex].sMatrix))
+                { sArray[playerIndex].Move(tileSize.X); }
+                if (iM.JustPressed(Buttons.DPadDown, playerIndex)
+                    && !PlayerMovementDownIntersect(playerIndex, sArray[playerIndex].sMatrix))
+                { if (!CheckFloor(sArray[playerIndex].sMatrix)) { sArray[playerIndex].Fall(tileSize.Y); } }
+                if (iM.IsHeld(Buttons.DPadDown, playerIndex)
+                    && !PlayerMovementDownIntersect(playerIndex, sArray[playerIndex].sMatrix))
+                {
+                    if (!CheckFloor(sArray[playerIndex].sMatrix))
+                    {
+                        sArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (sArray[playerIndex].Time > 0.4f)
+                        {
+                            sArray[playerIndex].Fall(tileSize.Y);
+                            sArray[playerIndex].Time = 0f;
+                        }
+                    }
+                }
+
+                if (sArray[playerIndex] != null && sArray[playerIndex].sMatrix != null && stackedBlocks.Length > 0)
+                {
+                    if (CheckOnStack(sArray[playerIndex].sMatrix))
+                    {
+                        CheckClearedRow(sArray[playerIndex].sMatrix, playerIndex);
+                        AddDeadBlock(sArray[playerIndex].sMatrix);
+                        UpdateStack();
+                        sArray[playerIndex] = null;
                     }
                 }
             }
@@ -991,7 +1416,7 @@ namespace BlockBrawl
         private string RandomBlock()
         {
             Random rnd = new Random();
-            string[] feedRandomMachine = new string[] { "J", "I", "T", "O" };
+            string[] feedRandomMachine = new string[] { "J", "I", "T", "O", "L", "S" };
             return feedRandomMachine[rnd.Next(0, feedRandomMachine.Length)];
         }
         public void Draw(SpriteBatch spriteBatch)
@@ -1004,10 +1429,14 @@ namespace BlockBrawl
             if (iArray[playerOneIndex] != null) { iArray[playerOneIndex].Draw(spriteBatch); }
             if (tArray[playerOneIndex] != null) { tArray[playerOneIndex].Draw(spriteBatch); }
             if (oArray[playerOneIndex] != null) { oArray[playerOneIndex].Draw(spriteBatch); }
+            if (lArray[playerOneIndex] != null) { lArray[playerOneIndex].Draw(spriteBatch); }
+            if (sArray[playerOneIndex] != null) { sArray[playerOneIndex].Draw(spriteBatch); }
             if (jArray[playerTwoIndex] != null) { jArray[playerTwoIndex].Draw(spriteBatch); }
             if (iArray[playerTwoIndex] != null) { iArray[playerTwoIndex].Draw(spriteBatch); }
             if (tArray[playerTwoIndex] != null) { tArray[playerTwoIndex].Draw(spriteBatch); }
             if (oArray[playerTwoIndex] != null) { oArray[playerTwoIndex].Draw(spriteBatch); }
+            if (lArray[playerTwoIndex] != null) { lArray[playerTwoIndex].Draw(spriteBatch); }
+            if (sArray[playerTwoIndex] != null) { sArray[playerTwoIndex].Draw(spriteBatch); }
             if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
             if (currentPlayState == PlayState.gameover) { spriteBatch.DrawString(FontManager.MenuText, "GameOver!", Vector2.Zero, Color.IndianRed); }
             if (currentPlayState == PlayState.pause) { spriteBatch.DrawString(FontManager.MenuText, "Pause!", Vector2.Zero, Color.IndianRed); }
@@ -1022,7 +1451,31 @@ namespace BlockBrawl
             new Vector2(SettingsManager.windowSize.X - FontManager.ScoreText.MeasureString($"{SettingsManager.playerTwoName.ToString()}\nscore: ").X - 160,
             80),
             Color.Black);
-
+            for (int playerIndex = 0; playerIndex < bonusRecieved.GetLength(0); playerIndex++)
+            {
+                for (int bonusRow = 0; bonusRow < bonusRecieved.GetLength(1); bonusRow++)
+                {
+                    if (bonusRecieved[playerIndex, bonusRow] != 0)
+                    {
+                        if (playerIndex == playerOneIndex)
+                        {
+                            spriteBatch.DrawString(FontManager.MenuText,
+                            "Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString(),
+                            new Vector2(playfield[0, 0].PosX - FontManager.MenuText.MeasureString("Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString()).X,
+                            playfield[0, bonusRow].PosY),
+                            Color.Black);
+                        }
+                        else if (playerIndex == playerTwoIndex)
+                        {
+                            spriteBatch.DrawString(FontManager.MenuText,
+                            "Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString(),
+                            new Vector2(playfield[playfield.GetLength(0) - 1, 0].PosX + tileSize.X,
+                            playfield[0, bonusRow].PosY),
+                            Color.Black);
+                        }
+                    }
+                }
+            }
         }
     }
 }
