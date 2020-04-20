@@ -165,7 +165,7 @@ namespace BlockBrawl
                 }
             }
         }
-        private int RowScore(int playerIndex, int row, TetrisObject[,] tetrisObjects)
+        private int RowScore(int playerIndex, int row/*, TetrisObject[,] tetrisObjects*/)
         {
             List<Texture2D> colors = new List<Texture2D>();
             int score = 0;
@@ -602,8 +602,7 @@ namespace BlockBrawl
                     {
                         if (tetrisobject.Pos == playfield[x, y].Pos && tetrisobject.alive)
                         {
-                            //cloneArray[x, y] = tetrisobject;
-                            cloneArray[x, y] = new TetrisObject(tetrisobject.Pos, tetrisobject.tex);
+                            cloneArray[x, y] = tetrisobject;
                         }
                     }
                 }
@@ -618,17 +617,17 @@ namespace BlockBrawl
                     }
                     else if (x == cloneArray.GetLength(0) - 1)
                     {
-                        score[playerOneIndex] += RowScore(playerOneIndex, y, tetrisObjects);
-                        score[playerTwoIndex] += RowScore(playerTwoIndex, y, tetrisObjects);
+                        score[playerOneIndex] += RowScore(playerOneIndex, y/*, tetrisObjects*/);
+                        score[playerTwoIndex] += RowScore(playerTwoIndex, y/*, tetrisObjects*/);
                         if (playerIndex == playerOneIndex)
                         {
-                            score[playerOneIndex] += RowScore(playerOneIndex, y, tetrisObjects);
-                            bonusRecieved[playerOneIndex, y] = RowScore(playerOneIndex, y, tetrisObjects);
+                            score[playerOneIndex] += RowScore(playerOneIndex, y/*, tetrisObjects*/);
+                            bonusRecieved[playerOneIndex, y] = RowScore(playerOneIndex, y/*, tetrisObjects*/);
                         }
                         else if (playerIndex == playerTwoIndex)
                         {
-                            score[playerTwoIndex] += RowScore(playerTwoIndex, y, tetrisObjects);
-                            bonusRecieved[playerTwoIndex, y] = RowScore(playerTwoIndex, y, tetrisObjects);
+                            score[playerTwoIndex] += RowScore(playerTwoIndex, y/*, tetrisObjects*/);
+                            bonusRecieved[playerTwoIndex, y] = RowScore(playerTwoIndex, y/*, tetrisObjects*/);
                         }
                     }
                 }
