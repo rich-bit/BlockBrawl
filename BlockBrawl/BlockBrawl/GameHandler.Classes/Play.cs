@@ -178,7 +178,7 @@ namespace BlockBrawl
             }
             foreach (TetrisObject item in tetrisObjects)
             {
-                if (playerColors[playerIndex] == item.tex)
+                if (item.alive && playerColors[playerIndex] == item.tex)
                 {
                     colors.Add(item.tex);
                 }
