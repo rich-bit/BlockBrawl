@@ -176,13 +176,13 @@ namespace BlockBrawl
                     colors.Add(stackedBlocks[x, row].tex);
                 }
             }
-            foreach (TetrisObject item in tetrisObjects)
-            {
-                if (item.alive && playerColors[playerIndex] == item.tex)
-                {
-                    colors.Add(item.tex);
-                }
-            }
+            //foreach (TetrisObject item in tetrisObjects)
+            //{
+            //    if (item.alive)
+            //    {
+            //        colors.Add(item.tex);
+            //    }
+            //}
             foreach (Texture2D color in colors)
             {
                 if (playerColors[playerIndex] == color) { score += 10; }
@@ -602,7 +602,8 @@ namespace BlockBrawl
                     {
                         if (tetrisobject.Pos == playfield[x, y].Pos && tetrisobject.alive)
                         {
-                            cloneArray[x, y] = tetrisobject;
+                            //cloneArray[x, y] = tetrisobject;
+                            cloneArray[x, y] = new TetrisObject(tetrisobject.Pos, tetrisobject.tex);
                         }
                     }
                 }
