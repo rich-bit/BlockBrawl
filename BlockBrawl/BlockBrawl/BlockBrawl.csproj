@@ -49,6 +49,7 @@
     <Compile Include="Blocks\O-block.cs" />
     <Compile Include="Blocks\T-block.cs" />
     <Compile Include="FileRead.cs" />
+    <Compile Include="Blocks\Z-block.cs" />
     <Compile Include="Management\FontManager.cs" />
     <Compile Include="Management\SoundManager.cs" />
     <Compile Include="Objects\TetrisObject.cs" />

@@ -30,6 +30,7 @@ namespace BlockBrawl
         O[] oArray;
         L[] lArray;
         S[] sArray;
+        Z[] zArray;
 
         //Nextblock, will switch this array for spawn.
         string[] nextBlock;
@@ -84,6 +85,7 @@ namespace BlockBrawl
             oArray = new O[2];
             lArray = new L[2];
             sArray = new S[2];
+            zArray = new Z[2];
 
             score = new int[2];
             bonusRecieved = new int[2, stackedBlocks.GetLength(1)];
@@ -228,6 +230,7 @@ namespace BlockBrawl
             else if (oArray[OtherPlayerIndex(playerIndex)] != null && oArray[OtherPlayerIndex(playerIndex)].oMatrix != null) { return oArray[OtherPlayerIndex(playerIndex)].oMatrix; }
             else if (lArray[OtherPlayerIndex(playerIndex)] != null && lArray[OtherPlayerIndex(playerIndex)].lMatrix != null) { return lArray[OtherPlayerIndex(playerIndex)].lMatrix; }
             else if (sArray[OtherPlayerIndex(playerIndex)] != null && sArray[OtherPlayerIndex(playerIndex)].sMatrix != null) { return sArray[OtherPlayerIndex(playerIndex)].sMatrix; }
+            else if (zArray[OtherPlayerIndex(playerIndex)] != null && zArray[OtherPlayerIndex(playerIndex)].zMatrix != null) { return zArray[OtherPlayerIndex(playerIndex)].zMatrix; }
             else return null;
         }
         private bool PlayerIntersect(int playerIndex, bool clockwise)
@@ -328,6 +331,22 @@ namespace BlockBrawl
                     }
                 }
             }
+            if (zArray[playerIndex] != null)
+            {
+                foreach (TetrisObject newPosition in zArray[playerIndex].NextRotatePosition(clockwise))
+                {
+                    if (LocateOtherPlayer(playerIndex) != null)
+                    {
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayer(playerIndex))
+                        {
+                            if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
             return false;
         }
         private bool PlayerMovementRightIntersect(int playerIndex, TetrisObject[,] tetrisObjects)
@@ -396,7 +415,7 @@ namespace BlockBrawl
         {
             Random rnd = new Random();
             if (jArray[playerIndex] == null && iArray[playerIndex] == null && tArray[playerIndex] == null && oArray[playerIndex] == null 
-                && lArray[playerIndex] == null && sArray[playerIndex] == null)
+                && lArray[playerIndex] == null && sArray[playerIndex] == null && zArray[playerIndex] == null)
             {
                 switch (nextBlock[playerIndex])
                 {
@@ -451,6 +470,15 @@ namespace BlockBrawl
                         {
                             sArray[playerIndex] = new S(playerColors[playerIndex], spawnPositions[playerIndex]);
                             if (GameOver(sArray[playerIndex].sMatrix)) { currentPlayState = PlayState.gameover; }
+                            spawnPositions[playerIndex] = GetSpawnPos(playerIndex);
+                            nextBlock[playerIndex] = null;
+                        }
+                        break;
+                    case "Z":
+                        if (VerifySpawn())
+                        {
+                            zArray[playerIndex] = new Z(playerColors[playerIndex], spawnPositions[playerIndex]);
+                            if (GameOver(zArray[playerIndex].zMatrix)) { currentPlayState = PlayState.gameover; }
                             spawnPositions[playerIndex] = GetSpawnPos(playerIndex);
                             nextBlock[playerIndex] = null;
                         }
@@ -743,6 +771,23 @@ namespace BlockBrawl
                     sArray[playerIndex].Fall(tileSize.X); sArray[playerIndex].Time = 0f;
                 }
             }
+            if (zArray[playerIndex] != null && CheckFloor(zArray[playerIndex].zMatrix))
+            {
+                CheckClearedRow(zArray[playerIndex].zMatrix, playerIndex);
+                AddDeadBlock(zArray[playerIndex].zMatrix);
+                UpdateStack();
+                zArray[playerIndex] = null;
+            }
+            if (zArray[playerIndex] != null)
+            {
+                zArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (zArray[playerIndex].Time > 1f && !CheckFloor(zArray[playerIndex].zMatrix) && !PlayerMovementDownIntersect(playerIndex, zArray[playerIndex].zMatrix))
+                {
+                    zArray[playerIndex].Fall(tileSize.X); zArray[playerIndex].Time = 0f;
+                }
+            }
+
+
         }
         private void KeyboardSteering(int playerIndex)
         {
@@ -1069,6 +1114,57 @@ namespace BlockBrawl
                     }
                 }
             }
+            if (zArray[playerIndex] != null)
+            {
+                if (iM.JustPressed(rotateClockWise)
+                && zArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                && !StackIntersect(zArray[playerIndex].NextRotatePosition(true))
+                && !PlayerIntersect(playerIndex, true))
+                {
+                    zArray[playerIndex].Rotate(true);
+                }
+                if (iM.JustPressed(rotateCounterClockWise)
+                && zArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                && !StackIntersect(zArray[playerIndex].NextRotatePosition(false))
+                && !PlayerIntersect(playerIndex, false))
+                { zArray[playerIndex].Rotate(false); }
+                if (iM.JustPressed(steerLeft)
+                && !CheckLeftSide(zArray[playerIndex].zMatrix)
+                && !CheckStackLeft(zArray[playerIndex].zMatrix)
+                && !PlayerMovementLeftIntersect(playerIndex, zArray[playerIndex].zMatrix))
+                { zArray[playerIndex].Move(-tileSize.X); }
+                if (iM.JustPressed(steerRight)
+                && !CheckRightSide(zArray[playerIndex].zMatrix)
+                && !CheckStackRight(zArray[playerIndex].zMatrix)
+                && !PlayerMovementRightIntersect(playerIndex, zArray[playerIndex].zMatrix))
+                { zArray[playerIndex].Move(tileSize.X); }
+                if (iM.JustPressed(steerDown)
+                && !PlayerMovementDownIntersect(playerIndex, zArray[playerIndex].zMatrix))
+                { if (!CheckFloor(zArray[playerIndex].zMatrix)) { zArray[playerIndex].Fall(tileSize.Y); } }
+                if (iM.IsHeld(steerDown)
+                && !PlayerMovementDownIntersect(playerIndex, zArray[playerIndex].zMatrix))
+                {
+                    if (!CheckFloor(zArray[playerIndex].zMatrix))
+                    {
+                        zArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (zArray[playerIndex].Time > 0.4f)
+                        {
+                            zArray[playerIndex].Fall(tileSize.Y);
+                            zArray[playerIndex].Time = 0f;
+                        }
+                    }
+                }
+                if (zArray[playerIndex] != null && zArray[playerIndex].zMatrix != null && stackedBlocks.Length > 0)
+                {
+                    if (CheckOnStack(zArray[playerIndex].zMatrix))
+                    {
+                        CheckClearedRow(zArray[playerIndex].zMatrix, playerIndex);
+                        AddDeadBlock(zArray[playerIndex].zMatrix);
+                        UpdateStack();
+                        zArray[playerIndex] = null;
+                    }
+                }
+            }
         }
         private void GamePadSteering(GameTime gameTime, int playerIndex)//unfortunately not a very practical/nice method but it works ( we will se what can be done later about this )
         {
@@ -1379,11 +1475,63 @@ namespace BlockBrawl
                     }
                 }
             }
+            if (zArray[playerIndex] != null)
+            {
+                if (iM.JustPressed(Buttons.B, playerIndex)
+                    && zArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                    && !StackIntersect(zArray[playerIndex].NextRotatePosition(true))
+                    && !PlayerIntersect(playerIndex, true))
+                {
+                    zArray[playerIndex].Rotate(true);
+                }
+                if (iM.JustPressed(Buttons.Y, playerIndex)
+                    && zArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
+                    && !StackIntersect(zArray[playerIndex].NextRotatePosition(false))
+                    && !PlayerIntersect(playerIndex, false))
+                { zArray[playerIndex].Rotate(false); }
+                if (iM.JustPressed(Buttons.DPadLeft, playerIndex)
+                    && !CheckLeftSide(zArray[playerIndex].zMatrix)
+                    && !CheckStackLeft(zArray[playerIndex].zMatrix)
+                    && !PlayerMovementLeftIntersect(playerIndex, zArray[playerIndex].zMatrix))
+                { zArray[playerIndex].Move(-tileSize.X); }
+                if (iM.JustPressed(Buttons.DPadRight, playerIndex)
+                    && !CheckRightSide(zArray[playerIndex].zMatrix)
+                    && !CheckStackRight(zArray[playerIndex].zMatrix)
+                    && !PlayerMovementRightIntersect(playerIndex, zArray[playerIndex].zMatrix))
+                { zArray[playerIndex].Move(tileSize.X); }
+                if (iM.JustPressed(Buttons.DPadDown, playerIndex)
+                    && !PlayerMovementDownIntersect(playerIndex, zArray[playerIndex].zMatrix))
+                { if (!CheckFloor(zArray[playerIndex].zMatrix)) { zArray[playerIndex].Fall(tileSize.Y); } }
+                if (iM.IsHeld(Buttons.DPadDown, playerIndex)
+                    && !PlayerMovementDownIntersect(playerIndex, zArray[playerIndex].zMatrix))
+                {
+                    if (!CheckFloor(zArray[playerIndex].zMatrix))
+                    {
+                        zArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                        if (zArray[playerIndex].Time > 0.4f)
+                        {
+                            zArray[playerIndex].Fall(tileSize.Y);
+                            zArray[playerIndex].Time = 0f;
+                        }
+                    }
+                }
+                if (zArray[playerIndex] != null && zArray[playerIndex].zMatrix != null && stackedBlocks.Length > 0)
+                {
+                    if (CheckOnStack(zArray[playerIndex].zMatrix))
+                    {
+                        CheckClearedRow(zArray[playerIndex].zMatrix, playerIndex);
+                        AddDeadBlock(zArray[playerIndex].zMatrix);
+                        UpdateStack();
+                        zArray[playerIndex] = null;
+                    }
+                }
+            }
         }
+
         private string RandomBlock()
         {
             Random rnd = new Random();
-            string[] feedRandomMachine = new string[] { "J", "I", "T", "O", "L", "S" };
+            string[] feedRandomMachine = new string[] { "J", "I", "T", "O", "L", "S", "Z" };
             return feedRandomMachine[rnd.Next(0, feedRandomMachine.Length)];
         }
         public void Draw(SpriteBatch spriteBatch)
@@ -1398,12 +1546,14 @@ namespace BlockBrawl
             if (oArray[playerOneIndex] != null) { oArray[playerOneIndex].Draw(spriteBatch); }
             if (lArray[playerOneIndex] != null) { lArray[playerOneIndex].Draw(spriteBatch); }
             if (sArray[playerOneIndex] != null) { sArray[playerOneIndex].Draw(spriteBatch); }
+            if (zArray[playerOneIndex] != null) { zArray[playerOneIndex].Draw(spriteBatch); }
             if (jArray[playerTwoIndex] != null) { jArray[playerTwoIndex].Draw(spriteBatch); }
             if (iArray[playerTwoIndex] != null) { iArray[playerTwoIndex].Draw(spriteBatch); }
             if (tArray[playerTwoIndex] != null) { tArray[playerTwoIndex].Draw(spriteBatch); }
             if (oArray[playerTwoIndex] != null) { oArray[playerTwoIndex].Draw(spriteBatch); }
             if (lArray[playerTwoIndex] != null) { lArray[playerTwoIndex].Draw(spriteBatch); }
             if (sArray[playerTwoIndex] != null) { sArray[playerTwoIndex].Draw(spriteBatch); }
+            if (zArray[playerTwoIndex] != null) { zArray[playerTwoIndex].Draw(spriteBatch); }
             if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
             if (currentPlayState == PlayState.gameover) { spriteBatch.DrawString(FontManager.MenuText, "GameOver!", Vector2.Zero, Color.IndianRed); }
             if (currentPlayState == PlayState.pause) { spriteBatch.DrawString(FontManager.MenuText, "Pause!", Vector2.Zero, Color.IndianRed); }
