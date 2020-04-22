@@ -167,31 +167,31 @@ namespace BlockBrawl
                 }
             }
         }
-        private int RowScore(int playerIndex, int row/*, TetrisObject[,] tetrisObjects*/)
+        private int RowScore(int playerIndex, int row, TetrisObject[,] tetrisObjects)
         {
             List<Texture2D> colors = new List<Texture2D>();
             int score = 0;
-            for (int x = 0; x < stackedBlocks.GetLength(0); x++)
+            for (int x = 0; x < tetrisObjects.GetLength(0); x++)
             {
-                if (stackedBlocks[x, row] != null)
+                if (tetrisObjects[x, row] != null)
                 {
-                    colors.Add(stackedBlocks[x, row].tex);
+                    colors.Add(tetrisObjects[x, row].tex);
                 }
             }
-            //foreach (TetrisObject item in tetrisObjects)
-            //{
-            //    if (item.alive)
-            //    {
-            //        colors.Add(item.tex);
-            //    }
-            //}
+            ////foreach (TetrisObject item in tetrisObjects)
+            ////{
+            ////    if (item.alive)
+            ////    {
+            ////        colors.Add(item.tex);
+            ////    }
+            ////}
             foreach (Texture2D color in colors)
             {
                 if (playerColors[playerIndex] == color) { score += 10; }
             }
             return score;
         }
-        private TetrisObject[,] UpdateStack(int deletedRow)
+        private TetrisObject[,] UpdatePositionsStack(int deletedRow)
         {
             for (int x = 0; x < stackedBlocks.GetLength(0); x++)
             {
@@ -414,7 +414,7 @@ namespace BlockBrawl
         private void GetBlocks(int playerIndex)
         {
             Random rnd = new Random();
-            if (jArray[playerIndex] == null && iArray[playerIndex] == null && tArray[playerIndex] == null && oArray[playerIndex] == null 
+            if (jArray[playerIndex] == null && iArray[playerIndex] == null && tArray[playerIndex] == null && oArray[playerIndex] == null
                 && lArray[playerIndex] == null && sArray[playerIndex] == null && zArray[playerIndex] == null)
             {
                 switch (nextBlock[playerIndex])
@@ -599,7 +599,7 @@ namespace BlockBrawl
             }
             return false;
         }
-        private void UpdateStack()
+        private void RemoveClearedRow()
         {
             for (int y = 0; y < stackedBlocks.GetLength(1); y++)
             {
@@ -614,14 +614,24 @@ namespace BlockBrawl
                             stackedBlocks[i, y] = null;
                             i++;
                         } while (i != x + 1);
-                        UpdateStack(y);
+                        UpdatePositionsStack(y);
                     }
                 }
             }
         }
-        private void CheckClearedRow(TetrisObject[,] tetrisObjects, int playerIndex)
+        private void CheckRowHandleScore(TetrisObject[,] tetrisObjects, int playerIndex)
         {
-            TetrisObject[,] cloneArray = stackedBlocks;
+            TetrisObject[,] cloneArray = new TetrisObject[stackedBlocks.GetLength(0), stackedBlocks.GetLength(1)];
+            for (int i = 0; i < stackedBlocks.GetLength(0); i++)
+            {
+                for (int j = 0; j < stackedBlocks.GetLength(1); j++)
+                {
+                    if (stackedBlocks[i, j] != null)
+                    {
+                        cloneArray[i, j] = new TetrisObject(stackedBlocks[i, j].Pos, stackedBlocks[i, j].tex);
+                    }
+                }
+            }
             for (int x = 0; x < playfield.GetLength(0); x++)
             {
                 for (int y = 0; y < playfield.GetLength(1); y++)
@@ -630,7 +640,7 @@ namespace BlockBrawl
                     {
                         if (tetrisobject.Pos == playfield[x, y].Pos && tetrisobject.alive)
                         {
-                            cloneArray[x, y] = tetrisobject;
+                            cloneArray[x, y] = new TetrisObject(tetrisobject.Pos, tetrisobject.tex);
                         }
                     }
                 }
@@ -645,17 +655,17 @@ namespace BlockBrawl
                     }
                     else if (x == cloneArray.GetLength(0) - 1)
                     {
-                        score[playerOneIndex] += RowScore(playerOneIndex, y/*, tetrisObjects*/);
-                        score[playerTwoIndex] += RowScore(playerTwoIndex, y/*, tetrisObjects*/);
+                        score[playerOneIndex] += RowScore(playerOneIndex, y, cloneArray);
+                        score[playerTwoIndex] += RowScore(playerTwoIndex, y, cloneArray);
                         if (playerIndex == playerOneIndex)
                         {
-                            score[playerOneIndex] += RowScore(playerOneIndex, y/*, tetrisObjects*/);
-                            bonusRecieved[playerOneIndex, y] = RowScore(playerOneIndex, y/*, tetrisObjects*/);
+                            score[playerOneIndex] += RowScore(playerOneIndex, y, cloneArray);
+                            bonusRecieved[playerOneIndex, y] = RowScore(playerOneIndex, y, cloneArray);
                         }
                         else if (playerIndex == playerTwoIndex)
                         {
-                            score[playerTwoIndex] += RowScore(playerTwoIndex, y/*, tetrisObjects*/);
-                            bonusRecieved[playerTwoIndex, y] = RowScore(playerTwoIndex, y/*, tetrisObjects*/);
+                            score[playerTwoIndex] += RowScore(playerTwoIndex, y, cloneArray);
+                            bonusRecieved[playerTwoIndex, y] = RowScore(playerTwoIndex, y, cloneArray);
                         }
                     }
                 }
@@ -682,9 +692,9 @@ namespace BlockBrawl
         {
             if (jArray[playerIndex] != null && CheckFloor(jArray[playerIndex].jMatrix))
             {
-                CheckClearedRow(jArray[playerIndex].jMatrix, playerIndex);
+                CheckRowHandleScore(jArray[playerIndex].jMatrix, playerIndex);
                 AddDeadBlock(jArray[playerIndex].jMatrix);
-                UpdateStack();
+                RemoveClearedRow();
                 jArray[playerIndex] = null;
             }
             if (jArray[playerIndex] != null)
@@ -698,9 +708,9 @@ namespace BlockBrawl
             }
             if (iArray[playerIndex] != null && CheckFloor(iArray[playerIndex].iMatrix))
             {
-                CheckClearedRow(iArray[playerIndex].iMatrix, playerIndex);
+                CheckRowHandleScore(iArray[playerIndex].iMatrix, playerIndex);
                 AddDeadBlock(iArray[playerIndex].iMatrix);
-                UpdateStack();
+                RemoveClearedRow();
                 iArray[playerIndex] = null;
             }
             if (iArray[playerIndex] != null)
@@ -713,9 +723,9 @@ namespace BlockBrawl
             }
             if (tArray[playerIndex] != null && CheckFloor(tArray[playerIndex].tMatrix))
             {
-                CheckClearedRow(tArray[playerIndex].tMatrix, playerIndex);
+                CheckRowHandleScore(tArray[playerIndex].tMatrix, playerIndex);
                 AddDeadBlock(tArray[playerIndex].tMatrix);
-                UpdateStack();
+                RemoveClearedRow();
                 tArray[playerIndex] = null;
             }
             if (tArray[playerIndex] != null)
@@ -728,9 +738,9 @@ namespace BlockBrawl
             }
             if (oArray[playerIndex] != null && CheckFloor(oArray[playerIndex].oMatrix))
             {
-                CheckClearedRow(oArray[playerIndex].oMatrix, playerIndex);
+                CheckRowHandleScore(oArray[playerIndex].oMatrix, playerIndex);
                 AddDeadBlock(oArray[playerIndex].oMatrix);
-                UpdateStack();
+                RemoveClearedRow();
                 oArray[playerIndex] = null;
             }
             if (oArray[playerIndex] != null)
@@ -743,9 +753,9 @@ namespace BlockBrawl
             }
             if (lArray[playerIndex] != null && CheckFloor(lArray[playerIndex].lMatrix))
             {
-                CheckClearedRow(lArray[playerIndex].lMatrix, playerIndex);
+                CheckRowHandleScore(lArray[playerIndex].lMatrix, playerIndex);
                 AddDeadBlock(lArray[playerIndex].lMatrix);
-                UpdateStack();
+                RemoveClearedRow();
                 lArray[playerIndex] = null;
             }
             if (lArray[playerIndex] != null)
@@ -758,9 +768,9 @@ namespace BlockBrawl
             }
             if (sArray[playerIndex] != null && CheckFloor(sArray[playerIndex].sMatrix))
             {
-                CheckClearedRow(sArray[playerIndex].sMatrix, playerIndex);
+                CheckRowHandleScore(sArray[playerIndex].sMatrix, playerIndex);
                 AddDeadBlock(sArray[playerIndex].sMatrix);
-                UpdateStack();
+                RemoveClearedRow();
                 sArray[playerIndex] = null;
             }
             if (sArray[playerIndex] != null)
@@ -773,9 +783,9 @@ namespace BlockBrawl
             }
             if (zArray[playerIndex] != null && CheckFloor(zArray[playerIndex].zMatrix))
             {
-                CheckClearedRow(zArray[playerIndex].zMatrix, playerIndex);
+                CheckRowHandleScore(zArray[playerIndex].zMatrix, playerIndex);
                 AddDeadBlock(zArray[playerIndex].zMatrix);
-                UpdateStack();
+                RemoveClearedRow();
                 zArray[playerIndex] = null;
             }
             if (zArray[playerIndex] != null)
@@ -849,9 +859,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(jArray[playerIndex].jMatrix))
                     {
-                        CheckClearedRow(jArray[playerIndex].jMatrix, playerIndex);
+                        CheckRowHandleScore(jArray[playerIndex].jMatrix, playerIndex);
                         AddDeadBlock(jArray[playerIndex].jMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         jArray[playerIndex] = null;
                     }
                 }
@@ -901,9 +911,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(iArray[playerIndex].iMatrix))
                     {
-                        CheckClearedRow(iArray[playerIndex].iMatrix, playerIndex);
+                        CheckRowHandleScore(iArray[playerIndex].iMatrix, playerIndex);
                         AddDeadBlock(iArray[playerIndex].iMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         iArray[playerIndex] = null;
                     }
                 }
@@ -953,9 +963,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(tArray[playerIndex].tMatrix))
                     {
-                        CheckClearedRow(tArray[playerIndex].tMatrix, playerIndex);
+                        CheckRowHandleScore(tArray[playerIndex].tMatrix, playerIndex);
                         AddDeadBlock(tArray[playerIndex].tMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         tArray[playerIndex] = null;
                     }
                 }
@@ -1004,9 +1014,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(oArray[playerIndex].oMatrix))
                     {
-                        CheckClearedRow(oArray[playerIndex].oMatrix, playerIndex);
+                        CheckRowHandleScore(oArray[playerIndex].oMatrix, playerIndex);
                         AddDeadBlock(oArray[playerIndex].oMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         oArray[playerIndex] = null;
                     }
                 }
@@ -1055,9 +1065,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(lArray[playerIndex].lMatrix))
                     {
-                        CheckClearedRow(lArray[playerIndex].lMatrix, playerIndex);
+                        CheckRowHandleScore(lArray[playerIndex].lMatrix, playerIndex);
                         AddDeadBlock(lArray[playerIndex].lMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         lArray[playerIndex] = null;
                     }
                 }
@@ -1107,9 +1117,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(sArray[playerIndex].sMatrix))
                     {
-                        CheckClearedRow(sArray[playerIndex].sMatrix, playerIndex);
+                        CheckRowHandleScore(sArray[playerIndex].sMatrix, playerIndex);
                         AddDeadBlock(sArray[playerIndex].sMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         sArray[playerIndex] = null;
                     }
                 }
@@ -1158,9 +1168,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(zArray[playerIndex].zMatrix))
                     {
-                        CheckClearedRow(zArray[playerIndex].zMatrix, playerIndex);
+                        CheckRowHandleScore(zArray[playerIndex].zMatrix, playerIndex);
                         AddDeadBlock(zArray[playerIndex].zMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         zArray[playerIndex] = null;
                     }
                 }
@@ -1213,9 +1223,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(jArray[playerIndex].jMatrix))
                     {
-                        CheckClearedRow(jArray[playerIndex].jMatrix, playerIndex);
+                        CheckRowHandleScore(jArray[playerIndex].jMatrix, playerIndex);
                         AddDeadBlock(jArray[playerIndex].jMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         jArray[playerIndex] = null;
                     }
                 }
@@ -1264,9 +1274,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(iArray[playerIndex].iMatrix))
                     {
-                        CheckClearedRow(iArray[playerIndex].iMatrix, playerIndex);
+                        CheckRowHandleScore(iArray[playerIndex].iMatrix, playerIndex);
                         AddDeadBlock(iArray[playerIndex].iMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         iArray[playerIndex] = null;
                     }
                 }
@@ -1315,9 +1325,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(tArray[playerIndex].tMatrix))
                     {
-                        CheckClearedRow(tArray[playerIndex].tMatrix, playerIndex);
+                        CheckRowHandleScore(tArray[playerIndex].tMatrix, playerIndex);
                         AddDeadBlock(tArray[playerIndex].tMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         tArray[playerIndex] = null;
                     }
                 }
@@ -1366,9 +1376,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(oArray[playerIndex].oMatrix))
                     {
-                        CheckClearedRow(oArray[playerIndex].oMatrix, playerIndex);
+                        CheckRowHandleScore(oArray[playerIndex].oMatrix, playerIndex);
                         AddDeadBlock(oArray[playerIndex].oMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         oArray[playerIndex] = null;
                     }
                 }
@@ -1417,9 +1427,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(lArray[playerIndex].lMatrix))
                     {
-                        CheckClearedRow(lArray[playerIndex].lMatrix, playerIndex);
+                        CheckRowHandleScore(lArray[playerIndex].lMatrix, playerIndex);
                         AddDeadBlock(lArray[playerIndex].lMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         lArray[playerIndex] = null;
                     }
                 }
@@ -1468,9 +1478,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(sArray[playerIndex].sMatrix))
                     {
-                        CheckClearedRow(sArray[playerIndex].sMatrix, playerIndex);
+                        CheckRowHandleScore(sArray[playerIndex].sMatrix, playerIndex);
                         AddDeadBlock(sArray[playerIndex].sMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         sArray[playerIndex] = null;
                     }
                 }
@@ -1519,9 +1529,9 @@ namespace BlockBrawl
                 {
                     if (CheckOnStack(zArray[playerIndex].zMatrix))
                     {
-                        CheckClearedRow(zArray[playerIndex].zMatrix, playerIndex);
+                        CheckRowHandleScore(zArray[playerIndex].zMatrix, playerIndex);
                         AddDeadBlock(zArray[playerIndex].zMatrix);
-                        UpdateStack();
+                        RemoveClearedRow();
                         zArray[playerIndex] = null;
                     }
                 }
