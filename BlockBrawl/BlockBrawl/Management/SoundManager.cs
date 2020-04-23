@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
 using System.IO;
-using System;
 
 namespace BlockBrawl
 {
