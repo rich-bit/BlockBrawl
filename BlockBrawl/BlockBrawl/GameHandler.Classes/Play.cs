@@ -43,6 +43,8 @@ namespace BlockBrawl
 
         int playerOneIndex, playerTwoIndex;
 
+        float fallWaitTime, newSpeedCounter;
+
         bool gamePadVersion;
 
         enum PlayState
@@ -50,6 +52,7 @@ namespace BlockBrawl
             play,
             pause,
             gameover,
+            qte,
         }
         PlayState currentPlayState;
 
@@ -59,6 +62,9 @@ namespace BlockBrawl
             this.playerOneIndex = playerOneIndex;
             this.playerTwoIndex = playerTwoIndex;
             this.gamePadVersion = gamePadVersion;
+
+            fallWaitTime = SettingsManager.fallTime;
+            newSpeedCounter = SettingsManager.newSpeedCounter;
 
             playerColors = new Texture2D[2];
             playerColors[playerOneIndex] = playerOneColor;
@@ -112,6 +118,7 @@ namespace BlockBrawl
                 case PlayState.play:
                     DrawBonus();
                     AvoidDubbleSpawn();
+                    IncreseFallSpeed();
                     if (gamePadVersion)
                     {
                         GamePadSteering(gameTime, playerOneIndex);
@@ -134,6 +141,8 @@ namespace BlockBrawl
                     else if (!gamePadVersion && iM.JustPressed(Keys.Escape) || iM.JustPressed(Keys.NumLock)) { currentPlayState = PlayState.play; }
                     break;
                 case PlayState.gameover:
+                    break;
+                case PlayState.qte:
                     break;
             }
         }
@@ -217,23 +226,23 @@ namespace BlockBrawl
             if (LocateOtherPlayeMatrix(OtherPlayerIndex(playerOneIndex)) != null)
             {
                 currentPosP1 = new I(TextureManager.transBlock, LocateOtherPlayeMatrix(OtherPlayerIndex(playerOneIndex))[0, 0].Pos);
-                foreach(TetrisObject item in currentPosP1.iMatrix) { item.alive = true; }
+                foreach (TetrisObject item in currentPosP1.iMatrix) { item.alive = true; }
             }
             I currentPosP2 = null;
             if (LocateOtherPlayeMatrix(OtherPlayerIndex(playerTwoIndex)) != null)
             {
                 currentPosP2 = new I(TextureManager.transBlock, LocateOtherPlayeMatrix(OtherPlayerIndex(playerTwoIndex))[0, 0].Pos);
-                foreach (TetrisObject item in currentPosP1.iMatrix) { item.alive = true; }
+                foreach (TetrisObject item in currentPosP2.iMatrix) { item.alive = true; }
             }
 
 
             return (desiredBlockOne.MaxValues().X < desiredBlockTwo.iMatrix[0, 0].PosX
                 || desiredBlockOne.MinValues().X > desiredBlockTwo.iMatrix[0, 0].PosX)
-                && (currentPosP2 == null || 
+                && (currentPosP2 == null ||
                 desiredBlockOne.MaxValues().X < currentPosP2.MinValues().X
                 || desiredBlockOne.MinValues().X > currentPosP2.MaxValues().X
                 || desiredBlockOne.MaxValues().Y < currentPosP2.MinValues().Y)
-                && (currentPosP1 == null 
+                && (currentPosP1 == null
                 || desiredBlockTwo.MaxValues().X < currentPosP1.MinValues().X
                 || desiredBlockTwo.MinValues().X > currentPosP1.MaxValues().X
                 || desiredBlockTwo.MaxValues().Y < currentPosP1.MinValues().Y
@@ -703,7 +712,15 @@ namespace BlockBrawl
                 }
             }
         }
-
+        private void IncreseFallSpeed()
+        {
+            playfield[0, 0].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (playfield[0, 0].Time > newSpeedCounter && fallWaitTime > 0.4f)
+            {
+                fallWaitTime -= 0.1f;
+                newSpeedCounter = 0;
+            }
+        }
         private void FallDownAddStack(int playerIndex)
         {
             if (jArray[playerIndex] != null && CheckFloor(jArray[playerIndex].jMatrix))
@@ -716,7 +733,7 @@ namespace BlockBrawl
             if (jArray[playerIndex] != null)
             {
                 jArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (jArray[playerIndex].Time > 1f && !CheckFloor(jArray[playerIndex].jMatrix) && !PlayerMovementDownIntersect(playerIndex, jArray[playerIndex].jMatrix))
+                if (jArray[playerIndex].Time > fallWaitTime && !CheckFloor(jArray[playerIndex].jMatrix) && !PlayerMovementDownIntersect(playerIndex, jArray[playerIndex].jMatrix))
                 {
                     jArray[playerIndex].Fall(tileSize.X);
                     jArray[playerIndex].Time = 0f;
@@ -732,9 +749,10 @@ namespace BlockBrawl
             if (iArray[playerIndex] != null)
             {
                 iArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (iArray[playerIndex].Time > 1f && !CheckFloor(iArray[playerIndex].iMatrix) && !PlayerMovementDownIntersect(playerIndex, iArray[playerIndex].iMatrix))
+                if (iArray[playerIndex].Time > fallWaitTime && !CheckFloor(iArray[playerIndex].iMatrix) && !PlayerMovementDownIntersect(playerIndex, iArray[playerIndex].iMatrix))
                 {
-                    iArray[playerIndex].Fall(tileSize.X); iArray[playerIndex].Time = 0f;
+                    iArray[playerIndex].Fall(tileSize.X);
+                    iArray[playerIndex].Time = 0f;
                 }
             }
             if (tArray[playerIndex] != null && CheckFloor(tArray[playerIndex].tMatrix))
@@ -747,7 +765,7 @@ namespace BlockBrawl
             if (tArray[playerIndex] != null)
             {
                 tArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (tArray[playerIndex].Time > 1f && !CheckFloor(tArray[playerIndex].tMatrix) && !PlayerMovementDownIntersect(playerIndex, tArray[playerIndex].tMatrix))
+                if (tArray[playerIndex].Time > fallWaitTime && !CheckFloor(tArray[playerIndex].tMatrix) && !PlayerMovementDownIntersect(playerIndex, tArray[playerIndex].tMatrix))
                 {
                     tArray[playerIndex].Fall(tileSize.X); tArray[playerIndex].Time = 0f;
                 }
@@ -762,7 +780,7 @@ namespace BlockBrawl
             if (oArray[playerIndex] != null)
             {
                 oArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (oArray[playerIndex].Time > 1f && !CheckFloor(oArray[playerIndex].oMatrix) && !PlayerMovementDownIntersect(playerIndex, oArray[playerIndex].oMatrix))
+                if (oArray[playerIndex].Time > fallWaitTime && !CheckFloor(oArray[playerIndex].oMatrix) && !PlayerMovementDownIntersect(playerIndex, oArray[playerIndex].oMatrix))
                 {
                     oArray[playerIndex].Fall(tileSize.X); oArray[playerIndex].Time = 0f;
                 }
@@ -777,7 +795,7 @@ namespace BlockBrawl
             if (lArray[playerIndex] != null)
             {
                 lArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (lArray[playerIndex].Time > 1f && !CheckFloor(lArray[playerIndex].lMatrix) && !PlayerMovementDownIntersect(playerIndex, lArray[playerIndex].lMatrix))
+                if (lArray[playerIndex].Time > fallWaitTime && !CheckFloor(lArray[playerIndex].lMatrix) && !PlayerMovementDownIntersect(playerIndex, lArray[playerIndex].lMatrix))
                 {
                     lArray[playerIndex].Fall(tileSize.X); lArray[playerIndex].Time = 0f;
                 }
@@ -792,7 +810,7 @@ namespace BlockBrawl
             if (sArray[playerIndex] != null)
             {
                 sArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (sArray[playerIndex].Time > 1f && !CheckFloor(sArray[playerIndex].sMatrix) && !PlayerMovementDownIntersect(playerIndex, sArray[playerIndex].sMatrix))
+                if (sArray[playerIndex].Time > fallWaitTime && !CheckFloor(sArray[playerIndex].sMatrix) && !PlayerMovementDownIntersect(playerIndex, sArray[playerIndex].sMatrix))
                 {
                     sArray[playerIndex].Fall(tileSize.X); sArray[playerIndex].Time = 0f;
                 }
@@ -807,7 +825,7 @@ namespace BlockBrawl
             if (zArray[playerIndex] != null)
             {
                 zArray[playerIndex].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (zArray[playerIndex].Time > 1f && !CheckFloor(zArray[playerIndex].zMatrix) && !PlayerMovementDownIntersect(playerIndex, zArray[playerIndex].zMatrix))
+                if (zArray[playerIndex].Time > fallWaitTime && !CheckFloor(zArray[playerIndex].zMatrix) && !PlayerMovementDownIntersect(playerIndex, zArray[playerIndex].zMatrix))
                 {
                     zArray[playerIndex].Fall(tileSize.X); zArray[playerIndex].Time = 0f;
                 }
@@ -1560,64 +1578,130 @@ namespace BlockBrawl
             string[] feedRandomMachine = new string[] { "J", "I", "T", "O", "L", "S", "Z" };
             return feedRandomMachine[rnd.Next(0, feedRandomMachine.Length)];
         }
+        private TetrisObject[,] NextBlock(int playerIndex)
+        {
+            TetrisObject[,] previewBlock = null;
+
+            Vector2 pos = Vector2.Zero;
+
+            if (playerIndex == playerOneIndex)
+            {
+                pos = new Vector2(playfield[0, 4].PosX - tileSize.X * 4, playfield[0,4].PosY);
+            }
+            else if (playerIndex == playerTwoIndex)
+            {
+                pos = new Vector2(playfield[playfield.GetLength(0) - 1, 4].PosX + tileSize.X, playfield[0, 4].PosY);
+            }
+
+            switch (nextBlock[playerIndex])
+            {
+                case "J":
+                    previewBlock = new J(playerColors[playerIndex], pos).jMatrix;
+                    break;
+                case "I":
+                    previewBlock = new I(playerColors[playerIndex], pos).iMatrix;
+                    break;
+                case "T":
+                    previewBlock = new T(playerColors[playerIndex], pos).tMatrix;
+                    break;
+                case "O":
+                    previewBlock = new O(playerColors[playerIndex], pos).oMatrix;
+                    break;
+                case "L":
+                    previewBlock = new L(playerColors[playerIndex], pos).lMatrix;
+                    break;
+                case "S":
+                    previewBlock = new S(playerColors[playerIndex], pos).sMatrix;
+                    break;
+                case "Z":
+                    previewBlock = new Z(playerColors[playerIndex], pos).zMatrix;
+                    break;
+            }
+            return previewBlock;
+        }
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (GameObject item in playfield)
+            switch (currentPlayState)
             {
-                item.Draw(spriteBatch);
-            }
-            if (jArray[playerOneIndex] != null) { jArray[playerOneIndex].Draw(spriteBatch); }
-            if (iArray[playerOneIndex] != null) { iArray[playerOneIndex].Draw(spriteBatch); }
-            if (tArray[playerOneIndex] != null) { tArray[playerOneIndex].Draw(spriteBatch); }
-            if (oArray[playerOneIndex] != null) { oArray[playerOneIndex].Draw(spriteBatch); }
-            if (lArray[playerOneIndex] != null) { lArray[playerOneIndex].Draw(spriteBatch); }
-            if (sArray[playerOneIndex] != null) { sArray[playerOneIndex].Draw(spriteBatch); }
-            if (zArray[playerOneIndex] != null) { zArray[playerOneIndex].Draw(spriteBatch); }
-            if (jArray[playerTwoIndex] != null) { jArray[playerTwoIndex].Draw(spriteBatch); }
-            if (iArray[playerTwoIndex] != null) { iArray[playerTwoIndex].Draw(spriteBatch); }
-            if (tArray[playerTwoIndex] != null) { tArray[playerTwoIndex].Draw(spriteBatch); }
-            if (oArray[playerTwoIndex] != null) { oArray[playerTwoIndex].Draw(spriteBatch); }
-            if (lArray[playerTwoIndex] != null) { lArray[playerTwoIndex].Draw(spriteBatch); }
-            if (sArray[playerTwoIndex] != null) { sArray[playerTwoIndex].Draw(spriteBatch); }
-            if (zArray[playerTwoIndex] != null) { zArray[playerTwoIndex].Draw(spriteBatch); }
-            if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
-            if (currentPlayState == PlayState.gameover) { spriteBatch.DrawString(FontManager.MenuText, "GameOver!", Vector2.Zero, Color.IndianRed); }
-            if (currentPlayState == PlayState.pause) { spriteBatch.DrawString(FontManager.MenuText, "Pause!", Vector2.Zero, Color.IndianRed); }
-
-            spriteBatch.DrawString(FontManager.MenuText,
-            $"{SettingsManager.playerOneName.ToString()}\nscore: " + score[playerOneIndex].ToString(),
-            new Vector2(0, 80),
-            Color.Black);
-
-            spriteBatch.DrawString(FontManager.MenuText,
-            $"{SettingsManager.playerTwoName.ToString()}\nscore: " + score[playerTwoIndex].ToString(),
-            new Vector2(SettingsManager.windowSize.X - FontManager.ScoreText.MeasureString($"{SettingsManager.playerTwoName.ToString()}\nscore: ").X - 160,
-            80),
-            Color.Black);
-            for (int playerIndex = 0; playerIndex < bonusRecieved.GetLength(0); playerIndex++)
-            {
-                for (int bonusRow = 0; bonusRow < bonusRecieved.GetLength(1); bonusRow++)
-                {
-                    if (bonusRecieved[playerIndex, bonusRow] != 0)
+                case PlayState.play:
+                    foreach (GameObject item in playfield)
                     {
-                        if (playerIndex == playerOneIndex)
+                        item.Draw(spriteBatch);
+                    }
+                    if (jArray[playerOneIndex] != null) { jArray[playerOneIndex].Draw(spriteBatch); }
+                    if (iArray[playerOneIndex] != null) { iArray[playerOneIndex].Draw(spriteBatch); }
+                    if (tArray[playerOneIndex] != null) { tArray[playerOneIndex].Draw(spriteBatch); }
+                    if (oArray[playerOneIndex] != null) { oArray[playerOneIndex].Draw(spriteBatch); }
+                    if (lArray[playerOneIndex] != null) { lArray[playerOneIndex].Draw(spriteBatch); }
+                    if (sArray[playerOneIndex] != null) { sArray[playerOneIndex].Draw(spriteBatch); }
+                    if (zArray[playerOneIndex] != null) { zArray[playerOneIndex].Draw(spriteBatch); }
+                    if (jArray[playerTwoIndex] != null) { jArray[playerTwoIndex].Draw(spriteBatch); }
+                    if (iArray[playerTwoIndex] != null) { iArray[playerTwoIndex].Draw(spriteBatch); }
+                    if (tArray[playerTwoIndex] != null) { tArray[playerTwoIndex].Draw(spriteBatch); }
+                    if (oArray[playerTwoIndex] != null) { oArray[playerTwoIndex].Draw(spriteBatch); }
+                    if (lArray[playerTwoIndex] != null) { lArray[playerTwoIndex].Draw(spriteBatch); }
+                    if (sArray[playerTwoIndex] != null) { sArray[playerTwoIndex].Draw(spriteBatch); }
+                    if (zArray[playerTwoIndex] != null) { zArray[playerTwoIndex].Draw(spriteBatch); }
+                    if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
+
+                    spriteBatch.DrawString(FontManager.MenuText,
+                    $"{SettingsManager.playerOneName.ToString()}\nscore: " + score[playerOneIndex].ToString(),
+                    new Vector2(0, 80),
+                    Color.Red);
+
+                    spriteBatch.DrawString(FontManager.MenuText,
+                    $"{SettingsManager.playerTwoName.ToString()}\nscore: " + score[playerTwoIndex].ToString(),
+                    new Vector2(SettingsManager.windowSize.X - FontManager.ScoreText.MeasureString($"{SettingsManager.playerTwoName.ToString()}\nscore: ").X - 160,
+                    80),
+                    Color.Red);
+                    for (int playerIndex = 0; playerIndex < bonusRecieved.GetLength(0); playerIndex++)
+                    {
+                        for (int bonusRow = 0; bonusRow < bonusRecieved.GetLength(1); bonusRow++)
                         {
-                            spriteBatch.DrawString(FontManager.MenuText,
-                            "Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString(),
-                            new Vector2(playfield[0, 0].PosX - FontManager.MenuText.MeasureString("Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString()).X,
-                            playfield[0, bonusRow].PosY),
-                            Color.Black);
-                        }
-                        else if (playerIndex == playerTwoIndex)
-                        {
-                            spriteBatch.DrawString(FontManager.MenuText,
-                            "Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString(),
-                            new Vector2(playfield[playfield.GetLength(0) - 1, 0].PosX + tileSize.X,
-                            playfield[0, bonusRow].PosY),
-                            Color.Black);
+                            if (bonusRecieved[playerIndex, bonusRow] != 0)
+                            {
+                                if (playerIndex == playerOneIndex)
+                                {
+                                    spriteBatch.DrawString(FontManager.MenuText,
+                                    "Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString(),
+                                    new Vector2(playfield[0, 0].PosX - FontManager.MenuText.MeasureString("Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString()).X,
+                                    playfield[0, bonusRow].PosY),
+                                    Color.Blue);
+                                }
+                                else if (playerIndex == playerTwoIndex)
+                                {
+                                    spriteBatch.DrawString(FontManager.MenuText,
+                                    "Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString(),
+                                    new Vector2(playfield[playfield.GetLength(0) - 1, 0].PosX + tileSize.X,
+                                    playfield[0, bonusRow].PosY),
+                                    Color.Blue);
+                                }
+                            }
                         }
                     }
-                }
+                    if (NextBlock(playerOneIndex) != null)
+                    {
+                        foreach (TetrisObject item in NextBlock(playerOneIndex))
+                        {
+                            item.Draw(spriteBatch);
+                        }
+                    }
+                    if (NextBlock(playerTwoIndex) != null)
+                    {
+                        foreach (TetrisObject item in NextBlock(playerTwoIndex))
+                        {
+                            item.Draw(spriteBatch);
+                        }
+                    }
+                    break;
+                case PlayState.pause:
+                    spriteBatch.DrawString(FontManager.MenuText, "Pause!", Vector2.Zero, Color.IndianRed);
+                    break;
+                case PlayState.gameover:
+                    spriteBatch.DrawString(FontManager.MenuText, "GameOver!", Vector2.Zero, Color.IndianRed);
+                    break;
+                case PlayState.qte:
+                    break;
             }
         }
     }

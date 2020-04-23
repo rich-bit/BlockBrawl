@@ -11,11 +11,13 @@ namespace BlockBrawl
             ScoreText = content.Load<SpriteFont>(@"scoreText");
             MenuText = content.Load<SpriteFont>(@"menuText");
             NewRoundText = content.Load<SpriteFont>(@"newround");
+            NeonText = content.Load<SpriteFont>(@"neonText");
         }
 
         public static SpriteFont GameText { get; set; }
         public static SpriteFont ScoreText { get; set; }
         public static SpriteFont MenuText { get; set; }
         public static SpriteFont NewRoundText { get; set; }
+        public static SpriteFont NeonText { get; set; }
     }
 }

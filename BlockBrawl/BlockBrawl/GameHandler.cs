@@ -10,9 +10,18 @@ namespace BlockBrawl
         GraphicsDevice graphicsDevice;
         GameTime gameTime;
 
+        public enum GameState
+        {
+            play,
+            settings,
+            highscore,
+            controlls,
+            menu,
+        }
+        GameState currentGameState;
         //Management
         Play play;
-
+        Menu menu;
         public GameHandler(GraphicsDeviceManager graphicsDeviceManager, GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
             //Construct stuff;                        
@@ -29,20 +38,50 @@ namespace BlockBrawl
                 SettingsManager.tiles, SettingsManager.tileSize,
                 graphicsDeviceManager.PreferredBackBufferWidth,
                 SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo,
-                SettingsManager.playerOneColor, SettingsManager.playerTwoColor);           
-        }
-        public void Draw()
-        {
-            graphicsDevice.Clear(Color.Silver);
+                SettingsManager.playerOneColor, SettingsManager.playerTwoColor);
+            menu = new Menu();
 
-            spriteBatch.Begin();
-            play.Draw(spriteBatch);
-            spriteBatch.End();
+            currentGameState = GameState.menu;
         }
         public void Update(GameTime gameTime)
         {
+            switch (currentGameState)
+            {
+                case GameState.play:
+                    play.Update(gameTime);
+                    break;
+                case GameState.settings:
+                    break;
+                case GameState.highscore:
+                    break;
+                case GameState.controlls:
+                    break;
+                case GameState.menu:
+                    menu.Update();
+                    break;
+            }
             this.gameTime = gameTime;
-            play.Update(gameTime);
+        }
+        public void Draw()
+        {
+            graphicsDevice.Clear(Color.Black);
+            spriteBatch.Begin();
+            switch (currentGameState)
+            {
+                case GameState.play:
+                    play.Draw(spriteBatch);
+                    break;
+                case GameState.settings:
+                    break;
+                case GameState.highscore:
+                    break;
+                case GameState.controlls:
+                    break;
+                case GameState.menu:
+                    menu.Draw(spriteBatch);
+                    break;
+            }
+            spriteBatch.End();
         }
     }
 }

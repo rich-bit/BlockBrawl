@@ -5,7 +5,8 @@ namespace BlockBrawl
 {
     class TextureManager
     {
-        public static Texture2D blueBlock, lightblueBlock, lightgreenBlock, orangeBlock, purpleBlock, whiteBlock, yellowBlock, emptyBlock, transBlock;
+        public static Texture2D blueBlock, lightblueBlock, lightgreenBlock, orangeBlock, purpleBlock, whiteBlock, yellowBlock, emptyBlock, transBlock,
+            menuPlay, menuSettings, menuHighScore, menuBlockBrawl, highScoreMenu;
 
         public TextureManager(ContentManager content)
         {
@@ -18,6 +19,11 @@ namespace BlockBrawl
             yellowBlock = content.Load<Texture2D>(@"yellowblock");
             emptyBlock = content.Load<Texture2D>(@"emptyblock");
             transBlock = content.Load<Texture2D>(@"transparentblock");
+            menuPlay = content.Load<Texture2D>(@"Menu.Images/Playknapp");
+            menuSettings = content.Load<Texture2D>(@"Menu.Images/SettingsKnapp");
+            //menuHighScore = content.Load<Texture2D>(@"Menu.Images/PlayBild");
+            menuBlockBrawl = content.Load<Texture2D>(@"Menu.Images/Menyknapp");
+            highScoreMenu = content.Load<Texture2D>(@"Menu.Images/highscore");
         }
     }
 }
