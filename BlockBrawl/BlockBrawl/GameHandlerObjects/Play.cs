@@ -1583,47 +1583,6 @@ namespace BlockBrawl
             string[] feedRandomMachine = new string[] { "J", "I", "T", "O", "L", "S", "Z" };
             return feedRandomMachine[rnd.Next(0, feedRandomMachine.Length)];
         }
-        //private TetrisObject[,] NextBlock(int playerIndex)
-        //{
-        //    TetrisObject[,] previewBlock = null;
-
-        //    Vector2 pos = Vector2.Zero;
-
-        //    if (playerIndex == playerOneIndex)
-        //    {
-        //        pos = new Vector2(playfield[0, 4].PosX - tileSize.X * 4, playfield[0,4].PosY);
-        //    }
-        //    else if (playerIndex == playerTwoIndex)
-        //    {
-        //        pos = new Vector2(playfield[playfield.GetLength(0) - 1, 4].PosX + tileSize.X, playfield[0, 4].PosY);
-        //    }
-
-        //    switch (nextBlock[playerIndex])
-        //    {
-        //        case "J":
-        //            previewBlock = new J(playerColors[playerIndex], pos).jMatrix;
-        //            break;
-        //        case "I":
-        //            previewBlock = new I(playerColors[playerIndex], pos).iMatrix;
-        //            break;
-        //        case "T":
-        //            previewBlock = new T(playerColors[playerIndex], pos).tMatrix;
-        //            break;
-        //        case "O":
-        //            previewBlock = new O(playerColors[playerIndex], pos).oMatrix;
-        //            break;
-        //        case "L":
-        //            previewBlock = new L(playerColors[playerIndex], pos).lMatrix;
-        //            break;
-        //        case "S":
-        //            previewBlock = new S(playerColors[playerIndex], pos).sMatrix;
-        //            break;
-        //        case "Z":
-        //            previewBlock = new Z(playerColors[playerIndex], pos).zMatrix;
-        //            break;
-        //    }
-        //    return previewBlock;
-        //}
         public void Draw(SpriteBatch spriteBatch)
         {
             switch (currentPlayState)
@@ -1649,22 +1608,6 @@ namespace BlockBrawl
                     if (sArray[playerTwoIndex] != null) { sArray[playerTwoIndex].Draw(spriteBatch); }
                     if (zArray[playerTwoIndex] != null) { zArray[playerTwoIndex].Draw(spriteBatch); }
                     if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
-
-
-                    //if (NextBlock(playerOneIndex) != null)
-                    //{
-                    //    foreach (TetrisObject item in NextBlock(playerOneIndex))
-                    //    {
-                    //        item.Draw(spriteBatch);
-                    //    }
-                    //}
-                    //if (NextBlock(playerTwoIndex) != null)
-                    //{
-                    //    foreach (TetrisObject item in NextBlock(playerTwoIndex))
-                    //    {
-                    //        item.Draw(spriteBatch);
-                    //    }
-                    //}
                     break;
                 case PlayState.pause:
                     spriteBatch.DrawString(FontManager.MenuText, "Pause!", Vector2.Zero, Color.IndianRed);
