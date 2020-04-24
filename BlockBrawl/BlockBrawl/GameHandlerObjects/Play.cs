@@ -47,6 +47,8 @@ namespace BlockBrawl
 
         bool gamePadVersion;
 
+        SideBars sideBars;
+
         enum PlayState
         {
             play,
@@ -93,6 +95,8 @@ namespace BlockBrawl
             sArray = new S[2];
             zArray = new Z[2];
 
+            sideBars = new SideBars(playerColors);
+
             score = new int[2];
             bonusRecieved = new int[2, stackedBlocks.GetLength(1)];
 
@@ -119,6 +123,7 @@ namespace BlockBrawl
                     DrawBonus();
                     AvoidDubbleSpawn();
                     IncreseFallSpeed();
+                    sideBars.Update(score, bonusRecieved, nextBlock);
                     if (gamePadVersion)
                     {
                         GamePadSteering(gameTime, playerOneIndex);
@@ -1578,52 +1583,12 @@ namespace BlockBrawl
             string[] feedRandomMachine = new string[] { "J", "I", "T", "O", "L", "S", "Z" };
             return feedRandomMachine[rnd.Next(0, feedRandomMachine.Length)];
         }
-        private TetrisObject[,] NextBlock(int playerIndex)
-        {
-            TetrisObject[,] previewBlock = null;
-
-            Vector2 pos = Vector2.Zero;
-
-            if (playerIndex == playerOneIndex)
-            {
-                pos = new Vector2(playfield[0, 4].PosX - tileSize.X * 4, playfield[0,4].PosY);
-            }
-            else if (playerIndex == playerTwoIndex)
-            {
-                pos = new Vector2(playfield[playfield.GetLength(0) - 1, 4].PosX + tileSize.X, playfield[0, 4].PosY);
-            }
-
-            switch (nextBlock[playerIndex])
-            {
-                case "J":
-                    previewBlock = new J(playerColors[playerIndex], pos).jMatrix;
-                    break;
-                case "I":
-                    previewBlock = new I(playerColors[playerIndex], pos).iMatrix;
-                    break;
-                case "T":
-                    previewBlock = new T(playerColors[playerIndex], pos).tMatrix;
-                    break;
-                case "O":
-                    previewBlock = new O(playerColors[playerIndex], pos).oMatrix;
-                    break;
-                case "L":
-                    previewBlock = new L(playerColors[playerIndex], pos).lMatrix;
-                    break;
-                case "S":
-                    previewBlock = new S(playerColors[playerIndex], pos).sMatrix;
-                    break;
-                case "Z":
-                    previewBlock = new Z(playerColors[playerIndex], pos).zMatrix;
-                    break;
-            }
-            return previewBlock;
-        }
         public void Draw(SpriteBatch spriteBatch)
         {
             switch (currentPlayState)
             {
                 case PlayState.play:
+                    sideBars.Draw(spriteBatch);
                     foreach (GameObject item in playfield)
                     {
                         item.Draw(spriteBatch);
@@ -1643,56 +1608,6 @@ namespace BlockBrawl
                     if (sArray[playerTwoIndex] != null) { sArray[playerTwoIndex].Draw(spriteBatch); }
                     if (zArray[playerTwoIndex] != null) { zArray[playerTwoIndex].Draw(spriteBatch); }
                     if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
-
-                    spriteBatch.DrawString(FontManager.MenuText,
-                    $"{SettingsManager.playerOneName.ToString()}\nscore: " + score[playerOneIndex].ToString(),
-                    new Vector2(0, 80),
-                    Color.Red);
-
-                    spriteBatch.DrawString(FontManager.MenuText,
-                    $"{SettingsManager.playerTwoName.ToString()}\nscore: " + score[playerTwoIndex].ToString(),
-                    new Vector2(SettingsManager.windowSize.X - FontManager.ScoreText.MeasureString($"{SettingsManager.playerTwoName.ToString()}\nscore: ").X - 160,
-                    80),
-                    Color.Red);
-                    for (int playerIndex = 0; playerIndex < bonusRecieved.GetLength(0); playerIndex++)
-                    {
-                        for (int bonusRow = 0; bonusRow < bonusRecieved.GetLength(1); bonusRow++)
-                        {
-                            if (bonusRecieved[playerIndex, bonusRow] != 0)
-                            {
-                                if (playerIndex == playerOneIndex)
-                                {
-                                    spriteBatch.DrawString(FontManager.MenuText,
-                                    "Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString(),
-                                    new Vector2(playfield[0, 0].PosX - FontManager.MenuText.MeasureString("Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString()).X,
-                                    playfield[0, bonusRow].PosY),
-                                    Color.Blue);
-                                }
-                                else if (playerIndex == playerTwoIndex)
-                                {
-                                    spriteBatch.DrawString(FontManager.MenuText,
-                                    "Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString(),
-                                    new Vector2(playfield[playfield.GetLength(0) - 1, 0].PosX + tileSize.X,
-                                    playfield[0, bonusRow].PosY),
-                                    Color.Blue);
-                                }
-                            }
-                        }
-                    }
-                    if (NextBlock(playerOneIndex) != null)
-                    {
-                        foreach (TetrisObject item in NextBlock(playerOneIndex))
-                        {
-                            item.Draw(spriteBatch);
-                        }
-                    }
-                    if (NextBlock(playerTwoIndex) != null)
-                    {
-                        foreach (TetrisObject item in NextBlock(playerTwoIndex))
-                        {
-                            item.Draw(spriteBatch);
-                        }
-                    }
                     break;
                 case PlayState.pause:
                     spriteBatch.DrawString(FontManager.MenuText, "Pause!", Vector2.Zero, Color.IndianRed);
