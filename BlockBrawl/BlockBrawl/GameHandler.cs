@@ -41,7 +41,7 @@ namespace BlockBrawl
                 SettingsManager.playerOneColor, SettingsManager.playerTwoColor);
             menu = new Menu();
 
-            currentGameState = GameState.menu;
+            currentGameState = GameState.play;
         }
         public void Update(GameTime gameTime)
         {

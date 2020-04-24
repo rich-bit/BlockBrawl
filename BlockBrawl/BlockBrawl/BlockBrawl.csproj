@@ -50,7 +50,8 @@
     <Compile Include="Blocks\T-block.cs" />
     <Compile Include="FileRead.cs" />
     <Compile Include="Blocks\Z-block.cs" />
-    <Compile Include="GameHandler.Classes\Menu.cs" />
+    <Compile Include="GameHandlerObjects\Menu.cs" />
+    <Compile Include="GameHandlerObjects\PlayObjects\SideBars.cs" />
     <Compile Include="Management\FontManager.cs" />
     <Compile Include="Management\SoundManager.cs" />
     <Compile Include="Objects\TetrisObject.cs" />
@@ -59,7 +60,7 @@
     <Compile Include="Game1.cs" />
     <Compile Include="GameHandler.cs" />
     <Compile Include="Objects\GameObject.cs" />
-    <Compile Include="GameHandler.Classes\Play.cs" />
+    <Compile Include="GameHandlerObjects\Play.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Management\TextureManager.cs" />
