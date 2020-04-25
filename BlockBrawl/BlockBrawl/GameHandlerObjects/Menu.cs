@@ -16,27 +16,47 @@ namespace BlockBrawl
             settings,
             highscore,
         }
-        GameObject blockBrawlMenu, settingsMenu, playMenu;
+        GameObject blockBrawlMenu, settingsMenu, playMenu, highScoreMenu;
 
-        int menuObjectCount;
+        List<GameObject> menuObjs = new List<GameObject>();
         public Menu()
         {
-            blockBrawlMenu = new GameObject(AssignPos(TextureManager.menuBlockBrawl), TextureManager.menuBlockBrawl);
-            settingsMenu = new GameObject(AssignPos(TextureManager.menuSettings), TextureManager.menuSettings);
-            playMenu = new GameObject(AssignPos(TextureManager.menuPlay), TextureManager.menuPlay);
+            blockBrawlMenu = new GameObject(Vector2.Zero, TextureManager.menuBlockBrawl);
+            playMenu = new GameObject(Vector2.Zero, TextureManager.menuPlay);
+            settingsMenu = new GameObject(Vector2.Zero, TextureManager.menuSettings);
+            highScoreMenu = new GameObject(Vector2.Zero, TextureManager.menuHighScore);
+            menuObjs.Add(blockBrawlMenu); menuObjs.Add(playMenu); menuObjs.Add(settingsMenu); menuObjs.Add(highScoreMenu);
+            AssignPos();
         }
-        private Vector2 AssignPos(Texture2D tex)
+        private void AssignPos()
         {
-            menuObjectCount++;
-            float arbitraryObjectMargin = 60;
-            return new Vector2(SettingsManager.gameWidth / 2 - tex.Width / 2, SettingsManager.gameHeight / 2 - tex.Height + menuObjectCount * arbitraryObjectMargin);
+            float lengthOfPics = 0f;
+            float heightCount = 0f;
+            float arbitraryMargin = 25f;
+            for (int i = 0; i < menuObjs.Count; i++)
+            {
+                lengthOfPics += menuObjs[i].tex.Height;
+                lengthOfPics += arbitraryMargin;
+            }
+            for (int j = 0; j < menuObjs.Count; j++)
+            {
+                menuObjs[j].Pos = new Vector2(
+                    SettingsManager.gameWidth / 2 - menuObjs[j].tex.Width / 2,
+                    SettingsManager.gameHeight / 2
+                    - lengthOfPics / 2
+                    + heightCount
+                    );
+                heightCount += menuObjs[j].tex.Height;
+                heightCount += arbitraryMargin;
+            }
         }
         public void Update() { }
-        public void Draw(SpriteBatch sb) 
+        public void Draw(SpriteBatch sb)
         {
             blockBrawlMenu.Draw(sb);
-            settingsMenu.Draw(sb);
             playMenu.Draw(sb);
+            settingsMenu.Draw(sb);
+            highScoreMenu.Draw(sb);
         }
     }
 }

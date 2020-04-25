@@ -9,6 +9,7 @@ namespace BlockBrawl
         SpriteBatch spriteBatch;
         GraphicsDevice graphicsDevice;
         GameTime gameTime;
+        GraphicsDeviceManager graphicsDeviceManager;
 
         public enum GameState
         {
@@ -22,21 +23,23 @@ namespace BlockBrawl
         //Management
         Play play;
         Menu menu;
+        SettingsManager settings;
         public GameHandler(GraphicsDeviceManager graphicsDeviceManager, GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
-            //Construct stuff;                        
+            //Construct stuff;                      
+            this.graphicsDeviceManager = graphicsDeviceManager;
             this.graphicsDevice = graphicsDevice;
 
             new FontManager(contentManager);
             new TextureManager(contentManager);
-            new SettingsManager(graphicsDeviceManager);
 
+            settings = new SettingsManager(graphicsDeviceManager);
             spriteBatch = new SpriteBatch(graphicsDevice);
 
             //Management
             play = new Play(SettingsManager.gamePadVersion,
                 SettingsManager.tiles, SettingsManager.tileSize,
-                graphicsDeviceManager.PreferredBackBufferWidth,
+                SettingsManager.gameWidth, SettingsManager.gameHeight,
                 SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo,
                 SettingsManager.playerOneColor, SettingsManager.playerTwoColor);
             menu = new Menu();
@@ -45,6 +48,7 @@ namespace BlockBrawl
         }
         public void Update(GameTime gameTime)
         {
+            settings.Update();
             switch (currentGameState)
             {
                 case GameState.play:

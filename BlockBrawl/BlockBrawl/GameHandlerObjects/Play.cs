@@ -33,21 +33,19 @@ namespace BlockBrawl
         Z[] zArray;
 
         //Nextblock, will switch this array for spawn.
-        string[] nextBlock;
+        readonly string[] nextBlock;
 
         //Will be the stack of stopped blockes.
-        TetrisObject[,] stackedBlocks;
+        readonly TetrisObject[,] stackedBlocks;
 
         //Our own inputmanager, for the NES replicas used (other gamepads will work i think).
-        InputManager iM;
-
-        int playerOneIndex, playerTwoIndex;
-
-        float fallWaitTime, newSpeedCounter;
-
-        bool gamePadVersion;
-
-        SideBars sideBars;
+        readonly InputManager iM;
+        private readonly int playerOneIndex;
+        private readonly int playerTwoIndex;
+        private float fallWaitTime;
+        private readonly float newSpeedCounter;
+        readonly bool gamePadVersion;
+        readonly SideBars sideBars;
 
         enum PlayState
         {
@@ -58,7 +56,7 @@ namespace BlockBrawl
         }
         PlayState currentPlayState;
 
-        public Play(bool gamePadVersion, Point tiles, Vector2 tileSize, int gameWidth, int playerOneIndex, int playerTwoIndex, Texture2D playerOneColor, Texture2D playerTwoColor)
+        public Play(bool gamePadVersion, Point tiles, Vector2 tileSize, int gameWidth, int gameHeight, int playerOneIndex, int playerTwoIndex, Texture2D playerOneColor, Texture2D playerTwoColor)
         {
             this.tileSize = tileSize;
             this.playerOneIndex = playerOneIndex;
@@ -73,7 +71,7 @@ namespace BlockBrawl
             playerColors[playerTwoIndex] = playerTwoColor;//player 1 = playercolors[0], player 1 = playercolors[1], same with other arrays
 
             playfield = new GameObject[tiles.X, tiles.Y];
-            PopulatePlayfield(tiles.X, tiles.Y, tileSize, gameWidth);
+            PopulatePlayfield(tiles.X, tiles.Y, tileSize, gameWidth, gameHeight);
 
             iM = new InputManager(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
 
@@ -102,14 +100,20 @@ namespace BlockBrawl
 
             currentPlayState = PlayState.play;
         }
-        private void PopulatePlayfield(int tilesX, int tilesY, Vector2 tileSize, int gameWidth)//Get drawable textures and pos for the playfield
+        private void PopulatePlayfield(int tilesX, int tilesY, Vector2 tileSize, int gameWidth, int gameHeight)//Get drawable textures and pos for the playfield
         {
-            float startPointX = gameWidth / 2 - tilesX * tileSize.X / 2;
-            for (int i = 0; i < tilesX; i++)
+            for (int y = tilesY - 1; y >= 0; y--)
             {
-                for (int j = 0; j < tilesY; j++)
+                for (int x = tilesX - 1; x >= 0; x--)
                 {
-                    playfield[i, j] = new GameObject(new Vector2(startPointX + i * tileSize.X, j * tileSize.Y), TextureManager.transBlock);
+                    playfield[x, y] = new GameObject(new Vector2(
+                        ((tilesX * tileSize.X)
+                        + (-tilesX * tileSize.X + x * tileSize.X) - tileSize.X)
+                        + (gameWidth / 2)
+                        - (tilesX * tileSize.X / 2),
+                        gameHeight 
+                        + (-tilesY * tileSize.Y + y * tileSize.Y)//it works atm
+                        ), TextureManager.transBlock);
                 }
             }
         }
@@ -689,13 +693,13 @@ namespace BlockBrawl
                         score[playerTwoIndex] += RowScore(playerTwoIndex, y, cloneArray);
                         if (playerIndex == playerOneIndex)
                         {
-                            score[playerOneIndex] += RowScore(playerOneIndex, y, cloneArray);
-                            bonusRecieved[playerOneIndex, y] = RowScore(playerOneIndex, y, cloneArray);
+                            score[playerOneIndex] += RowScore(playerOneIndex, y, cloneArray) / 2;
+                            bonusRecieved[playerOneIndex, y] = RowScore(playerOneIndex, y, cloneArray) / 2;
                         }
                         else if (playerIndex == playerTwoIndex)
                         {
-                            score[playerTwoIndex] += RowScore(playerTwoIndex, y, cloneArray);
-                            bonusRecieved[playerTwoIndex, y] = RowScore(playerTwoIndex, y, cloneArray);
+                            score[playerTwoIndex] += RowScore(playerTwoIndex, y, cloneArray) / 2;
+                            bonusRecieved[playerTwoIndex, y] = RowScore(playerTwoIndex, y, cloneArray) / 2;
                         }
                     }
                 }
@@ -723,7 +727,7 @@ namespace BlockBrawl
             if (playfield[0, 0].Time > newSpeedCounter && fallWaitTime > 0.4f)
             {
                 fallWaitTime -= 0.1f;
-                newSpeedCounter = 0;
+                playfield[0, 0].Time = 0f;
             }
         }
         private void FallDownAddStack(int playerIndex)

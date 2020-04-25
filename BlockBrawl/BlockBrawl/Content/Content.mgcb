@@ -68,7 +68,7 @@
 /processorParam:TextureFormat=Color
 /build:lightgreenblock.png
 
-#begin Menu.Images/highscore.png
+#begin Menu.Images/blockbrawl1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -78,9 +78,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Menu.Images/highscore.png
+/build:Menu.Images/blockbrawl1.png
 
-#begin Menu.Images/Menyknapp.png
+#begin Menu.Images/highscore1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -90,9 +90,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Menu.Images/Menyknapp.png
+/build:Menu.Images/highscore1.png
 
-#begin Menu.Images/Playknapp.png
+#begin Menu.Images/play1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -102,9 +102,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Menu.Images/Playknapp.png
+/build:Menu.Images/play1.png
 
-#begin Menu.Images/SettingsKnapp.png
+#begin Menu.Images/settings1.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -114,7 +114,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Menu.Images/SettingsKnapp.png
+/build:Menu.Images/settings1.png
 
 #begin MenuFont.spritefont
 /importer:FontDescriptionImporter

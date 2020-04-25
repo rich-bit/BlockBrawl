@@ -143,7 +143,7 @@ C:\Users\Elliot\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\obj\Debug\Bloc
 C:\Users\Elliot\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\obj\Debug\BlockBrawl.exe
 C:\Users\Elliot\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\obj\Debug\BlockBrawl.pdb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\neonText.xnb
-C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\highscore.xnb
-C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\Menyknapp.xnb
-C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\Playknapp.xnb
-C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\SettingsKnapp.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\highscore1.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\play1.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\settings1.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\blockbrawl1.xnb
