@@ -147,3 +147,6 @@ C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\play1.xnb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\settings1.xnb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\blockbrawl1.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\qteblock.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\qteColor.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\qtedottedblock.xnb

@@ -32,6 +32,8 @@ namespace BlockBrawl
         S[] sArray;
         Z[] zArray;
 
+        QTE qte;
+
         //Nextblock, will switch this array for spawn.
         readonly string[] nextBlock;
 
@@ -93,12 +95,14 @@ namespace BlockBrawl
             sArray = new S[2];
             zArray = new Z[2];
 
+            qte = new QTE();
+
             sideBars = new SideBars(playerColors);
 
             score = new int[2];
             bonusRecieved = new int[2, stackedBlocks.GetLength(1)];
 
-            currentPlayState = PlayState.play;
+            currentPlayState = PlayState.qte;
         }
         private void PopulatePlayfield(int tilesX, int tilesY, Vector2 tileSize, int gameWidth, int gameHeight)//Get drawable textures and pos for the playfield
         {
@@ -152,6 +156,7 @@ namespace BlockBrawl
                 case PlayState.gameover:
                     break;
                 case PlayState.qte:
+                    qte.Update(gameTime, iM);
                     break;
             }
         }
@@ -1620,6 +1625,7 @@ namespace BlockBrawl
                     spriteBatch.DrawString(FontManager.MenuText, "GameOver!", Vector2.Zero, Color.IndianRed);
                     break;
                 case PlayState.qte:
+                    qte.Draw(spriteBatch);
                     break;
             }
         }
