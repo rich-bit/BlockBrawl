@@ -9,8 +9,8 @@ namespace BlockBrawl
         SpriteBatch spriteBatch;
         GraphicsDevice graphicsDevice;
         GameTime gameTime;
-        GraphicsDeviceManager graphicsDeviceManager;
-
+        InputManager iM;
+        SettingsManager settings;
         public enum GameState
         {
             play,
@@ -23,20 +23,18 @@ namespace BlockBrawl
         //Management
         Play play;
         Menu menu;
-        SettingsManager settings;
-        public GameHandler(GraphicsDeviceManager graphicsDeviceManager, GraphicsDevice graphicsDevice, ContentManager contentManager)
+        public GameHandler(GraphicsDeviceManager graphicsDeviceManager, GraphicsDevice graphicsDevice, ContentManager contentManager,
+            bool fullscreen, int gameWidth, int gameHeight)
         {
             //Construct stuff;                      
-            this.graphicsDeviceManager = graphicsDeviceManager;
             this.graphicsDevice = graphicsDevice;
 
             new FontManager(contentManager);
             new TextureManager(contentManager);
-
-            settings = new SettingsManager(graphicsDeviceManager);
+            settings = new SettingsManager(graphicsDeviceManager, gameWidth, gameHeight, fullscreen);
             spriteBatch = new SpriteBatch(graphicsDevice);
+            iM = new InputManager(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
 
-            //Management
             play = new Play(SettingsManager.gamePadVersion,
                 SettingsManager.tiles, SettingsManager.tileSize,
                 SettingsManager.gameWidth, SettingsManager.gameHeight,
@@ -48,11 +46,11 @@ namespace BlockBrawl
         }
         public void Update(GameTime gameTime)
         {
-            settings.Update();
+            iM.Update();
             switch (currentGameState)
             {
                 case GameState.play:
-                    play.Update(gameTime);
+                    play.Update(gameTime, iM);
                     break;
                 case GameState.settings:
                     break;

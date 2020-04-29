@@ -19,12 +19,18 @@
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/newround.spritefont</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/orangeblock.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/purpleblock.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/qteblock.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/qteColor.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/qtedottedblock.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/scoreText.spritefont</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/transparentblock.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/whiteblock.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/yellowblock.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

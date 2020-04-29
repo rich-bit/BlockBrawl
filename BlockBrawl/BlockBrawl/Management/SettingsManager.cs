@@ -1,34 +1,30 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using System;
 namespace BlockBrawl
 {
     class SettingsManager
     {
-        GraphicsDeviceManager graphicsDeviceManager;
-        InputManager iM;
-        public static Point windowSize;
+        //GraphicsDeviceManager graphicsDeviceManager;
         public static Vector2 tileSize;
         public static float speed, fallTime, newSpeedCounter;
         public static Texture2D playerOneColor, playerTwoColor;
         public static string playerOneName, playerTwoName;
-        public static int playerIndexOne, playerIndexTwo, gameWidth, gameHeight;
+        public static int playerIndexOne, playerIndexTwo;
+        public static int gameWidth, gameHeight;
         public static bool gamePadVersion;
         public static Point tiles;
-        public SettingsManager(GraphicsDeviceManager graphicsDeviceManager)
+        public SettingsManager(GraphicsDeviceManager graphicsDeviceManager, int setGameWidth, int setGameHeight, bool fulllscreen)
         {
-            this.graphicsDeviceManager = graphicsDeviceManager;
-            graphicsDeviceManager.PreferredBackBufferWidth = 1920;
-            graphicsDeviceManager.PreferredBackBufferHeight = 1080;
-            graphicsDeviceManager.IsFullScreen = true;
+            gameWidth = setGameWidth;
+            gameHeight = setGameHeight;
+            graphicsDeviceManager.PreferredBackBufferWidth = gameWidth;
+            graphicsDeviceManager.PreferredBackBufferHeight = gameHeight;
+
+            graphicsDeviceManager.HardwareModeSwitch = false;
+            graphicsDeviceManager.IsFullScreen = fulllscreen;
             graphicsDeviceManager.ApplyChanges();
-
-            gameWidth = graphicsDeviceManager.PreferredBackBufferWidth;
-            gameHeight = graphicsDeviceManager.PreferredBackBufferHeight;
-
-            windowSize.X = graphicsDeviceManager.PreferredBackBufferWidth;
-            windowSize.Y = graphicsDeviceManager.PreferredBackBufferHeight;
 
             speed = tileSize.X;
             fallTime = 1.3f;
@@ -41,28 +37,11 @@ namespace BlockBrawl
 
             playerIndexOne = 0;
             playerIndexTwo = 1;
-            iM = new InputManager(playerIndexOne, playerIndexTwo);
-            tileSize = new Vector2(TextureManager.transBlock.Width, TextureManager.transBlock.Height);
-            tiles = new Point(20, graphicsDeviceManager.PreferredBackBufferHeight / TextureManager.transBlock.Height);
+            tileSize = new Vector2(60, 60);//Note
+            tiles = new Point(20, gameHeight / 60);
 
             playerOneName = "Player One";
             playerTwoName = "Player Two";
-        }
-        public void Update()
-        {
-            iM.Update();
-            ToggleFullscreen();
-        }
-        public void ToggleFullscreen()
-        {
-            if (iM.JustPressed(Buttons.Back, playerIndexOne) || iM.JustPressed(Buttons.Back, playerIndexTwo))
-            {
-                graphicsDeviceManager.ToggleFullScreen();
-            }
-            if (iM.JustPressed(Keys.F4))
-            {
-                graphicsDeviceManager.ToggleFullScreen();
-            }
         }
     }
 }

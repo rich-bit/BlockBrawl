@@ -6,7 +6,7 @@ namespace BlockBrawl
     class TextureManager
     {
         public static Texture2D blueBlock, lightblueBlock, lightgreenBlock, orangeBlock, purpleBlock, whiteBlock, yellowBlock, emptyBlock, transBlock,
-            menuPlay, menuSettings, menuHighScore, menuBlockBrawl;
+            menuPlay, menuSettings, menuHighScore, menuBlockBrawl, qteColor, qteDotted;
 
         public TextureManager(ContentManager content)
         {
@@ -23,6 +23,8 @@ namespace BlockBrawl
             menuSettings = content.Load<Texture2D>(@"Menu.Images/settings1");
             menuHighScore = content.Load<Texture2D>(@"Menu.Images/highscore1");
             menuBlockBrawl = content.Load<Texture2D>(@"Menu.Images/blockbrawl1");
+            qteColor = content.Load<Texture2D>(@"qteblock");
+            qteDotted = content.Load<Texture2D>(@"qtedottedblock");
         }
     }
 }
