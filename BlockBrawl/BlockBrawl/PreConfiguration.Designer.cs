@@ -108,6 +108,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Navy;
             this.ClientSize = new System.Drawing.Size(269, 153);
+            this.ControlBox = false;
             this.Controls.Add(this.runGamebtn);
             this.Controls.Add(this.dontShowAgainlbl);
             this.Controls.Add(this.fullscreenchk);

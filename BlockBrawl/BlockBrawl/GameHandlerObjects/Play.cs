@@ -98,7 +98,7 @@ namespace BlockBrawl
             score = new int[2];
             bonusRecieved = new int[2, stackedBlocks.GetLength(1)];
 
-            currentPlayState = PlayState.play;
+            currentPlayState = PlayState.qte;
         }
         private void PopulatePlayfield(int tilesX, int tilesY, Vector2 tileSize, int gameWidth, int gameHeight)//Get drawable textures and pos for the playfield
         {
@@ -151,8 +151,9 @@ namespace BlockBrawl
                 case PlayState.gameover:
                     break;
                 case PlayState.qte:
-                    qte.Update(gameTime, iM, playerOneIndex, gamePadVersion);
-                    qte.Update(gameTime, iM, playerTwoIndex, gamePadVersion);
+                    qte.Status(gameTime);
+                    qte.Update(iM, playerOneIndex, gamePadVersion);
+                    qte.Update(iM, playerTwoIndex, gamePadVersion);
                     break;
             }
         }

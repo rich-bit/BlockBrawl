@@ -8,7 +8,7 @@ namespace BlockBrawl
     {
         SpriteBatch spriteBatch;
         GraphicsDevice graphicsDevice;
-        GameTime gameTime;
+        //GameTime gameTime;
         InputManager iM;
         SettingsManager settings;
         public enum GameState
@@ -62,7 +62,7 @@ namespace BlockBrawl
                     menu.Update();
                     break;
             }
-            this.gameTime = gameTime;
+           // this.gameTime = gameTime;
         }
         public void Draw()
         {
