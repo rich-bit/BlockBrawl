@@ -33,7 +33,7 @@ namespace BlockBrawl
             playerOneColor = TextureManager.whiteBlock;
             playerTwoColor = TextureManager.purpleBlock;
 
-            gamePadVersion = true;
+            gamePadVersion = false;
 
             playerIndexOne = 0;
             playerIndexTwo = 1;

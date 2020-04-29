@@ -22,10 +22,14 @@ namespace BlockBrawl
         Vector2 tileSizeQTE, gameBoundaries;
         string playerOneName, playerTwoName;
         int playerOneIndex, playerTwoIndex;
+        float timeLeft;
+        bool Cleared { get; set; }
+        int Winner { get; set; }
         public int WinnerIndex { get; }
-        //bool cleared;
         public QTE()
         {
+            timeLeft = 5;
+
             playerOneName = SettingsManager.playerOneName;
             playerTwoName = SettingsManager.playerTwoName;
 
@@ -54,8 +58,8 @@ namespace BlockBrawl
                             new J(TextureManager.transBlock, Vector2.Zero).jMatrix.GetLength(1) * tileSizeQTE.X
                             ), count)
                             );
-                        j = new J(TextureManager.qteColor, jDotted.jMatrix[0,0].Pos + randomOffset);
-                        for(int i = 0; i < rotateFewTiles; i++)
+                        j = new J(TextureManager.qteColor, jDotted.jMatrix[0, 0].Pos + randomOffset);
+                        for (int i = 0; i < rotateFewTiles; i++)
                         {
                             j.Rotate(true);
                         }
@@ -157,7 +161,7 @@ namespace BlockBrawl
             float playerIndexCorrection = gameBoundaries.X / 4;
             float x = gameBoundaries.X / 2;
             float y = gameBoundaries.Y / 2;
-            if(playerIndex == 0)
+            if (playerIndex == 0)
             {
                 x += playerIndexCorrection;
             }
@@ -174,29 +178,243 @@ namespace BlockBrawl
         private Vector2 RandomOffset(int maxOffset)
         {
             int offsetX = rnd.Next(1, maxOffset + 1);
-            if(rnd.Next(2) == 0)
+            if (rnd.Next(2) == 0)
             {
                 offsetX *= -1;
             }
             int offsetY = rnd.Next(1, maxOffset + 1);
-            if(rnd.Next(2) == 0)
+            if (rnd.Next(2) == 0)
             {
                 offsetY *= -1;
             }
             return new Vector2(offsetX * tileSizeQTE.X, offsetY * tileSizeQTE.Y);
         }
-        public void Update(GameTime gameTime, InputManager iM, int playerIndex, bool gamePad)
+        public void Status(GameTime gameTime)
         {
+            if (timeLeft >= 0f)
+            {
+                timeLeft -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else
+            {
+                Cleared = true;
+            }
+        }
+        public void Update(InputManager iM, int playerIndex, bool gamePad)
+        {
+
             if (gamePad && playerBlocks[playerIndex] != null)
             {
                 CheckGamePadInputs(playerIndex, iM);
             }
             else
             {
-                if (iM.JustPressed(Keys.Space))
-                {
+                CheckKeyboardInput(playerIndex, iM);
+            }
+        }
+        private void CheckKeyboardInput(int playerIndex, InputManager iM)
+        {
+            Keys up = Keys.W;
+            Keys left = Keys.A;
+            Keys down = Keys.S;
+            Keys right = Keys.D;
+            Keys rotateCW = Keys.Space;
+            Keys rotateCC = Keys.LeftShift;
 
-                }
+            if (playerIndex == playerTwoIndex)
+            {
+                up = Keys.Up;
+                left = Keys.Left;
+                down = Keys.Down;
+                right = Keys.Right;
+                rotateCW = Keys.NumPad0;
+                rotateCC = Keys.Enter;
+            }
+
+            switch (playerBlocks[playerIndex])
+            {
+                case "J":
+                    if (iM.JustPressed(rotateCW))
+                    {
+                        j.Rotate(true);
+                    }
+                    if (iM.JustPressed(rotateCC))
+                    {
+                        j.Rotate(false);
+                    }
+                    if (iM.JustPressed(up))
+                    {
+                        j.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(down))
+                    {
+                        j.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(left))
+                    {
+                        j.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(right))
+                    {
+                        j.Move(tileSizeQTE.X);
+                    }
+                    break;
+                case "I":
+                    if (iM.JustPressed(rotateCW))
+                    {
+                        i.Rotate(true);
+                    }
+                    if (iM.JustPressed(rotateCC))
+                    {
+                        i.Rotate(false);
+                    }
+                    if (iM.JustPressed(up))
+                    {
+                        i.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(down))
+                    {
+                        i.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(left))
+                    {
+                        i.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(right))
+                    {
+                        i.Move(tileSizeQTE.X);
+                    }
+                    break;
+                case "T":
+                    if (iM.JustPressed(rotateCW))
+                    {
+                        t.Rotate(true);
+                    }
+                    if (iM.JustPressed(rotateCC))
+                    {
+                        t.Rotate(false);
+                    }
+                    if (iM.JustPressed(up))
+                    {
+                        t.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(down))
+                    {
+                        t.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(left))
+                    {
+                        t.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(right))
+                    {
+                        t.Move(tileSizeQTE.X);
+                    }
+                    break;
+                case "O":
+                    if (iM.JustPressed(rotateCW))
+                    {
+                        o.Rotate(true);
+                    }
+                    if (iM.JustPressed(rotateCC))
+                    {
+                        o.Rotate(false);
+                    }
+                    if (iM.JustPressed(up))
+                    {
+                        o.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(down))
+                    {
+                        o.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(left))
+                    {
+                        o.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(right))
+                    {
+                        o.Move(tileSizeQTE.X);
+                    }
+                    break;
+                case "L":
+                    if (iM.JustPressed(rotateCW))
+                    {
+                        l.Rotate(true);
+                    }
+                    if (iM.JustPressed(rotateCC))
+                    {
+                        l.Rotate(false);
+                    }
+                    if (iM.JustPressed(up))
+                    {
+                        l.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(down))
+                    {
+                        l.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(left))
+                    {
+                        l.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(right))
+                    {
+                        l.Move(tileSizeQTE.X);
+                    }
+                    break;
+                case "S":
+                    if (iM.JustPressed(rotateCW))
+                    {
+                        s.Rotate(true);
+                    }
+                    if (iM.JustPressed(rotateCC))
+                    {
+                        s.Rotate(false);
+                    }
+                    if (iM.JustPressed(up))
+                    {
+                        s.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(down))
+                    {
+                        s.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(left))
+                    {
+                        s.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(right))
+                    {
+                        s.Move(tileSizeQTE.X);
+                    }
+                    break;
+                case "Z":
+                    if (iM.JustPressed(rotateCW))
+                    {
+                        z.Rotate(true);
+                    }
+                    if (iM.JustPressed(rotateCC))
+                    {
+                        z.Rotate(false);
+                    }
+                    if (iM.JustPressed(up))
+                    {
+                        z.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(down))
+                    {
+                        z.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(left))
+                    {
+                        z.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(right))
+                    {
+                        z.Move(tileSizeQTE.X);
+                    }
+                    break;
             }
         }
         private void CheckGamePadInputs(int playerIndex, InputManager iM)
@@ -408,6 +626,25 @@ namespace BlockBrawl
             string randomString = randomStrings[rnd.Next(randomStrings.Count)];
             return randomString;
         }
+        private Vector2 TextPosition(Vector2 gameBoundaries, SpriteFont spriteFont, string text)
+        {
+            float x = gameBoundaries.X / 2;
+            float margin = tileSizeQTE.Y;
+            float y = 0 + margin;
+
+            x -= spriteFont.MeasureString(text).X / 2;
+
+            return new Vector2(x, y);
+        }
+        private Vector2 TextPosition(Vector2 gameBoundaries, SpriteFont spriteFont, string text, float margin)
+        {
+            float x = gameBoundaries.X / 2;
+            float y = 0 + margin;
+
+            x -= spriteFont.MeasureString(text).X / 2;
+
+            return new Vector2(x, y);
+        }
         private Vector2 TextPosition(int playerIndex, Vector2 gameBoundaries, SpriteFont spriteFont, string text)
         {
             float playerIndexCorrection = gameBoundaries.X / 4;
@@ -465,16 +702,28 @@ namespace BlockBrawl
                 oDotted.Draw(spritebatch);
                 o.Draw(spritebatch);
             }
-            spritebatch.DrawString(FontManager.MenuText, playerOneName, 
+            spritebatch.DrawString(FontManager.MenuText, playerOneName,
                 TextPosition(
                 playerOneIndex, gameBoundaries, FontManager.MenuText, playerOneName
-                ), 
+                ),
                 Color.Red);
+            spritebatch.DrawString(FontManager.MenuText, "VS",
+            TextPosition(
+            gameBoundaries, FontManager.MenuText, "VS"
+                ),
+            Color.Red);
             spritebatch.DrawString(FontManager.MenuText, playerTwoName,
                 TextPosition(
                 playerTwoIndex, gameBoundaries, FontManager.MenuText, playerTwoName
                 ),
                 Color.Red);
+            spritebatch.DrawString(FontManager.MenuText, "Time Left " + Convert.ToInt32(timeLeft).ToString(),
+            TextPosition(
+                gameBoundaries,
+                FontManager.MenuText, "Time Left " + Convert.ToInt32(timeLeft).ToString(),
+                SettingsManager.gameHeight / 2
+                ),
+            Color.Red);
         }
     }
 }
