@@ -40,8 +40,6 @@ namespace BlockBrawl
         //Will be the stack of stopped blockes.
         readonly TetrisObject[,] stackedBlocks;
 
-        //Our own inputmanager, for the NES replicas used (other gamepads will work i think).
-        readonly InputManager iM;
         private readonly int playerOneIndex;
         private readonly int playerTwoIndex;
         private float fallWaitTime;
@@ -75,8 +73,6 @@ namespace BlockBrawl
             playfield = new GameObject[tiles.X, tiles.Y];
             PopulatePlayfield(tiles.X, tiles.Y, tileSize, gameWidth, gameHeight);
 
-            iM = new InputManager(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
-
             nextBlock = new string[2];
             nextBlock[playerOneIndex] = RandomBlock();
             nextBlock[playerTwoIndex] = RandomBlock();
@@ -102,7 +98,7 @@ namespace BlockBrawl
             score = new int[2];
             bonusRecieved = new int[2, stackedBlocks.GetLength(1)];
 
-            currentPlayState = PlayState.qte;
+            currentPlayState = PlayState.play;
         }
         private void PopulatePlayfield(int tilesX, int tilesY, Vector2 tileSize, int gameWidth, int gameHeight)//Get drawable textures and pos for the playfield
         {
@@ -121,10 +117,9 @@ namespace BlockBrawl
                 }
             }
         }
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, InputManager iM)
         {
             this.gameTime = gameTime;
-            iM.Update();
             switch (currentPlayState)
             {
                 case PlayState.play:
@@ -134,13 +129,13 @@ namespace BlockBrawl
                     sideBars.Update(score, bonusRecieved, nextBlock);
                     if (gamePadVersion)
                     {
-                        GamePadSteering(gameTime, playerOneIndex);
-                        GamePadSteering(gameTime, playerTwoIndex);
+                        GamePadSteering(gameTime, playerOneIndex, iM);
+                        GamePadSteering(gameTime, playerTwoIndex, iM);
                     }
                     else
                     {
-                        KeyboardSteering(playerOneIndex);
-                        KeyboardSteering(playerTwoIndex);
+                        KeyboardSteering(playerOneIndex, iM);
+                        KeyboardSteering(playerTwoIndex, iM);
                     }
                     FallDownAddStack(playerOneIndex);
                     FallDownAddStack(playerTwoIndex);
@@ -156,7 +151,8 @@ namespace BlockBrawl
                 case PlayState.gameover:
                     break;
                 case PlayState.qte:
-                    qte.Update(gameTime, iM);
+                    qte.Update(gameTime, iM, playerOneIndex, gamePadVersion);
+                    qte.Update(gameTime, iM, playerTwoIndex, gamePadVersion);
                     break;
             }
         }
@@ -847,7 +843,7 @@ namespace BlockBrawl
 
 
         }
-        private void KeyboardSteering(int playerIndex)
+        private void KeyboardSteering(int playerIndex, InputManager iM)
         {
             Keys rotateClockWise = Keys.NumPad0;
             Keys rotateCounterClockWise = Keys.Enter;
@@ -1224,7 +1220,7 @@ namespace BlockBrawl
                 }
             }
         }
-        private void GamePadSteering(GameTime gameTime, int playerIndex)//unfortunately not a very practical/nice method but it works ( we will se what can be done later about this )
+        private void GamePadSteering(GameTime gameTime, int playerIndex, InputManager iM)//unfortunately not a very practical/nice method but it works ( we will se what can be done later about this )
         {
             if (jArray[playerIndex] != null)
             {

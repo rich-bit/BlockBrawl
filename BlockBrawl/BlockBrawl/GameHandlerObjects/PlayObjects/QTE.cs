@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using BlockBrawl.Blocks;
-using BlockBrawl.Objects;
 
 
 namespace BlockBrawl
@@ -21,53 +18,418 @@ namespace BlockBrawl
         O o, oDotted;
         T t, tDotted;
         Random rnd = new Random();
+        string[] playerBlocks;
+        Vector2 tileSizeQTE, gameBoundaries;
+        string playerOneName, playerTwoName;
+        int playerOneIndex, playerTwoIndex;
+        public int WinnerIndex { get; }
+        //bool cleared;
         public QTE()
         {
-            switch (SpawnRandomBlock())
+            playerOneName = SettingsManager.playerOneName;
+            playerTwoName = SettingsManager.playerTwoName;
+
+            playerOneIndex = SettingsManager.playerIndexOne;
+            playerTwoIndex = SettingsManager.playerIndexTwo;
+
+            gameBoundaries = new Vector2(SettingsManager.gameWidth, SettingsManager.gameHeight);
+            tileSizeQTE = new Vector2(TextureManager.qteColor.Width, TextureManager.qteColor.Height);
+            Vector2 randomOffset = RandomOffset(3);
+            int count = 0;
+            int rotateFewTiles = rnd.Next(1, 6);
+            playerBlocks = new string[2];
+            string oldString = null;
+
+            do
+            {
+                string myString = SpawnRandomBlock(oldString);
+                switch (myString)
+                {
+                    case "J":
+                        jDotted = new J(TextureManager.qteDotted,
+                            GetMiddlePosition(
+                            gameBoundaries,
+                            new Vector2(
+                            new J(TextureManager.transBlock, Vector2.Zero).jMatrix.GetLength(0) * tileSizeQTE.X,
+                            new J(TextureManager.transBlock, Vector2.Zero).jMatrix.GetLength(1) * tileSizeQTE.X
+                            ), count)
+                            );
+                        j = new J(TextureManager.qteColor, jDotted.jMatrix[0,0].Pos + randomOffset);
+                        for(int i = 0; i < rotateFewTiles; i++)
+                        {
+                            j.Rotate(true);
+                        }
+                        break;
+                    case "I":
+                        iDotted = new I(TextureManager.qteDotted,
+                            GetMiddlePosition(
+                            gameBoundaries,
+                            new Vector2(
+                            new I(TextureManager.transBlock, Vector2.Zero).iMatrix.GetLength(0) * tileSizeQTE.X,
+                            new I(TextureManager.transBlock, Vector2.Zero).iMatrix.GetLength(1) * tileSizeQTE.X
+                            ), count)
+                            );
+                        i = new I(TextureManager.qteColor, iDotted.iMatrix[0, 0].Pos + randomOffset);
+                        for (int j = 0; j < rotateFewTiles; j++)
+                        {
+                            i.Rotate(true);
+                        }
+                        break;
+                    case "T":
+                        tDotted = new T(TextureManager.qteDotted,
+                            GetMiddlePosition(
+                            gameBoundaries,
+                            new Vector2(
+                            new T(TextureManager.transBlock, Vector2.Zero).tMatrix.GetLength(0) * tileSizeQTE.X,
+                            new T(TextureManager.transBlock, Vector2.Zero).tMatrix.GetLength(1) * tileSizeQTE.X
+                            ), count)
+                            );
+                        t = new T(TextureManager.qteColor, tDotted.tMatrix[0, 0].Pos + randomOffset);
+                        for (int i = 0; i < rotateFewTiles; i++)
+                        {
+                            t.Rotate(true);
+                        }
+                        break;
+                    case "O":
+                        oDotted = new O(TextureManager.qteDotted,
+                            GetMiddlePosition(
+                            gameBoundaries,
+                            new Vector2(
+                            new O(TextureManager.transBlock, Vector2.Zero).oMatrix.GetLength(0) * tileSizeQTE.X,
+                            new O(TextureManager.transBlock, Vector2.Zero).oMatrix.GetLength(1) * tileSizeQTE.X
+                            ), count)
+                            );
+                        o = new O(TextureManager.qteColor, oDotted.oMatrix[0, 0].Pos + randomOffset);
+                        for (int i = 0; i < rotateFewTiles; i++)
+                        {
+                            o.Rotate(true);
+                        }
+                        break;
+                    case "L":
+                        lDotted = new L(TextureManager.qteDotted,
+                            GetMiddlePosition(
+                            gameBoundaries,
+                            new Vector2(
+                            new L(TextureManager.transBlock, Vector2.Zero).lMatrix.GetLength(0) * tileSizeQTE.X,
+                            new L(TextureManager.transBlock, Vector2.Zero).lMatrix.GetLength(1) * tileSizeQTE.X
+                            ), count)
+                            );
+                        l = new L(TextureManager.qteColor, lDotted.lMatrix[0, 0].Pos + randomOffset);
+                        for (int i = 0; i < rotateFewTiles; i++)
+                        {
+                            l.Rotate(true);
+                        }
+                        break;
+                    case "S":
+                        sDotted = new S(TextureManager.qteDotted,
+                            GetMiddlePosition(
+                            gameBoundaries,
+                            new Vector2(
+                            new S(TextureManager.transBlock, Vector2.Zero).sMatrix.GetLength(0) * tileSizeQTE.X,
+                            new S(TextureManager.transBlock, Vector2.Zero).sMatrix.GetLength(1) * tileSizeQTE.X
+                            ), count)
+                            );
+                        s = new S(TextureManager.qteColor, sDotted.sMatrix[0, 0].Pos + randomOffset);
+                        for (int i = 0; i < rotateFewTiles; i++)
+                        {
+                            s.Rotate(true);
+                        }
+                        break;
+                    case "Z":
+                        zDotted = new Z(TextureManager.qteDotted,
+                            GetMiddlePosition(
+                            gameBoundaries,
+                            new Vector2(
+                            new Z(TextureManager.transBlock, Vector2.Zero).zMatrix.GetLength(0) * tileSizeQTE.X,
+                            new Z(TextureManager.transBlock, Vector2.Zero).zMatrix.GetLength(1) * tileSizeQTE.X
+                            ), count)
+                            );
+                        z = new Z(TextureManager.qteColor, zDotted.zMatrix[0, 0].Pos + randomOffset);
+                        break;
+                }
+                playerBlocks[count] = myString;
+                count++;
+                oldString = myString;
+            } while (count < 2);
+        }
+        private Vector2 GetMiddlePosition(Vector2 gameBoundaries, Vector2 lenght, int playerIndex)
+        {
+            float playerIndexCorrection = gameBoundaries.X / 4;
+            float x = gameBoundaries.X / 2;
+            float y = gameBoundaries.Y / 2;
+            if(playerIndex == 0)
+            {
+                x += playerIndexCorrection;
+            }
+            else
+            {
+                x -= playerIndexCorrection;
+            }
+
+            x -= lenght.X / 2;
+            y -= lenght.Y / 2;
+
+            return new Vector2(x, y);
+        }
+        private Vector2 RandomOffset(int maxOffset)
+        {
+            int offsetX = rnd.Next(1, maxOffset + 1);
+            if(rnd.Next(2) == 0)
+            {
+                offsetX *= -1;
+            }
+            int offsetY = rnd.Next(1, maxOffset + 1);
+            if(rnd.Next(2) == 0)
+            {
+                offsetY *= -1;
+            }
+            return new Vector2(offsetX * tileSizeQTE.X, offsetY * tileSizeQTE.Y);
+        }
+        public void Update(GameTime gameTime, InputManager iM, int playerIndex, bool gamePad)
+        {
+            if (gamePad && playerBlocks[playerIndex] != null)
+            {
+                CheckGamePadInputs(playerIndex, iM);
+            }
+            else
+            {
+                if (iM.JustPressed(Keys.Space))
+                {
+
+                }
+            }
+        }
+        private void CheckGamePadInputs(int playerIndex, InputManager iM)
+        {
+            switch (playerBlocks[playerIndex])
             {
                 case "J":
-                    j = new J(TextureManager.qteColor, Vector2.Zero);
-                    jDotted = new J(TextureManager.qteDotted, j.jMatrix[rnd.Next(j.jMatrix.GetLength(0)), rnd.Next(j.jMatrix.GetLength(1))].Pos);
+                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    {
+                        j.Rotate(true);
+                    }
+                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    {
+                        j.Rotate(false);
+                    }
+                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    {
+                        j.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    {
+                        j.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    {
+                        j.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    {
+                        j.Move(tileSizeQTE.X);
+                    }
                     break;
                 case "I":
-                    i = new I(TextureManager.qteColor, Vector2.Zero);
-                    iDotted = new I(TextureManager.qteDotted, i.iMatrix[rnd.Next(i.iMatrix.GetLength(0)), rnd.Next(i.iMatrix.GetLength(1))].Pos);
+                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    {
+                        i.Rotate(true);
+                    }
+                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    {
+                        i.Rotate(false);
+                    }
+                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    {
+                        i.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    {
+                        i.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    {
+                        i.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    {
+                        i.Move(tileSizeQTE.X);
+                    }
                     break;
                 case "T":
-                    t = new T(TextureManager.qteColor, Vector2.Zero);
-                    tDotted = new T(TextureManager.qteDotted, t.tMatrix[rnd.Next(t.tMatrix.GetLength(0)), rnd.Next(t.tMatrix.GetLength(1))].Pos);
+                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    {
+                        t.Rotate(true);
+                    }
+                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    {
+                        t.Rotate(false);
+                    }
+                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    {
+                        t.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    {
+                        t.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    {
+                        t.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    {
+                        t.Move(tileSizeQTE.X);
+                    }
                     break;
                 case "O":
-                    o = new O(TextureManager.qteColor, Vector2.Zero);
-                    oDotted = new O(TextureManager.qteDotted, o.oMatrix[rnd.Next(o.oMatrix.GetLength(0)), rnd.Next(o.oMatrix.GetLength(1))].Pos);
+                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    {
+                        o.Rotate(true);
+                    }
+                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    {
+                        o.Rotate(false);
+                    }
+                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    {
+                        o.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    {
+                        o.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    {
+                        o.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    {
+                        o.Move(tileSizeQTE.X);
+                    }
                     break;
                 case "L":
-                    l = new L(TextureManager.qteColor, Vector2.Zero);
-                    lDotted = new L(TextureManager.qteDotted, l.lMatrix[rnd.Next(l.lMatrix.GetLength(0)), rnd.Next(l.lMatrix.GetLength(1))].Pos);
+                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    {
+                        l.Rotate(true);
+                    }
+                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    {
+                        l.Rotate(false);
+                    }
+                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    {
+                        l.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    {
+                        l.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    {
+                        l.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    {
+                        l.Move(tileSizeQTE.X);
+                    }
                     break;
                 case "S":
-                    s = new S(TextureManager.qteColor, Vector2.Zero);
-                    sDotted = new S(TextureManager.qteDotted, s.sMatrix[rnd.Next(s.sMatrix.GetLength(0)), rnd.Next(s.sMatrix.GetLength(1))].Pos);
+                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    {
+                        s.Rotate(true);
+                    }
+                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    {
+                        s.Rotate(false);
+                    }
+                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    {
+                        s.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    {
+                        s.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    {
+                        s.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    {
+                        s.Move(tileSizeQTE.X);
+                    }
                     break;
                 case "Z":
-                    z = new Z(TextureManager.qteColor, Vector2.Zero);
-                    zDotted = new Z(TextureManager.qteDotted, z.zMatrix[rnd.Next(z.zMatrix.GetLength(0)), rnd.Next(z.zMatrix.GetLength(1))].Pos);
+                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    {
+                        z.Rotate(true);
+                    }
+                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    {
+                        z.Rotate(false);
+                    }
+                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    {
+                        z.Fall(-tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    {
+                        z.Fall(tileSizeQTE.Y);
+                    }
+                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    {
+                        z.Move(-tileSizeQTE.X);
+                    }
+                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    {
+                        z.Move(tileSizeQTE.X);
+                    }
                     break;
             }
         }
-        public void Update(GameTime gameTime, InputManager im)
-        {
-
-        }
-        public string SpawnRandomBlock()
+        public string SpawnRandomBlock(string lastRandom)
         {
             Random rnd = new Random();
-            string[] feedRandomMachine = new string[] { "J", "I", "T", "O", "L", "S", "Z" };
-            return feedRandomMachine[rnd.Next(0, feedRandomMachine.Length)];
+            List<string> randomStrings = new List<string>
+            {
+                "J",
+                "I",
+                "T",
+                "O",
+                "L",
+                "S",
+                "Z"
+            };
+            if (lastRandom != null)
+            {
+                randomStrings.Remove(lastRandom);
+                randomStrings.Sort();
+            }
+            string randomString = randomStrings[rnd.Next(randomStrings.Count)];
+            return randomString;
+        }
+        private Vector2 TextPosition(int playerIndex, Vector2 gameBoundaries, SpriteFont spriteFont, string text)
+        {
+            float playerIndexCorrection = gameBoundaries.X / 4;
+            float x = gameBoundaries.X / 2;
+            float margin = tileSizeQTE.Y;
+            float y = 0 + margin;
+            if (playerIndex == 0)
+            {
+                x -= playerIndexCorrection;
+            }
+            else
+            {
+                x += playerIndexCorrection;
+            }
+
+            x -= spriteFont.MeasureString(text).X / 2;
+
+            return new Vector2(x, y);
         }
         public void Draw(SpriteBatch spritebatch)
         {
-            
+
             if (i != null)
             {
                 iDotted.Draw(spritebatch);
@@ -103,7 +465,16 @@ namespace BlockBrawl
                 oDotted.Draw(spritebatch);
                 o.Draw(spritebatch);
             }
+            spritebatch.DrawString(FontManager.MenuText, playerOneName, 
+                TextPosition(
+                playerOneIndex, gameBoundaries, FontManager.MenuText, playerOneName
+                ), 
+                Color.Red);
+            spritebatch.DrawString(FontManager.MenuText, playerTwoName,
+                TextPosition(
+                playerTwoIndex, gameBoundaries, FontManager.MenuText, playerTwoName
+                ),
+                Color.Red);
         }
-
     }
 }
