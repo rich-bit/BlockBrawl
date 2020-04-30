@@ -221,10 +221,10 @@ namespace BlockBrawl
         public void Update(InputManager iM, int playerIndex, bool gamePad, GameTime gameTime)
         {
             FadeIn(gameTime, playerIndex);
-            if (Winner == int.MinValue)
-            {
                 CheckWinner(playerIndex);
-            }
+            //if (Winner == int.MinValue)
+            //{
+            //}
             if (gamePad && playerBlocks[playerIndex] != null)
             {
                 CheckGamePadInputs(playerIndex, iM);
@@ -836,7 +836,7 @@ namespace BlockBrawl
             {
                 for (int j = 0; j < pArray.GetLength(1); j++)
                 {
-                    if (pArray[i, j].alive && pDottedArray[i, j].alive && pArray[i, j].Pos == pDottedArray[i, j].Pos)
+                    if (pArray[i, j].alive && pDottedArray[i, j].alive && pArray[i, j].Pos == pDottedArray[i, j].Pos)//Här e buggen
                     {
                         count++;
                     }
