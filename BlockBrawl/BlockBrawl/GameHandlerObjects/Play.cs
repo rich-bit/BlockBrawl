@@ -152,8 +152,8 @@ namespace BlockBrawl
                     break;
                 case PlayState.qte:
                     qte.Status(gameTime);
-                    qte.Update(iM, playerOneIndex, gamePadVersion);
-                    qte.Update(iM, playerTwoIndex, gamePadVersion);
+                    qte.Update(iM, playerOneIndex, gamePadVersion, gameTime);
+                    qte.Update(iM, playerTwoIndex, gamePadVersion, gameTime);
                     break;
             }
         }

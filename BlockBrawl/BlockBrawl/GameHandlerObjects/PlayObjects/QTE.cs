@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using BlockBrawl.Blocks;
-
+using BlockBrawl.Objects;
 
 namespace BlockBrawl
 {
@@ -23,12 +23,12 @@ namespace BlockBrawl
         string playerOneName, playerTwoName;
         int playerOneIndex, playerTwoIndex;
         float timeLeft;
-        bool Cleared { get; set; }
-        int Winner { get; set; }
-        public int WinnerIndex { get; }
+        public bool Cleared { get; set; }
+        public int Winner { get; set; }
         public QTE()
         {
             timeLeft = 5;
+            Winner = int.MinValue;
 
             playerOneName = SettingsManager.playerOneName;
             playerTwoName = SettingsManager.playerTwoName;
@@ -59,6 +59,8 @@ namespace BlockBrawl
                             ), count)
                             );
                         j = new J(TextureManager.qteColor, jDotted.jMatrix[0, 0].Pos + randomOffset);
+                        foreach (TetrisObject item in j.jMatrix) { item.transparency = 0f; }
+                        foreach (TetrisObject item in jDotted.jMatrix) { item.transparency = 0f; }
                         for (int i = 0; i < rotateFewTiles; i++)
                         {
                             j.Rotate(true);
@@ -74,6 +76,8 @@ namespace BlockBrawl
                             ), count)
                             );
                         i = new I(TextureManager.qteColor, iDotted.iMatrix[0, 0].Pos + randomOffset);
+                        foreach (TetrisObject item in i.iMatrix) { item.transparency = 0f; }
+                        foreach (TetrisObject item in iDotted.iMatrix) { item.transparency = 0f; }
                         for (int j = 0; j < rotateFewTiles; j++)
                         {
                             i.Rotate(true);
@@ -89,6 +93,8 @@ namespace BlockBrawl
                             ), count)
                             );
                         t = new T(TextureManager.qteColor, tDotted.tMatrix[0, 0].Pos + randomOffset);
+                        foreach (TetrisObject item in t.tMatrix) { item.transparency = 0f; }
+                        foreach (TetrisObject item in tDotted.tMatrix) { item.transparency = 0f; }
                         for (int i = 0; i < rotateFewTiles; i++)
                         {
                             t.Rotate(true);
@@ -104,6 +110,8 @@ namespace BlockBrawl
                             ), count)
                             );
                         o = new O(TextureManager.qteColor, oDotted.oMatrix[0, 0].Pos + randomOffset);
+                        foreach (TetrisObject item in o.oMatrix) { item.transparency = 0f; }
+                        foreach (TetrisObject item in oDotted.oMatrix) { item.transparency = 0f; }
                         for (int i = 0; i < rotateFewTiles; i++)
                         {
                             o.Rotate(true);
@@ -119,6 +127,8 @@ namespace BlockBrawl
                             ), count)
                             );
                         l = new L(TextureManager.qteColor, lDotted.lMatrix[0, 0].Pos + randomOffset);
+                        foreach (TetrisObject item in l.lMatrix) { item.transparency = 0f; }
+                        foreach (TetrisObject item in lDotted.lMatrix) { item.transparency = 0f; }
                         for (int i = 0; i < rotateFewTiles; i++)
                         {
                             l.Rotate(true);
@@ -134,6 +144,8 @@ namespace BlockBrawl
                             ), count)
                             );
                         s = new S(TextureManager.qteColor, sDotted.sMatrix[0, 0].Pos + randomOffset);
+                        foreach (TetrisObject item in s.sMatrix) { item.transparency = 0f; }
+                        foreach (TetrisObject item in sDotted.sMatrix) { item.transparency = 0f; }
                         for (int i = 0; i < rotateFewTiles; i++)
                         {
                             s.Rotate(true);
@@ -149,6 +161,12 @@ namespace BlockBrawl
                             ), count)
                             );
                         z = new Z(TextureManager.qteColor, zDotted.zMatrix[0, 0].Pos + randomOffset);
+                        foreach (TetrisObject item in zDotted.zMatrix) { item.transparency = 0f; }
+                        foreach (TetrisObject item in z.zMatrix) { item.transparency = 0f; }
+                        for (int i = 0; i < rotateFewTiles; i++)
+                        {
+                            z.Rotate(true);
+                        }
                         break;
                 }
                 playerBlocks[count] = myString;
@@ -163,11 +181,11 @@ namespace BlockBrawl
             float y = gameBoundaries.Y / 2;
             if (playerIndex == 0)
             {
-                x += playerIndexCorrection;
+                x -= playerIndexCorrection;
             }
             else
             {
-                x -= playerIndexCorrection;
+                x += playerIndexCorrection;
             }
 
             x -= lenght.X / 2;
@@ -191,7 +209,7 @@ namespace BlockBrawl
         }
         public void Status(GameTime gameTime)
         {
-            if (timeLeft >= 0f)
+            if (timeLeft >= 0f && !Cleared)
             {
                 timeLeft -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
@@ -200,9 +218,13 @@ namespace BlockBrawl
                 Cleared = true;
             }
         }
-        public void Update(InputManager iM, int playerIndex, bool gamePad)
+        public void Update(InputManager iM, int playerIndex, bool gamePad, GameTime gameTime)
         {
-
+            FadeIn(gameTime, playerIndex);
+            if (Winner == int.MinValue)
+            {
+                CheckWinner(playerIndex);
+            }
             if (gamePad && playerBlocks[playerIndex] != null)
             {
                 CheckGamePadInputs(playerIndex, iM);
@@ -210,6 +232,140 @@ namespace BlockBrawl
             else
             {
                 CheckKeyboardInput(playerIndex, iM);
+            }
+        }
+        private void FadeIn(GameTime gameTime, int playerIndex)
+        {
+            float increment = 0.1f;
+            float timeBetweenIncr = 0.1f;
+            switch (playerBlocks[playerIndex])
+            {
+                case "J":
+                    for(int i = 0; i < j.jMatrix.GetLength(0); i++)
+                    {
+                        for(int k = 0; k < j.jMatrix.GetLength(1); k++)
+                        {
+                            if (j.jMatrix[i,k].transparency < 1f)
+                            {
+                                j.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (j.Time >= timeBetweenIncr)
+                                {
+                                    j.jMatrix[i,k].transparency += increment;
+                                    jDotted.jMatrix[i, k].transparency += increment;
+                                    j.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case "L":
+                    for (int i = 0; i < l.lMatrix.GetLength(0); i++)
+                    {
+                        for (int k = 0; k < l.lMatrix.GetLength(1); k++)
+                        {
+                            if (l.lMatrix[i, k].transparency < 1f)
+                            {
+                                l.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (l.Time >= timeBetweenIncr)
+                                {
+                                    l.lMatrix[i, k].transparency += increment;
+                                    lDotted.lMatrix[i, k].transparency += increment;
+                                    l.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case "T":
+                    for (int i = 0; i < t.tMatrix.GetLength(0); i++)
+                    {
+                        for (int k = 0; k < t.tMatrix.GetLength(1); k++)
+                        {
+                            if (t.tMatrix[i, k].transparency < 1f)
+                            {
+                                t.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (t.Time >= timeBetweenIncr)
+                                {
+                                    t.tMatrix[i, k].transparency += increment;
+                                    tDotted.tMatrix[i, k].transparency += increment;
+                                    t.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case "I":
+                    for (int f = 0; f < i.iMatrix.GetLength(0); f++)
+                    {
+                        for (int k = 0; k < i.iMatrix.GetLength(1); k++)
+                        {
+                            if (i.iMatrix[f, k].transparency < 1f)
+                            {
+                                i.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (i.Time >= timeBetweenIncr)
+                                {
+                                    i.iMatrix[f, k].transparency += increment;
+                                    iDotted.iMatrix[f, k].transparency += increment;
+                                    i.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case "Z":
+                    for (int i = 0; i < z.zMatrix.GetLength(0); i++)
+                    {
+                        for (int k = 0; k < z.zMatrix.GetLength(1); k++)
+                        {
+                            if (z.zMatrix[i, k].transparency < 1f)
+                            {
+                                z.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (z.Time >= timeBetweenIncr)
+                                {
+                                    z.zMatrix[i, k].transparency += increment;
+                                    zDotted.zMatrix[i, k].transparency += increment;
+                                    z.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case "S":
+                    for (int i = 0; i < s.sMatrix.GetLength(0); i++)
+                    {
+                        for (int k = 0; k < s.sMatrix.GetLength(1); k++)
+                        {
+                            if (s.sMatrix[i, k].transparency < 1f)
+                            {
+                                s.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (s.Time >= timeBetweenIncr)
+                                {
+                                    s.sMatrix[i, k].transparency += increment;
+                                    sDotted.sMatrix[i, k].transparency += increment;
+                                    s.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case "O":
+                    for (int i = 0; i < o.oMatrix.GetLength(0); i++)
+                    {
+                        for (int k = 0; k < o.oMatrix.GetLength(1); k++)
+                        {
+                            if (o.oMatrix[i, k].transparency < 1f)
+                            {
+                                o.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (o.Time >= timeBetweenIncr)
+                                {
+                                    o.oMatrix[i, k].transparency += increment;
+                                    oDotted.oMatrix[i, k].transparency += increment;
+                                    o.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    break;
             }
         }
         private void CheckKeyboardInput(int playerIndex, InputManager iM)
@@ -230,7 +386,6 @@ namespace BlockBrawl
                 rotateCW = Keys.NumPad0;
                 rotateCC = Keys.Enter;
             }
-
             switch (playerBlocks[playerIndex])
             {
                 case "J":
@@ -419,6 +574,15 @@ namespace BlockBrawl
         }
         private void CheckGamePadInputs(int playerIndex, InputManager iM)
         {
+            if (iM.JustPressed(Buttons.DPadUp, playerIndex) ||
+                iM.JustPressed(Buttons.DPadLeft, playerIndex) ||
+                iM.JustPressed(Buttons.DPadRight, playerIndex) ||
+                iM.JustPressed(Buttons.DPadDown, playerIndex) ||
+                iM.JustPressed(Buttons.B, playerIndex) ||
+                iM.JustPressed(Buttons.Y, playerIndex))
+            {
+                CheckWinner(playerIndex);
+            }
             switch (playerBlocks[playerIndex])
             {
                 case "J":
@@ -664,43 +828,90 @@ namespace BlockBrawl
 
             return new Vector2(x, y);
         }
+        public void AssignWinner(TetrisObject[,] pArray, TetrisObject[,] pDottedArray, int playerIndex)
+        {
+            int bricks = 4;
+            int count = 0;
+            for (int i = 0; i < pArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < pArray.GetLength(1); j++)
+                {
+                    if (pArray[i, j].alive && pDottedArray[i, j].alive && pArray[i, j].Pos == pDottedArray[i, j].Pos)
+                    {
+                        count++;
+                    }
+                }
+            }
+            if (bricks == count)
+            {
+                Winner = playerIndex;
+                Cleared = true;
+            }
+        }
+        public void CheckWinner(int playerIndex)
+        {
+            switch (playerBlocks[playerIndex])
+            {
+                case "J":
+                    AssignWinner(j.jMatrix, jDotted.jMatrix, playerIndex);
+                    break;
+                case "L":
+                    AssignWinner(l.lMatrix, lDotted.lMatrix, playerIndex);
+                    break;
+                case "T":
+                    AssignWinner(t.tMatrix, tDotted.tMatrix, playerIndex);
+                    break;
+                case "I":
+                    AssignWinner(i.iMatrix, iDotted.iMatrix, playerIndex);
+                    break;
+                case "Z":
+                    AssignWinner(z.zMatrix, zDotted.zMatrix, playerIndex);
+                    break;
+                case "S":
+                    AssignWinner(s.sMatrix, sDotted.sMatrix, playerIndex);
+                    break;
+                case "O":
+                    AssignWinner(o.oMatrix, oDotted.oMatrix, playerIndex);
+                    break;
+            }
+        }
         public void Draw(SpriteBatch spritebatch)
         {
 
             if (i != null)
             {
-                iDotted.Draw(spritebatch);
-                i.Draw(spritebatch);
+                iDotted.Draw(spritebatch, Color.White);
+                i.Draw(spritebatch, Color.White);
             }
             if (j != null)
             {
-                jDotted.Draw(spritebatch);
-                j.Draw(spritebatch);
+                jDotted.Draw(spritebatch, Color.White);
+                j.Draw(spritebatch, Color.White);
             }
             if (l != null)
             {
-                lDotted.Draw(spritebatch);
-                l.Draw(spritebatch);
+                lDotted.Draw(spritebatch, Color.White);
+                l.Draw(spritebatch, Color.White);
             }
             if (s != null)
             {
-                sDotted.Draw(spritebatch);
-                s.Draw(spritebatch);
+                sDotted.Draw(spritebatch, Color.White);
+                s.Draw(spritebatch, Color.White);
             }
             if (z != null)
             {
-                zDotted.Draw(spritebatch);
-                z.Draw(spritebatch);
+                zDotted.Draw(spritebatch, Color.White);
+                z.Draw(spritebatch, Color.White);
             }
             if (t != null)
             {
-                tDotted.Draw(spritebatch);
-                t.Draw(spritebatch);
+                tDotted.Draw(spritebatch, Color.White);
+                t.Draw(spritebatch, Color.White);
             }
             if (o != null)
             {
-                oDotted.Draw(spritebatch);
-                o.Draw(spritebatch);
+                oDotted.Draw(spritebatch, Color.White);
+                o.Draw(spritebatch, Color.White);
             }
             spritebatch.DrawString(FontManager.MenuText, playerOneName,
                 TextPosition(
@@ -724,6 +935,16 @@ namespace BlockBrawl
                 SettingsManager.gameHeight / 2
                 ),
             Color.Red);
+            if (Winner != int.MinValue)
+            {
+                spritebatch.DrawString(FontManager.MenuText, "Player " + (Winner + 1).ToString() + " wins!!",
+                    TextPosition(
+                        gameBoundaries,
+                        FontManager.MenuText, "Player " + (Winner + 1).ToString() + " wins!!",
+                        SettingsManager.gameHeight - tileSizeQTE.Y
+                        ),
+                            Color.Yellow);
+            }
         }
     }
 }
