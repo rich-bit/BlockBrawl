@@ -222,9 +222,9 @@ namespace BlockBrawl
         {
             FadeIn(gameTime, playerIndex);
                 CheckWinner(playerIndex);
-            //if (Winner == int.MinValue)
-            //{
-            //}
+            if (Winner == int.MinValue)
+            {
+            }
             if (gamePad && playerBlocks[playerIndex] != null)
             {
                 CheckGamePadInputs(playerIndex, iM);
@@ -830,15 +830,20 @@ namespace BlockBrawl
         }
         public void AssignWinner(TetrisObject[,] pArray, TetrisObject[,] pDottedArray, int playerIndex)
         {
+            List<Vector2> correctPositions = new List<Vector2>();
+            foreach (TetrisObject item in pDottedArray) { if (item.alive) { correctPositions.Add(item.Pos); } }
             int bricks = 4;
             int count = 0;
             for (int i = 0; i < pArray.GetLength(0); i++)
             {
                 for (int j = 0; j < pArray.GetLength(1); j++)
                 {
-                    if (pArray[i, j].alive && pDottedArray[i, j].alive && pArray[i, j].Pos == pDottedArray[i, j].Pos)//Här e buggen
+                    foreach(Vector2 pos in correctPositions)
                     {
-                        count++;
+                        if(pArray[i,j].alive && pArray[i,j].Pos == pos)
+                        {
+                            count++;
+                        }
                     }
                 }
             }
