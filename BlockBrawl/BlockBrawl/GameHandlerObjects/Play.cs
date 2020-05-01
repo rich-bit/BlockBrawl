@@ -42,7 +42,7 @@ namespace BlockBrawl
 
         private readonly int playerOneIndex;
         private readonly int playerTwoIndex;
-        private float fallWaitTime;
+        private float fallWaitTime, qteWaitTime;
         private readonly float newSpeedCounter;
         readonly bool gamePadVersion;
         readonly SideBars sideBars;
@@ -65,6 +65,7 @@ namespace BlockBrawl
 
             fallWaitTime = SettingsManager.fallTime;
             newSpeedCounter = SettingsManager.newSpeedCounter;
+            qteWaitTime = SettingsManager.qteWaitTime;
 
             playerColors = new Texture2D[2];
             playerColors[playerOneIndex] = playerOneColor;
@@ -91,14 +92,12 @@ namespace BlockBrawl
             sArray = new S[2];
             zArray = new Z[2];
 
-            qte = new QTE();
-
             sideBars = new SideBars(playerColors);
 
             score = new int[2];
             bonusRecieved = new int[2, stackedBlocks.GetLength(1)];
 
-            currentPlayState = PlayState.qte;
+            currentPlayState = PlayState.play;
         }
         private void PopulatePlayfield(int tilesX, int tilesY, Vector2 tileSize, int gameWidth, int gameHeight)//Get drawable textures and pos for the playfield
         {
@@ -117,12 +116,32 @@ namespace BlockBrawl
                 }
             }
         }
+        private void EventTrigger(GameTime gameTime)
+        {
+            playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            float time = playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Time;
+            if(time > qteWaitTime && qte == null)
+            {
+                qte = new QTE();
+                currentPlayState = PlayState.qte;
+                playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Time = 0f;
+            }
+        }
+        private void EventHandler(GameTime gameTime)
+        {
+            if (qte.Cleared)
+            {
+                currentPlayState = PlayState.play;
+                qte = null;
+            }
+        }
         public void Update(GameTime gameTime, InputManager iM)
         {
             this.gameTime = gameTime;
             switch (currentPlayState)
             {
                 case PlayState.play:
+                    EventTrigger(gameTime);
                     DrawBonus();
                     AvoidDubbleSpawn();
                     IncreseFallSpeed();
@@ -154,6 +173,7 @@ namespace BlockBrawl
                     qte.Status(gameTime);
                     qte.Update(iM, playerOneIndex, gamePadVersion, gameTime);
                     qte.Update(iM, playerTwoIndex, gamePadVersion, gameTime);
+                    EventHandler(gameTime);
                     break;
             }
         }

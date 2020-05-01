@@ -22,12 +22,13 @@ namespace BlockBrawl
         Vector2 tileSizeQTE, gameBoundaries;
         string playerOneName, playerTwoName;
         int playerOneIndex, playerTwoIndex;
-        float timeLeft;
+        float timeLeft, textTransparecy;
         public bool Cleared { get; set; }
         public int Winner { get; set; }
         public QTE()
         {
             timeLeft = 5;
+            textTransparecy = 0f;
             Winner = int.MinValue;
 
             playerOneName = SettingsManager.playerOneName;
@@ -209,54 +210,223 @@ namespace BlockBrawl
         }
         public void Status(GameTime gameTime)
         {
-            if (timeLeft >= 0f && !Cleared)
+            if (timeLeft >= 0f && Winner != playerOneIndex && Winner != playerTwoIndex)
             {
                 timeLeft -= (float)gameTime.ElapsedGameTime.TotalSeconds;
-            }
-            else
-            {
-                Cleared = true;
             }
         }
         public void Update(InputManager iM, int playerIndex, bool gamePad, GameTime gameTime)
         {
-            FadeIn(gameTime, playerIndex);
-                CheckWinner(playerIndex);
-            if (Winner == int.MinValue)
+            if (timeLeft > 0f && Winner != playerOneIndex && Winner != playerTwoIndex)
             {
+                FadeIn(gameTime, playerIndex);
             }
-            if (gamePad && playerBlocks[playerIndex] != null)
+            if (Winner != playerOneIndex || Winner != playerTwoIndex)
+            {
+                CheckWinner(playerIndex);
+            }
+            if (gamePad && playerBlocks[playerIndex] != null && timeLeft > 0f)
             {
                 CheckGamePadInputs(playerIndex, iM);
             }
-            else
+            else if (Winner == int.MinValue && timeLeft > 0f)
             {
                 CheckKeyboardInput(playerIndex, iM);
+            }
+            if (timeLeft <= 0f || Winner == playerOneIndex || Winner == playerTwoIndex)
+            {
+                FadeOut(gameTime, playerIndex);
+            }
+        }
+        private void CheckCleared(TetrisObject[,] tetrisObjects)
+        {
+            int count = 0;
+            foreach (TetrisObject item in tetrisObjects)
+            {
+                if(item.transparency <= 0f)
+                {
+                    count++;
+                }
+            }
+            if(count == tetrisObjects.GetLength(0) * tetrisObjects.GetLength(1))
+            {
+                Cleared = true;
+            }
+        }
+        private void FadeOut(GameTime gameTime, int playerIndex)
+        {
+            float decrement = 0.1f;
+            float timeBetweenIncr = 0.1f;
+
+            switch (playerBlocks[playerIndex])
+            {
+                case "J":
+                    for (int i = 0; i < j.jMatrix.GetLength(0); i++)
+                    {
+                        for (int k = 0; k < j.jMatrix.GetLength(1); k++)
+                        {
+                            if (j.jMatrix[i, k].transparency > 0f)
+                            {
+                                j.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (j.Time >= timeBetweenIncr)
+                                {
+                                    j.jMatrix[i, k].transparency -= decrement;
+                                    jDotted.jMatrix[i, k].transparency -= decrement;
+                                    j.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    FadeOutTexts(j.Time, decrement, gameTime);
+                    CheckCleared(j.jMatrix);
+                    break;
+                case "L":
+                    for (int i = 0; i < l.lMatrix.GetLength(0); i++)
+                    {
+                        for (int k = 0; k < l.lMatrix.GetLength(1); k++)
+                        {
+                            if (l.lMatrix[i, k].transparency > 0f)
+                            {
+                                l.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (l.Time >= timeBetweenIncr)
+                                {
+                                    l.lMatrix[i, k].transparency -= decrement;
+                                    lDotted.lMatrix[i, k].transparency -= decrement;
+                                    l.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    FadeOutTexts(l.Time, decrement, gameTime);
+                    CheckCleared(l.lMatrix);
+                    break;
+                case "T":
+                    for (int i = 0; i < t.tMatrix.GetLength(0); i++)
+                    {
+                        for (int k = 0; k < t.tMatrix.GetLength(1); k++)
+                        {
+                            if (t.tMatrix[i, k].transparency > 0f)
+                            {
+                                t.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (t.Time >= timeBetweenIncr)
+                                {
+                                    t.tMatrix[i, k].transparency -= decrement;
+                                    tDotted.tMatrix[i, k].transparency -= decrement;
+                                    t.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    FadeOutTexts(t.Time, decrement, gameTime);
+                    CheckCleared(t.tMatrix);
+                    break;
+                case "I":
+                    for (int f = 0; f < i.iMatrix.GetLength(0); f++)
+                    {
+                        for (int k = 0; k < i.iMatrix.GetLength(1); k++)
+                        {
+                            if (i.iMatrix[f, k].transparency > 0f)
+                            {
+                                i.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (i.Time >= timeBetweenIncr)
+                                {
+                                    i.iMatrix[f, k].transparency -= decrement;
+                                    iDotted.iMatrix[f, k].transparency -= decrement;
+                                    i.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    FadeOutTexts(i.Time, decrement, gameTime);
+                    CheckCleared(i.iMatrix);
+                    break;
+                case "Z":
+                    for (int i = 0; i < z.zMatrix.GetLength(0); i++)
+                    {
+                        for (int k = 0; k < z.zMatrix.GetLength(1); k++)
+                        {
+                            if (z.zMatrix[i, k].transparency > 0f)
+                            {
+                                z.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (z.Time >= timeBetweenIncr)
+                                {
+                                    z.zMatrix[i, k].transparency -= decrement;
+                                    zDotted.zMatrix[i, k].transparency -= decrement;
+                                    z.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    FadeOutTexts(z.Time, decrement, gameTime);
+                    CheckCleared(z.zMatrix);
+                    break;
+                case "S":
+                    for (int i = 0; i < s.sMatrix.GetLength(0); i++)
+                    {
+                        for (int k = 0; k < s.sMatrix.GetLength(1); k++)
+                        {
+                            if (s.sMatrix[i, k].transparency > 0f)
+                            {
+                                s.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (s.Time >= timeBetweenIncr)
+                                {
+                                    s.sMatrix[i, k].transparency -= decrement;
+                                    sDotted.sMatrix[i, k].transparency -= decrement;
+                                    s.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    FadeOutTexts(s.Time, decrement, gameTime);
+                    CheckCleared(s.sMatrix);
+                    break;
+                case "O":
+                    for (int i = 0; i < o.oMatrix.GetLength(0); i++)
+                    {
+                        for (int k = 0; k < o.oMatrix.GetLength(1); k++)
+                        {
+                            if (o.oMatrix[i, k].transparency > 0f)
+                            {
+                                o.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                                if (o.Time >= timeBetweenIncr)
+                                {
+                                    o.oMatrix[i, k].transparency -= decrement;
+                                    oDotted.oMatrix[i, k].transparency -= decrement;
+                                    o.Time = 0f;
+                                }
+                            }
+                        }
+                    }
+                    FadeOutTexts(o.Time, decrement, gameTime);
+                    CheckCleared(o.oMatrix);
+                    break;
             }
         }
         private void FadeIn(GameTime gameTime, int playerIndex)
         {
             float increment = 0.1f;
             float timeBetweenIncr = 0.1f;
+
             switch (playerBlocks[playerIndex])
             {
                 case "J":
-                    for(int i = 0; i < j.jMatrix.GetLength(0); i++)
+                    for (int i = 0; i < j.jMatrix.GetLength(0); i++)
                     {
-                        for(int k = 0; k < j.jMatrix.GetLength(1); k++)
+                        for (int k = 0; k < j.jMatrix.GetLength(1); k++)
                         {
-                            if (j.jMatrix[i,k].transparency < 1f)
+                            if (j.jMatrix[i, k].transparency < 1f)
                             {
                                 j.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
                                 if (j.Time >= timeBetweenIncr)
                                 {
-                                    j.jMatrix[i,k].transparency += increment;
+                                    j.jMatrix[i, k].transparency += increment;
                                     jDotted.jMatrix[i, k].transparency += increment;
                                     j.Time = 0f;
                                 }
                             }
                         }
                     }
+                    FadeInTexts(j.Time, increment, gameTime);
                     break;
                 case "L":
                     for (int i = 0; i < l.lMatrix.GetLength(0); i++)
@@ -275,6 +445,7 @@ namespace BlockBrawl
                             }
                         }
                     }
+                    FadeInTexts(l.Time, increment, gameTime);
                     break;
                 case "T":
                     for (int i = 0; i < t.tMatrix.GetLength(0); i++)
@@ -293,6 +464,7 @@ namespace BlockBrawl
                             }
                         }
                     }
+                    FadeInTexts(t.Time, increment, gameTime);
                     break;
                 case "I":
                     for (int f = 0; f < i.iMatrix.GetLength(0); f++)
@@ -311,6 +483,7 @@ namespace BlockBrawl
                             }
                         }
                     }
+                    FadeInTexts(i.Time, increment, gameTime);
                     break;
                 case "Z":
                     for (int i = 0; i < z.zMatrix.GetLength(0); i++)
@@ -329,6 +502,7 @@ namespace BlockBrawl
                             }
                         }
                     }
+                    FadeInTexts(z.Time, increment, gameTime);
                     break;
                 case "S":
                     for (int i = 0; i < s.sMatrix.GetLength(0); i++)
@@ -347,6 +521,7 @@ namespace BlockBrawl
                             }
                         }
                     }
+                    FadeInTexts(s.Time, increment, gameTime);
                     break;
                 case "O":
                     for (int i = 0; i < o.oMatrix.GetLength(0); i++)
@@ -365,7 +540,26 @@ namespace BlockBrawl
                             }
                         }
                     }
+                    FadeInTexts(o.Time, increment, gameTime);
                     break;
+            }
+        }
+        private void FadeInTexts(float timeCounter, float increment, GameTime gameTime)
+        {
+            timeCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (timeCounter > 0.1f)
+            {
+                textTransparecy += increment;
+                timeCounter = 0f;
+            }
+        }
+        private void FadeOutTexts(float timeCounter, float increment, GameTime gameTime)
+        {
+            timeCounter += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (timeCounter > 0.1f)
+            {
+                textTransparecy -= increment * 2;
+                timeCounter = 0f;
             }
         }
         private void CheckKeyboardInput(int playerIndex, InputManager iM)
@@ -838,9 +1032,9 @@ namespace BlockBrawl
             {
                 for (int j = 0; j < pArray.GetLength(1); j++)
                 {
-                    foreach(Vector2 pos in correctPositions)
+                    foreach (Vector2 pos in correctPositions)
                     {
-                        if(pArray[i,j].alive && pArray[i,j].Pos == pos)
+                        if (pArray[i, j].alive && pArray[i, j].Pos == pos)
                         {
                             count++;
                         }
@@ -850,7 +1044,7 @@ namespace BlockBrawl
             if (bricks == count)
             {
                 Winner = playerIndex;
-                Cleared = true;
+                //Cleared = true;
             }
         }
         public void CheckWinner(int playerIndex)
@@ -922,24 +1116,24 @@ namespace BlockBrawl
                 TextPosition(
                 playerOneIndex, gameBoundaries, FontManager.MenuText, playerOneName
                 ),
-                Color.Red);
+                Color.Red * textTransparecy);
             spritebatch.DrawString(FontManager.MenuText, "VS",
             TextPosition(
             gameBoundaries, FontManager.MenuText, "VS"
                 ),
-            Color.Red);
+            Color.Red * textTransparecy);
             spritebatch.DrawString(FontManager.MenuText, playerTwoName,
                 TextPosition(
                 playerTwoIndex, gameBoundaries, FontManager.MenuText, playerTwoName
                 ),
-                Color.Red);
+                Color.Red * textTransparecy);
             spritebatch.DrawString(FontManager.MenuText, "Time Left " + Convert.ToInt32(timeLeft).ToString(),
             TextPosition(
                 gameBoundaries,
                 FontManager.MenuText, "Time Left " + Convert.ToInt32(timeLeft).ToString(),
                 SettingsManager.gameHeight / 2
                 ),
-            Color.Red);
+            Color.Red * textTransparecy);
             if (Winner != int.MinValue)
             {
                 spritebatch.DrawString(FontManager.MenuText, "Player " + (Winner + 1).ToString() + " wins!!",
@@ -948,7 +1142,7 @@ namespace BlockBrawl
                         FontManager.MenuText, "Player " + (Winner + 1).ToString() + " wins!!",
                         SettingsManager.gameHeight - tileSizeQTE.Y
                         ),
-                            Color.Yellow);
+                            Color.Yellow * textTransparecy);
             }
         }
     }

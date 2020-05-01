@@ -8,7 +8,7 @@ namespace BlockBrawl
     {
         //GraphicsDeviceManager graphicsDeviceManager;
         public static Vector2 tileSize;
-        public static float speed, fallTime, newSpeedCounter;
+        public static float speed, fallTime, newSpeedCounter, qteWaitTime;
         public static Texture2D playerOneColor, playerTwoColor;
         public static string playerOneName, playerTwoName;
         public static int playerIndexOne, playerIndexTwo;
@@ -32,6 +32,8 @@ namespace BlockBrawl
 
             playerOneColor = TextureManager.whiteBlock;
             playerTwoColor = TextureManager.purpleBlock;
+
+            qteWaitTime = 40f;
 
             gamePadVersion = false;
 
