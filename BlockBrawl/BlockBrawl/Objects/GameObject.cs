@@ -27,6 +27,10 @@ namespace BlockBrawl
             get { return pos.Y; }
             set { pos.Y = value; rect.X = (int)pos.X; rect.Y = (int)pos.Y; }
         }
+        public Rectangle Rect
+        {
+            get { return rect; }
+        }
         public Vector2 Pos
         {
             get

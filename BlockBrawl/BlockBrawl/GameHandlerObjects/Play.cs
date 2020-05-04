@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using BlockBrawl.Blocks;
 using BlockBrawl.Objects;
+using BlockBrawl.GameHandlerObjects.PlayObjects;
 using System.Collections.Generic;
 
 namespace BlockBrawl
@@ -19,6 +20,7 @@ namespace BlockBrawl
         int marginRight = 3; // to Avoid spawn outside map, will be changed.
 
         int[] score;
+        float[] waitForSpawn;
         int[,] bonusRecieved;
 
         Vector2 tileSize;
@@ -47,6 +49,8 @@ namespace BlockBrawl
         readonly bool gamePadVersion;
         readonly SideBars sideBars;
 
+        //Power-Ups
+        Bazooka bazooka;
         enum PlayState
         {
             play,
@@ -78,6 +82,8 @@ namespace BlockBrawl
             nextBlock[playerOneIndex] = RandomBlock();
             nextBlock[playerTwoIndex] = RandomBlock();
 
+            waitForSpawn = new float[2];
+
             spawnPositions = new Vector2[2];
             spawnPositions[playerOneIndex] = GetSpawnPos(playerOneIndex);
             spawnPositions[playerTwoIndex] = GetSpawnPos(playerTwoIndex);
@@ -92,7 +98,7 @@ namespace BlockBrawl
             sArray = new S[2];
             zArray = new Z[2];
 
-            sideBars = new SideBars(playerColors);
+            sideBars = new SideBars(playerColors, waitForSpawn);
 
             score = new int[2];
             bonusRecieved = new int[2, stackedBlocks.GetLength(1)];
@@ -110,7 +116,7 @@ namespace BlockBrawl
                         + (-tilesX * tileSize.X + x * tileSize.X) - tileSize.X)
                         + (gameWidth / 2)
                         - (tilesX * tileSize.X / 2),
-                        gameHeight 
+                        gameHeight
                         + (-tilesY * tileSize.Y + y * tileSize.Y)//it works atm
                         ), TextureManager.transBlock);
                 }
@@ -120,7 +126,7 @@ namespace BlockBrawl
         {
             playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
             float time = playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Time;
-            if(time > qteWaitTime && qte == null)
+            if (time > qteWaitTime && qte == null)
             {
                 qte = new QTE();
                 currentPlayState = PlayState.qte;
@@ -131,11 +137,12 @@ namespace BlockBrawl
         {
             if (qte.Cleared)
             {
-                currentPlayState = PlayState.play;
+                bazooka = new Bazooka(5f, qte.Winner, playerOneIndex, playerTwoIndex);
                 qte = null;
+                currentPlayState = PlayState.play;
             }
         }
-        public void Update(GameTime gameTime, InputManager iM)
+        public void Update(GameTime gameTime, InputManager iM, SpriteBatch spriteBatch)
         {
             this.gameTime = gameTime;
             switch (currentPlayState)
@@ -145,6 +152,7 @@ namespace BlockBrawl
                     DrawBonus();
                     AvoidDubbleSpawn();
                     IncreseFallSpeed();
+                    HandleWaitForSpawn(gameTime);
                     sideBars.Update(score, bonusRecieved, nextBlock);
                     if (gamePadVersion)
                     {
@@ -160,6 +168,19 @@ namespace BlockBrawl
                     FallDownAddStack(playerTwoIndex);
                     GetBlocks(playerOneIndex);
                     GetBlocks(playerTwoIndex);
+                    if (bazooka != null)
+                    {
+                        bazooka.Action(
+                            LocateOtherPlayerMatrix(OtherPlayerIndex(playerOneIndex)),
+                            LocateOtherPlayerMatrix(OtherPlayerIndex(playerTwoIndex)),
+                            iM, gamePadVersion, gameTime);
+                        if (bazooka.TargetHit)
+                        {
+                            RemoveOtherPlayerBlock(OtherPlayerIndex(bazooka.PlayerIndexBazooka));
+                            waitForSpawn[OtherPlayerIndex(bazooka.PlayerIndexBazooka)] += SettingsManager.spawnBlockBazooka;
+                            bazooka = null;
+                        }
+                    }
                     if (gamePadVersion && iM.JustPressed(Buttons.Start, playerOneIndex) || iM.JustPressed(Buttons.Start, playerTwoIndex)) { currentPlayState = PlayState.pause; }
                     else if (!gamePadVersion && iM.JustPressed(Keys.Escape) || iM.JustPressed(Keys.NumLock)) { currentPlayState = PlayState.pause; }
                     break;
@@ -205,6 +226,27 @@ namespace BlockBrawl
                         }
                     }
                 }
+            }
+        }
+        private void RemoveOtherPlayerBlock(int playerIndex)
+        {
+            if (jArray[playerIndex] != null) { jArray[playerIndex] = null; }
+            else if (iArray[playerIndex] != null) { iArray[playerIndex] = null; }
+            else if (tArray[playerIndex] != null) { tArray[playerIndex] = null; }
+            else if (oArray[playerIndex] != null) { oArray[playerIndex] = null; }
+            else if (lArray[playerIndex] != null) { lArray[playerIndex] = null; }
+            else if (sArray[playerIndex] != null) { sArray[playerIndex] = null; }
+            else if (zArray[playerIndex] != null) { zArray[playerIndex] = null; }
+        }
+        private void HandleWaitForSpawn(GameTime gameTime)
+        {
+            if (waitForSpawn[playerOneIndex] > 0f)
+            {
+                waitForSpawn[playerOneIndex] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            else if(waitForSpawn[playerTwoIndex] > 0f)
+            {
+                waitForSpawn[playerTwoIndex] -= (float)gameTime.ElapsedGameTime.TotalSeconds;
             }
         }
         private int RowScore(int playerIndex, int row, TetrisObject[,] tetrisObjects)
@@ -254,15 +296,15 @@ namespace BlockBrawl
             I desiredBlockTwo = new I(TextureManager.transBlock, spawnPositions[playerTwoIndex]);
 
             I currentPosP1 = null;
-            if (LocateOtherPlayeMatrix(OtherPlayerIndex(playerOneIndex)) != null)
+            if (LocateOtherPlayerMatrix(OtherPlayerIndex(playerOneIndex)) != null)
             {
-                currentPosP1 = new I(TextureManager.transBlock, LocateOtherPlayeMatrix(OtherPlayerIndex(playerOneIndex))[0, 0].Pos);
+                currentPosP1 = new I(TextureManager.transBlock, LocateOtherPlayerMatrix(OtherPlayerIndex(playerOneIndex))[0, 0].Pos);
                 foreach (TetrisObject item in currentPosP1.iMatrix) { item.alive = true; }
             }
             I currentPosP2 = null;
-            if (LocateOtherPlayeMatrix(OtherPlayerIndex(playerTwoIndex)) != null)
+            if (LocateOtherPlayerMatrix(OtherPlayerIndex(playerTwoIndex)) != null)
             {
-                currentPosP2 = new I(TextureManager.transBlock, LocateOtherPlayeMatrix(OtherPlayerIndex(playerTwoIndex))[0, 0].Pos);
+                currentPosP2 = new I(TextureManager.transBlock, LocateOtherPlayerMatrix(OtherPlayerIndex(playerTwoIndex))[0, 0].Pos);
                 foreach (TetrisObject item in currentPosP2.iMatrix) { item.alive = true; }
             }
 
@@ -279,7 +321,7 @@ namespace BlockBrawl
                 || desiredBlockTwo.MaxValues().Y < currentPosP1.MinValues().Y
                 );
         }
-        private TetrisObject[,] LocateOtherPlayeMatrix(int playerIndex)
+        private TetrisObject[,] LocateOtherPlayerMatrix(int playerIndex)
         {
             if (iArray[OtherPlayerIndex(playerIndex)] != null && iArray[OtherPlayerIndex(playerIndex)].iMatrix != null) { return iArray[OtherPlayerIndex(playerIndex)].iMatrix; }
             else if (jArray[OtherPlayerIndex(playerIndex)] != null && jArray[OtherPlayerIndex(playerIndex)].jMatrix != null) { return jArray[OtherPlayerIndex(playerIndex)].jMatrix; }
@@ -296,9 +338,9 @@ namespace BlockBrawl
             {
                 foreach (TetrisObject newPosition in iArray[playerIndex].NextRotatePosition(clockwise))
                 {
-                    if (LocateOtherPlayeMatrix(playerIndex) != null)
+                    if (LocateOtherPlayerMatrix(playerIndex) != null)
                     {
-                        foreach (TetrisObject otherPlayer in LocateOtherPlayeMatrix(playerIndex))
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayerMatrix(playerIndex))
                         {
                             if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
                             {
@@ -312,9 +354,9 @@ namespace BlockBrawl
             {
                 foreach (TetrisObject newPosition in jArray[playerIndex].NextRotatePosition(clockwise))
                 {
-                    if (LocateOtherPlayeMatrix(playerIndex) != null)
+                    if (LocateOtherPlayerMatrix(playerIndex) != null)
                     {
-                        foreach (TetrisObject otherPlayer in LocateOtherPlayeMatrix(playerIndex))
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayerMatrix(playerIndex))
                         {
                             if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
                             {
@@ -328,9 +370,9 @@ namespace BlockBrawl
             {
                 foreach (TetrisObject newPosition in tArray[playerIndex].NextRotatePosition(clockwise))
                 {
-                    if (LocateOtherPlayeMatrix(playerIndex) != null)
+                    if (LocateOtherPlayerMatrix(playerIndex) != null)
                     {
-                        foreach (TetrisObject otherPlayer in LocateOtherPlayeMatrix(playerIndex))
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayerMatrix(playerIndex))
                         {
                             if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
                             {
@@ -344,9 +386,9 @@ namespace BlockBrawl
             {
                 foreach (TetrisObject newPosition in oArray[playerIndex].NextRotatePosition(clockwise))
                 {
-                    if (LocateOtherPlayeMatrix(playerIndex) != null)
+                    if (LocateOtherPlayerMatrix(playerIndex) != null)
                     {
-                        foreach (TetrisObject otherPlayer in LocateOtherPlayeMatrix(playerIndex))
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayerMatrix(playerIndex))
                         {
                             if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
                             {
@@ -360,9 +402,9 @@ namespace BlockBrawl
             {
                 foreach (TetrisObject newPosition in lArray[playerIndex].NextRotatePosition(clockwise))
                 {
-                    if (LocateOtherPlayeMatrix(playerIndex) != null)
+                    if (LocateOtherPlayerMatrix(playerIndex) != null)
                     {
-                        foreach (TetrisObject otherPlayer in LocateOtherPlayeMatrix(playerIndex))
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayerMatrix(playerIndex))
                         {
                             if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
                             {
@@ -376,9 +418,9 @@ namespace BlockBrawl
             {
                 foreach (TetrisObject newPosition in sArray[playerIndex].NextRotatePosition(clockwise))
                 {
-                    if (LocateOtherPlayeMatrix(playerIndex) != null)
+                    if (LocateOtherPlayerMatrix(playerIndex) != null)
                     {
-                        foreach (TetrisObject otherPlayer in LocateOtherPlayeMatrix(playerIndex))
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayerMatrix(playerIndex))
                         {
                             if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
                             {
@@ -392,9 +434,9 @@ namespace BlockBrawl
             {
                 foreach (TetrisObject newPosition in zArray[playerIndex].NextRotatePosition(clockwise))
                 {
-                    if (LocateOtherPlayeMatrix(playerIndex) != null)
+                    if (LocateOtherPlayerMatrix(playerIndex) != null)
                     {
-                        foreach (TetrisObject otherPlayer in LocateOtherPlayeMatrix(playerIndex))
+                        foreach (TetrisObject otherPlayer in LocateOtherPlayerMatrix(playerIndex))
                         {
                             if (newPosition.Pos == otherPlayer.Pos && newPosition.alive && otherPlayer.alive)
                             {
@@ -410,9 +452,9 @@ namespace BlockBrawl
         {
             foreach (TetrisObject playerPosition in tetrisObjects)
             {
-                if (LocateOtherPlayeMatrix(playerIndex) != null)
+                if (LocateOtherPlayerMatrix(playerIndex) != null)
                 {
-                    foreach (TetrisObject otherPlayer in LocateOtherPlayeMatrix(playerIndex))
+                    foreach (TetrisObject otherPlayer in LocateOtherPlayerMatrix(playerIndex))
                     {
                         if (playerPosition.PosX + tileSize.X == otherPlayer.PosX && playerPosition.PosY == otherPlayer.PosY && playerPosition.alive && otherPlayer.alive)
                         {
@@ -427,9 +469,9 @@ namespace BlockBrawl
         {
             foreach (TetrisObject playerPosition in tetrisObjects)
             {
-                if (LocateOtherPlayeMatrix(playerIndex) != null)
+                if (LocateOtherPlayerMatrix(playerIndex) != null)
                 {
-                    foreach (TetrisObject otherPlayer in LocateOtherPlayeMatrix(playerIndex))
+                    foreach (TetrisObject otherPlayer in LocateOtherPlayerMatrix(playerIndex))
                     {
                         if (playerPosition.PosX - tileSize.X == otherPlayer.PosX && playerPosition.PosY == otherPlayer.PosY && playerPosition.alive && otherPlayer.alive)
                         {
@@ -444,9 +486,9 @@ namespace BlockBrawl
         {
             foreach (TetrisObject playerPosition in tetrisObjects)
             {
-                if (LocateOtherPlayeMatrix(playerIndex) != null)
+                if (LocateOtherPlayerMatrix(playerIndex) != null)
                 {
-                    foreach (TetrisObject otherPlayer in LocateOtherPlayeMatrix(playerIndex))
+                    foreach (TetrisObject otherPlayer in LocateOtherPlayerMatrix(playerIndex))
                     {
                         if (playerPosition.PosX == otherPlayer.PosX && playerPosition.PosY + tileSize.Y == otherPlayer.PosY && playerPosition.alive && otherPlayer.alive)
                         {
@@ -472,7 +514,7 @@ namespace BlockBrawl
         {
             Random rnd = new Random();
             if (jArray[playerIndex] == null && iArray[playerIndex] == null && tArray[playerIndex] == null && oArray[playerIndex] == null
-                && lArray[playerIndex] == null && sArray[playerIndex] == null && zArray[playerIndex] == null)
+                && lArray[playerIndex] == null && sArray[playerIndex] == null && zArray[playerIndex] == null && waitForSpawn[playerIndex] <= 0f)
             {
                 switch (nextBlock[playerIndex])
                 {
@@ -1634,6 +1676,8 @@ namespace BlockBrawl
                     if (sArray[playerTwoIndex] != null) { sArray[playerTwoIndex].Draw(spriteBatch); }
                     if (zArray[playerTwoIndex] != null) { zArray[playerTwoIndex].Draw(spriteBatch); }
                     if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
+
+                    if (bazooka != null) { bazooka.Draw(spriteBatch); }
                     break;
                 case PlayState.pause:
                     spriteBatch.DrawString(FontManager.MenuText, "Pause!", Vector2.Zero, Color.IndianRed);

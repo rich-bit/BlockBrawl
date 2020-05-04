@@ -21,9 +21,5 @@ namespace BlockBrawl.Objects
             }
             else { tex = aliveTex; alive = true; }
         }
-        public Rectangle Rect
-        {
-            get { return rect; }
-        }
     }
 }

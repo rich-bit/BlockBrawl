@@ -6,9 +6,8 @@ namespace BlockBrawl
 {
     class SettingsManager
     {
-        //GraphicsDeviceManager graphicsDeviceManager;
-        public static Vector2 tileSize;
-        public static float speed, fallTime, newSpeedCounter, qteWaitTime;
+        public static Vector2 tileSize, shotSpeed;
+        public static float speed, fallTime, newSpeedCounter, qteWaitTime, spawnBlockBazooka;
         public static Texture2D playerOneColor, playerTwoColor;
         public static string playerOneName, playerTwoName;
         public static int playerIndexOne, playerIndexTwo;
@@ -35,7 +34,9 @@ namespace BlockBrawl
 
             qteWaitTime = 40f;
 
-            gamePadVersion = false;
+            shotSpeed = new Vector2(10, 10);
+            spawnBlockBazooka = 5f;
+            gamePadVersion = true;
 
             playerIndexOne = 0;
             playerIndexTwo = 1;
