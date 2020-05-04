@@ -50,7 +50,7 @@ namespace BlockBrawl
             switch (currentGameState)
             {
                 case GameState.play:
-                    play.Update(gameTime, iM);
+                    play.Update(gameTime, iM, spriteBatch);
                     break;
                 case GameState.settings:
                     break;

@@ -152,3 +152,4 @@ C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\qtedottedblock.xnb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\obj\Debug\BlockBrawl.PreConfigurations.resources
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\obj\Debug\BlockBrawl.csproj.GenerateResource.cache
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Bazooka\bazooka-shot.xnb

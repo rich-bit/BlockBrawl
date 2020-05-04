@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using BlockBrawl.Blocks;
 using BlockBrawl.Objects;
@@ -10,13 +11,14 @@ namespace BlockBrawl
         Vector2 playerOnePos, playerTwoPos;
         int[] score;
         int[,] bonusRecieved;
+        float[] spawnWaitTime;
         string[] nextBlock;
         Texture2D[] playerColors;
         int playerOneIndex, playerTwoIndex;
-        public SideBars(Texture2D[] playerColors)
+        public SideBars(Texture2D[] playerColors, float[] spawnBlock)
         {
             this.playerColors = playerColors;
-
+            this.spawnWaitTime = spawnBlock;
             playerOneIndex = SettingsManager.playerIndexOne;
             playerTwoIndex = SettingsManager.playerIndexTwo;
 
@@ -145,6 +147,19 @@ namespace BlockBrawl
                 {
                     item.Draw(spriteBatch);
                 }
+            }
+            if(spawnWaitTime[playerOneIndex] > 0f)
+            {
+                spriteBatch.DrawString(FontManager.MenuText, "Wait\nfor spawn!" + Convert.ToInt32(spawnWaitTime[playerOneIndex]).ToString(), GetPlayerOneAllignment(7), Color.Red);
+            }
+            if (spawnWaitTime[playerTwoIndex] > 0f)
+            {
+                spriteBatch.DrawString(FontManager.MenuText, "Wait\nfor spawn!\n" + Convert.ToInt32(spawnWaitTime[playerTwoIndex]).ToString(),
+                    GetPlayerTwoAllignment(
+                        FontManager.MenuText.MeasureString("Wait\nfor spawn!\n" + Convert.ToInt32(spawnWaitTime[playerTwoIndex]).ToString()
+                            ).X
+                        , 7),
+                    Color.Red);
             }
         }
     }
