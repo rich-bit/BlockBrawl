@@ -32,11 +32,11 @@ namespace BlockBrawl
             playerOneColor = TextureManager.whiteBlock;
             playerTwoColor = TextureManager.purpleBlock;
 
-            qteWaitTime = 10f;
+            qteWaitTime = 40f;
 
             shotSpeed = new Vector2(10, 10);
             spawnBlockBazooka = 5f;
-            gamePadVersion = false;
+            gamePadVersion = true;
 
             playerIndexOne = 0;
             playerIndexTwo = 1;

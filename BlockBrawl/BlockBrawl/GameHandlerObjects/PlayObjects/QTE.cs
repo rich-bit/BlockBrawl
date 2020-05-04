@@ -225,7 +225,7 @@ namespace BlockBrawl
             {
                 CheckWinner(playerIndex);
             }
-            if (gamePad && playerBlocks[playerIndex] != null && timeLeft > 0f)
+            if (gamePad && playerBlocks[playerIndex] != null && timeLeft > 0f && Winner == int.MinValue)
             {
                 CheckGamePadInputs(playerIndex, iM);
             }
