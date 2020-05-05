@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
+
 namespace BlockBrawl
 {
     class SettingsManager
@@ -32,7 +31,7 @@ namespace BlockBrawl
             playerOneColor = TextureManager.whiteBlock;
             playerTwoColor = TextureManager.purpleBlock;
 
-            qteWaitTime = 40f;
+            qteWaitTime = 10f;
 
             shotSpeed = new Vector2(10, 10);
             spawnBlockBazooka = 5f;

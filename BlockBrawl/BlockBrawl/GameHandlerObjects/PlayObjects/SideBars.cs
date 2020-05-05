@@ -150,7 +150,7 @@ namespace BlockBrawl
             }
             if(spawnWaitTime[playerOneIndex] > 0f)
             {
-                spriteBatch.DrawString(FontManager.MenuText, "Wait\nfor spawn!" + Convert.ToInt32(spawnWaitTime[playerOneIndex]).ToString(), GetPlayerOneAllignment(7), Color.Red);
+                spriteBatch.DrawString(FontManager.MenuText, "Wait\nfor spawn!" + Convert.ToInt32(spawnWaitTime[playerOneIndex]).ToString(), GetPlayerOneAllignment(7), Color.Yellow);
             }
             if (spawnWaitTime[playerTwoIndex] > 0f)
             {
@@ -159,7 +159,7 @@ namespace BlockBrawl
                         FontManager.MenuText.MeasureString("Wait\nfor spawn!\n" + Convert.ToInt32(spawnWaitTime[playerTwoIndex]).ToString()
                             ).X
                         , 7),
-                    Color.Red);
+                    Color.Yellow);
             }
         }
     }

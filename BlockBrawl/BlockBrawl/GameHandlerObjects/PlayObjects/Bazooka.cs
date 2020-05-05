@@ -21,7 +21,7 @@ namespace BlockBrawl.GameHandlerObjects.PlayObjects
 
             speed = SettingsManager.shotSpeed;
 
-            shot = new GameObject(Vector2.Zero, TextureManager.bazookaShot);
+            //shot = new GameObject(Vector2.Zero, TextureManager.bazookaShot);
             tileSeize = SettingsManager.tileSize.X;
         }
         public void Action(TetrisObject[,] playerOneBlock, TetrisObject[,] playerTwoBlock, InputManager iM, bool gamePad, GameTime gameTime)
@@ -54,7 +54,7 @@ namespace BlockBrawl.GameHandlerObjects.PlayObjects
                     sender.GetLength(1) - 1, 0
                     ].PosY + tileSeize)
                     - (sender[0, 0].PosY)) / 2));
-
+                shot = new GameObject(Vector2.Zero, TextureManager.bazookaShot);
                 shot.Pos = sender[0, 0].Pos + posStartMiddle;
                 fired = true;
             }
@@ -69,7 +69,7 @@ namespace BlockBrawl.GameHandlerObjects.PlayObjects
                     sender.GetLength(1) - 1, 0
                     ].PosY + tileSeize)
                     - (sender[0, 0].PosY)) / 2));
-
+                shot = new GameObject(Vector2.Zero, TextureManager.bazookaShot);
                 shot.Pos = sender[0, 0].Pos + posStartMiddle;
                 fired = true;
             }
