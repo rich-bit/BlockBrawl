@@ -135,9 +135,14 @@ namespace BlockBrawl
         }
         private void EventHandler(GameTime gameTime)
         {
-            if (qte.Cleared)
+            if (qte.Cleared && qte.Winner != int.MinValue)
             {
                 bazooka = new Bazooka(5f, qte.Winner, playerOneIndex, playerTwoIndex);
+                qte = null;
+                currentPlayState = PlayState.play;
+            }
+            else if(qte.Cleared && qte.Winner == int.MinValue)
+            {
                 qte = null;
                 currentPlayState = PlayState.play;
             }
