@@ -28,10 +28,10 @@ namespace BlockBrawl
             fallTime = 1.3f;
             newSpeedCounter = 15f;
 
-            playerOneColor = TextureManager.whiteBlock;
-            playerTwoColor = TextureManager.purpleBlock;
+            playerOneColor = TextureManager.blueBlock1920;
+            playerTwoColor = TextureManager.greenBlock1920;
 
-            qteWaitTime = 10f;
+            qteWaitTime = 40f;
 
             shotSpeed = new Vector2(10, 10);
             spawnBlockBazooka = 5f;

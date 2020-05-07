@@ -109,7 +109,7 @@ namespace BlockBrawl
         {
             for (int y = tilesY - 1; y >= 0; y--)
             {
-                for (int x = tilesX - 1; x >= 0; x--)
+                for (int x = tilesX - 1; x >= 0; x--)// Fixa
                 {
                     playfield[x, y] = new GameObject(new Vector2(
                         ((tilesX * tileSize.X)

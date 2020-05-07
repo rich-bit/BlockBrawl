@@ -5,19 +5,13 @@ namespace BlockBrawl
 {
     class TextureManager
     {
-        public static Texture2D blueBlock, lightblueBlock, lightgreenBlock, orangeBlock, purpleBlock, whiteBlock, yellowBlock, emptyBlock, transBlock,
+        public static Texture2D emptyBlock, transBlock,
             menuPlay, menuSettings, menuHighScore, menuBlockBrawl, qteColor, qteDotted,
+            blueBlock1920, greenBlock1920, yellowBlock1920, purpleBlock1920, lightBlueBlock1920, orangeBlock1920, redBlock1920,
             bazookaShot;
 
         public TextureManager(ContentManager content)
         {
-            blueBlock = content.Load<Texture2D>(@"blueblock");
-            lightblueBlock = content.Load<Texture2D>(@"lightblue");
-            lightgreenBlock = content.Load<Texture2D>(@"lightgreenblock");
-            orangeBlock = content.Load<Texture2D>(@"orangeblock");
-            purpleBlock = content.Load<Texture2D>(@"purpleblock");
-            whiteBlock = content.Load<Texture2D>(@"whiteblock");
-            yellowBlock = content.Load<Texture2D>(@"yellowblock");
             emptyBlock = content.Load<Texture2D>(@"emptyblock");
             transBlock = content.Load<Texture2D>(@"transparentblock");
             menuPlay = content.Load<Texture2D>(@"Menu.Images/play1");
@@ -27,6 +21,14 @@ namespace BlockBrawl
             qteColor = content.Load<Texture2D>(@"qteblock");
             qteDotted = content.Load<Texture2D>(@"qtedottedblock");
             bazookaShot = content.Load<Texture2D>(@"Bazooka/bazooka-shot");
+
+            blueBlock1920 = content.Load<Texture2D>(@"1920x1080/blockblå");
+            greenBlock1920 = content.Load<Texture2D>(@"1920x1080/blockgrön");
+            yellowBlock1920 = content.Load<Texture2D>(@"1920x1080/blockgul");
+            purpleBlock1920 = content.Load<Texture2D>(@"1920x1080/blocklila");
+            lightBlueBlock1920 = content.Load<Texture2D>(@"1920x1080/blockljusblå");
+            orangeBlock1920 = content.Load<Texture2D>(@"1920x1080/blockorange");
+            redBlock1920 = content.Load<Texture2D>(@"1920x1080/blockröd");
         }
     }
 }
