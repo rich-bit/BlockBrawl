@@ -35,7 +35,7 @@ namespace BlockBrawl
 
             shotSpeed = new Vector2(10, 10);
             spawnBlockBazooka = 5f;
-            gamePadVersion = false;
+            gamePadVersion = true;
 
             playerIndexOne = 0;
             playerIndexTwo = 1;
