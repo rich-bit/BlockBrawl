@@ -5,11 +5,20 @@ Keyboardsteering how to use: Change gamePadVersion to false in settingsmanager t
 Keyboard mapping: 
 
 Player One:
-Left: A, Right: D, Down: S, RotateClockWise: Space, RotateCounterClockwise: Shift. Pause: Esc.
-Power up: "F"
+Left: A
+Right: D
+Down: S
+RotateClockWise: Space
+RotateCounterClockwise: Shift. 
+Pause: Esc.
+Power up: F
 
 PlayerTwo:
-Left: LeftArrow, Right: RightArrow, Down: DownArrow, RotateClockWise: NUM0, RotateCounterClockwise: Enter. 
+Left: LeftArrow
+Right: RightArrow
+Down: DownArrow
+RotateClockWise: NUM0
+RotateCounterClockwise: Enter. 
 Pause: NUMLOCK.
 Power-Up: Left-CTRL
 
