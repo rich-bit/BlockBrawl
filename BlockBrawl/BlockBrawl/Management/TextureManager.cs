@@ -5,13 +5,16 @@ namespace BlockBrawl
 {
     class TextureManager
     {
-        public static Texture2D emptyBlock, transBlock,
+        public static Texture2D emptyBlock, transBlock, menuArrowLeft, menuArrowRight,
             menuPlay, menuSettings, menuHighScore, menuBlockBrawl, qteColor, qteDotted,
             blueBlock1920, greenBlock1920, yellowBlock1920, purpleBlock1920, lightBlueBlock1920, orangeBlock1920, redBlock1920,
             bazookaShot;
 
         public TextureManager(ContentManager content)
         {
+            menuArrowLeft = content.Load<Texture2D>(@"Menu.Images/menuArrowLeft");
+            menuArrowRight = content.Load<Texture2D>(@"Menu.Images/menuArrowRight");
+
             emptyBlock = content.Load<Texture2D>(@"emptyblock");
             transBlock = content.Load<Texture2D>(@"transparentblock");
             menuPlay = content.Load<Texture2D>(@"Menu.Images/play1");

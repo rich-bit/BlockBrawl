@@ -152,6 +152,30 @@
 /processorParam:TextureFormat=Color
 /build:Menu.Images/highscore1.png
 
+#begin Menu.Images/menuArrowLeft.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Menu.Images/menuArrowLeft.png
+
+#begin Menu.Images/menuArrowRight.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Menu.Images/menuArrowRight.png
+
 #begin Menu.Images/play1.png
 /importer:TextureImporter
 /processor:TextureProcessor

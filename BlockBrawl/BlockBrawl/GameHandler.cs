@@ -47,6 +47,7 @@ namespace BlockBrawl
         public void Update(GameTime gameTime)
         {
             iM.Update();
+            MenuSwitcher();
             switch (currentGameState)
             {
                 case GameState.play:
@@ -59,10 +60,31 @@ namespace BlockBrawl
                 case GameState.controlls:
                     break;
                 case GameState.menu:
-                    menu.Update();
+                    menu.Update(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo, gameTime);
                     break;
             }
            // this.gameTime = gameTime;
+        }
+        public void MenuSwitcher()
+        {
+            if (menu.EnterChoice)
+            {
+                if(menu.menuChoiceSwitch == Menu.MenuChoice.play)
+                {
+                    currentGameState = GameState.play;
+                    menu.EnterChoice = false;
+                }
+                else if (menu.menuChoiceSwitch == Menu.MenuChoice.settings)
+                {
+                    currentGameState = GameState.settings;
+                    menu.EnterChoice = false;
+                }
+                else if (menu.menuChoiceSwitch == Menu.MenuChoice.highscore)
+                {
+                    currentGameState = GameState.highscore;
+                    menu.EnterChoice = false;
+                }
+            }
         }
         public void Draw()
         {

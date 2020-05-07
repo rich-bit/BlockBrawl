@@ -12,7 +12,7 @@ namespace BlockBrawl
         public static int playerIndexOne, playerIndexTwo;
         public static int gameWidth, gameHeight;
         public static bool gamePadVersion;
-        public static Point tiles;
+        public static Point tiles, arrowsInMenuMaxX;
         public SettingsManager(GraphicsDeviceManager graphicsDeviceManager, int setGameWidth, int setGameHeight, bool fulllscreen)
         {
             gameWidth = setGameWidth;
@@ -41,6 +41,8 @@ namespace BlockBrawl
             playerIndexTwo = 1;
             tileSize = new Vector2(60, 60);//Note
             tiles = new Point(20, gameHeight / 60);
+
+            arrowsInMenuMaxX = new Point(10, 0); // Set y to 0 please.
 
             playerOneName = "Player One";
             playerTwoName = "Player Two";

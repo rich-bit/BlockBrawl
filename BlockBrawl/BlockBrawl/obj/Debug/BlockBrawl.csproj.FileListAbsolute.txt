@@ -153,3 +153,5 @@ C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\1920x1080\blockljusblå.xnb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\1920x1080\blockorange.xnb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\1920x1080\blockröd.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\menuArrowLeft.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\menuArrowRight.xnb
