@@ -50,7 +50,7 @@ namespace BlockBrawl
         readonly SideBars sideBars;
 
         //Power-Ups
-        Bazooka bazooka;
+        BloodOrb bloodOrb;
         //Special-Effects
         AnimatedObject explosion;
         enum PlayState
@@ -139,7 +139,7 @@ namespace BlockBrawl
         {
             if (qte.Cleared && qte.Winner != int.MinValue)
             {
-                bazooka = new Bazooka(5f, qte.Winner, playerOneIndex, playerTwoIndex);
+                bloodOrb = new BloodOrb(5f, qte.Winner, playerOneIndex, playerTwoIndex);
                 qte = null;
                 currentPlayState = PlayState.play;
             }
@@ -175,18 +175,18 @@ namespace BlockBrawl
                     FallDownAddStack(playerTwoIndex);
                     GetBlocks(playerOneIndex);
                     GetBlocks(playerTwoIndex);
-                    if (bazooka != null)
+                    if (bloodOrb != null)
                     {
-                        bazooka.Action(
+                        bloodOrb.Action(
                             LocateOtherPlayerMatrix(OtherPlayerIndex(playerOneIndex)),
                             LocateOtherPlayerMatrix(OtherPlayerIndex(playerTwoIndex)),
                             iM, gamePadVersion, gameTime);
-                        if (bazooka.TargetHit)
+                        if (bloodOrb.TargetHit)
                         {
-                            explosion = new AnimatedObject(bazooka.ShotPos, TextureManager.spriteSheetExplosion1920x1080, new Point(4, 4));
-                            RemoveOtherPlayerBlock(OtherPlayerIndex(bazooka.PlayerIndexBazooka));
-                            waitForSpawn[OtherPlayerIndex(bazooka.PlayerIndexBazooka)] += SettingsManager.spawnBlockBazooka;
-                            bazooka = null;
+                            explosion = new AnimatedObject(bloodOrb.ShotPos, TextureManager.spriteSheetExplosion1920x1080, new Point(4, 4));
+                            RemoveOtherPlayerBlock(OtherPlayerIndex(bloodOrb.PlayerIndexBazooka));
+                            waitForSpawn[OtherPlayerIndex(bloodOrb.PlayerIndexBazooka)] += SettingsManager.spawnBlockBazooka;
+                            bloodOrb = null;
                         }
                     }
                     if(explosion != null) { 
@@ -1694,7 +1694,7 @@ namespace BlockBrawl
                     if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
 
                     //Weapons
-                    if (bazooka != null) { bazooka.Draw(spriteBatch); }
+                    if (bloodOrb != null) { bloodOrb.Draw(spriteBatch); }
                     //Effects
                     if(explosion != null) { explosion.Draw(spriteBatch); }
                     break;

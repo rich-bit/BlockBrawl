@@ -5,7 +5,7 @@ using BlockBrawl.Objects;
 
 namespace BlockBrawl.GameHandlerObjects.PlayObjects
 {
-    class Bazooka
+    class BloodOrb
     {
         AnimatedObject shot;
         public Vector2 ShotPos { get; set; }
@@ -15,7 +15,7 @@ namespace BlockBrawl.GameHandlerObjects.PlayObjects
         public int PlayerIndexBazooka { get; set; }
         int playerOneIndex;
         TetrisObject[,] sender, reciever;
-        public Bazooka(float timeToLive, int qteWinnerIndex, int playerOneIndex, int playerTwoIndex)
+        public BloodOrb(float timeToLive, int qteWinnerIndex, int playerOneIndex, int playerTwoIndex)
         {
             PlayerIndexBazooka = qteWinnerIndex;
             this.playerOneIndex = playerOneIndex;

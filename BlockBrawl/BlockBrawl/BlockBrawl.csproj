@@ -66,7 +66,7 @@
     <Compile Include="FileRead.cs" />
     <Compile Include="Blocks\Z-block.cs" />
     <Compile Include="GameHandlerObjects\Menu.cs" />
-    <Compile Include="GameHandlerObjects\PlayObjects\Bazooka.cs" />
+    <Compile Include="GameHandlerObjects\PlayObjects\BloodOrb.cs" />
     <Compile Include="GameHandlerObjects\PlayObjects\QTE.cs" />
     <Compile Include="GameHandlerObjects\PlayObjects\SideBars.cs" />
     <Compile Include="Management\FontManager.cs" />
