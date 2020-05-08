@@ -78,6 +78,7 @@
     <Compile Include="GameHandler.cs" />
     <Compile Include="Objects\GameObject.cs" />
     <Compile Include="GameHandlerObjects\Play.cs" />
+    <Compile Include="Other\AnimatedObject.cs" />
     <Compile Include="PreConfiguration.cs">
       <SubType>Form</SubType>
     </Compile>

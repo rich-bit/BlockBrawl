@@ -17,9 +17,9 @@ namespace BlockBrawl.Objects
         {
             if (kill)
             {
-            tex = deadTex; alive = false;
+            Tex = deadTex; alive = false;
             }
-            else { tex = aliveTex; alive = true; }
+            else { Tex = aliveTex; alive = true; }
         }
     }
 }

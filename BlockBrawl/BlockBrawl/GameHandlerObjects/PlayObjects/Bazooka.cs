@@ -7,7 +7,8 @@ namespace BlockBrawl.GameHandlerObjects.PlayObjects
 {
     class Bazooka
     {
-        GameObject shot;
+        AnimatedObject shot;
+        public Vector2 ShotPos { get; set; }
         Vector2 posStartMiddle, speed;
         float tileSeize;
         bool fired;
@@ -21,7 +22,6 @@ namespace BlockBrawl.GameHandlerObjects.PlayObjects
 
             speed = SettingsManager.shotSpeed;
 
-            //shot = new GameObject(Vector2.Zero, TextureManager.bazookaShot);
             tileSeize = SettingsManager.tileSize.X;
         }
         public void Action(TetrisObject[,] playerOneBlock, TetrisObject[,] playerTwoBlock, InputManager iM, bool gamePad, GameTime gameTime)
@@ -54,7 +54,7 @@ namespace BlockBrawl.GameHandlerObjects.PlayObjects
                     sender.GetLength(1) - 1, 0
                     ].PosY + tileSeize)
                     - (sender[0, 0].PosY)) / 2));
-                shot = new GameObject(Vector2.Zero, TextureManager.bazookaShot);
+                shot = new AnimatedObject(Vector2.Zero, TextureManager.spriteSheetShot, new Point(7,1));
                 shot.Pos = sender[0, 0].Pos + posStartMiddle;
                 fired = true;
             }
@@ -69,7 +69,7 @@ namespace BlockBrawl.GameHandlerObjects.PlayObjects
                     sender.GetLength(1) - 1, 0
                     ].PosY + tileSeize)
                     - (sender[0, 0].PosY)) / 2));
-                shot = new GameObject(Vector2.Zero, TextureManager.bazookaShot);
+                shot = new AnimatedObject(Vector2.Zero, TextureManager.spriteSheetShot, new Point(7, 1));
                 shot.Pos = sender[0, 0].Pos + posStartMiddle;
                 fired = true;
             }
@@ -77,6 +77,10 @@ namespace BlockBrawl.GameHandlerObjects.PlayObjects
             {
                 SeekOtherPlayer(reciever);
                 CheckCollision(reciever);
+            }
+            if(shot != null)
+            {
+                shot.CycleSpriteSheet(gameTime);
             }
         }
         public bool TargetHit { get; private set; }
@@ -104,6 +108,7 @@ namespace BlockBrawl.GameHandlerObjects.PlayObjects
                 if (item.alive && item.Rect.Intersects(shot.Rect))
                 {
                     TargetHit = true;
+                    ShotPos = shot.Pos;
                     shot = null;
                     break;
                 }

@@ -51,6 +51,8 @@ namespace BlockBrawl
 
         //Power-Ups
         Bazooka bazooka;
+        //Special-Effects
+        AnimatedObject explosion;
         enum PlayState
         {
             play,
@@ -58,7 +60,7 @@ namespace BlockBrawl
             gameover,
             qte,
         }
-        PlayState currentPlayState;
+        PlayState currentPlayState;        
 
         public Play(bool gamePadVersion, Point tiles, Vector2 tileSize, int gameWidth, int gameHeight, int playerOneIndex, int playerTwoIndex, Texture2D playerOneColor, Texture2D playerTwoColor)
         {
@@ -181,11 +183,18 @@ namespace BlockBrawl
                             iM, gamePadVersion, gameTime);
                         if (bazooka.TargetHit)
                         {
+                            explosion = new AnimatedObject(bazooka.ShotPos, TextureManager.spriteSheetExplosion1920x1080, new Point(4, 4));
                             RemoveOtherPlayerBlock(OtherPlayerIndex(bazooka.PlayerIndexBazooka));
                             waitForSpawn[OtherPlayerIndex(bazooka.PlayerIndexBazooka)] += SettingsManager.spawnBlockBazooka;
                             bazooka = null;
                         }
                     }
+                    if(explosion != null) { 
+                        explosion.CycleSpriteSheetOnce(gameTime); 
+                        if (explosion.Done) 
+                        { 
+                            explosion = null; 
+                        } }
                     if (gamePadVersion && iM.JustPressed(Buttons.Start, playerOneIndex) || iM.JustPressed(Buttons.Start, playerTwoIndex)) { currentPlayState = PlayState.pause; }
                     else if (!gamePadVersion && iM.JustPressed(Keys.Escape) || iM.JustPressed(Keys.NumLock)) { currentPlayState = PlayState.pause; }
                     break;
@@ -262,7 +271,7 @@ namespace BlockBrawl
             {
                 if (tetrisObjects[x, row] != null)
                 {
-                    colors.Add(tetrisObjects[x, row].tex);
+                    colors.Add(tetrisObjects[x, row].Tex);
                 }
             }
             foreach (Texture2D color in colors)
@@ -279,7 +288,7 @@ namespace BlockBrawl
                 {
                     if (stackedBlocks[x, y - 1] != null && y <= deletedRow)
                     {
-                        stackedBlocks[x, y] = new TetrisObject(playfield[x, y].Pos, stackedBlocks[x, y - 1].tex);
+                        stackedBlocks[x, y] = new TetrisObject(playfield[x, y].Pos, stackedBlocks[x, y - 1].Tex);
                         stackedBlocks[x, y - 1] = null;
                     }
                 }
@@ -731,7 +740,7 @@ namespace BlockBrawl
                 {
                     if (stackedBlocks[i, j] != null)
                     {
-                        cloneArray[i, j] = new TetrisObject(stackedBlocks[i, j].Pos, stackedBlocks[i, j].tex);
+                        cloneArray[i, j] = new TetrisObject(stackedBlocks[i, j].Pos, stackedBlocks[i, j].Tex);
                     }
                 }
             }
@@ -743,7 +752,7 @@ namespace BlockBrawl
                     {
                         if (tetrisobject.Pos == playfield[x, y].Pos && tetrisobject.alive)
                         {
-                            cloneArray[x, y] = new TetrisObject(tetrisobject.Pos, tetrisobject.tex);
+                            cloneArray[x, y] = new TetrisObject(tetrisobject.Pos, tetrisobject.Tex);
                         }
                     }
                 }
@@ -784,7 +793,7 @@ namespace BlockBrawl
                     {
                         if (item.Pos == playfield[i, j].Pos && item.alive)
                         {
-                            stackedBlocks[i, j] = new TetrisObject(item.Pos, item.tex);
+                            stackedBlocks[i, j] = new TetrisObject(item.Pos, item.Tex);
                         }
                     }
                 }
@@ -1666,6 +1675,7 @@ namespace BlockBrawl
                     {
                         item.Draw(spriteBatch);
                     }
+                    //Draw for blocks
                     if (jArray[playerOneIndex] != null) { jArray[playerOneIndex].Draw(spriteBatch); }
                     if (iArray[playerOneIndex] != null) { iArray[playerOneIndex].Draw(spriteBatch); }
                     if (tArray[playerOneIndex] != null) { tArray[playerOneIndex].Draw(spriteBatch); }
@@ -1680,9 +1690,13 @@ namespace BlockBrawl
                     if (lArray[playerTwoIndex] != null) { lArray[playerTwoIndex].Draw(spriteBatch); }
                     if (sArray[playerTwoIndex] != null) { sArray[playerTwoIndex].Draw(spriteBatch); }
                     if (zArray[playerTwoIndex] != null) { zArray[playerTwoIndex].Draw(spriteBatch); }
+                    ///The stack of dead blocks
                     if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
 
+                    //Weapons
                     if (bazooka != null) { bazooka.Draw(spriteBatch); }
+                    //Effects
+                    if(explosion != null) { explosion.Draw(spriteBatch); }
                     break;
                 case PlayState.pause:
                     spriteBatch.DrawString(FontManager.MenuText, "Pause!", Vector2.Zero, Color.IndianRed);

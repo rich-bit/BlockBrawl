@@ -8,7 +8,7 @@ namespace BlockBrawl
         public static Texture2D emptyBlock, transBlock, menuArrowLeft, menuArrowRight,
             menuPlay, menuSettings, menuHighScore, menuBlockBrawl, qteColor, qteDotted,
             blueBlock1920, greenBlock1920, yellowBlock1920, purpleBlock1920, lightBlueBlock1920, orangeBlock1920, redBlock1920,
-            bazookaShot;
+            bazookaShot, spriteSheetExplosion, spriteSheetExplosion1920x1080, spriteSheetShot;
 
         public TextureManager(ContentManager content)
         {
@@ -32,6 +32,11 @@ namespace BlockBrawl
             lightBlueBlock1920 = content.Load<Texture2D>(@"1920x1080/blockljusblå");
             orangeBlock1920 = content.Load<Texture2D>(@"1920x1080/blockorange");
             redBlock1920 = content.Load<Texture2D>(@"1920x1080/blockröd");
+
+            spriteSheetExplosion = content.Load<Texture2D>(@"spritesheetExp");
+            spriteSheetExplosion1920x1080 = content.Load<Texture2D>(@"1920x1080/spritesheetExp-1920x1080");
+
+            spriteSheetShot = content.Load<Texture2D>(@"spritesheetShot");
         }
     }
 }

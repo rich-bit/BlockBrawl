@@ -48,18 +48,18 @@ namespace BlockBrawl
             float arbitraryMargin = 25f;
             for (int i = 0; i < menuObjs.Count; i++)
             {
-                lengthOfPics += menuObjs[i].tex.Height;
+                lengthOfPics += menuObjs[i].Tex.Height;
                 lengthOfPics += arbitraryMargin;
             }
             for (int j = 0; j < menuObjs.Count; j++)
             {
                 menuObjs[j].Pos = new Vector2(
-                    SettingsManager.gameWidth / 2 - menuObjs[j].tex.Width / 2,
+                    SettingsManager.gameWidth / 2 - menuObjs[j].Tex.Width / 2,
                     SettingsManager.gameHeight / 2
                     - lengthOfPics / 2
                     + heightCount
                     );
-                heightCount += menuObjs[j].tex.Height;
+                heightCount += menuObjs[j].Tex.Height;
                 heightCount += arbitraryMargin;
             }
         }

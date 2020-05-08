@@ -6,14 +6,14 @@ namespace BlockBrawl
     class GameObject
     {
         protected Vector2 pos;
-        public Texture2D tex;
+        public Texture2D Tex { get; set; }
         protected Rectangle rect;
         public float transparency;
         public float Time { get; set; }
         public GameObject(Vector2 pos, Texture2D tex)
         {
             this.pos = pos;
-            this.tex = tex;
+            Tex = tex;
             transparency = 1f;
             rect = new Rectangle((int)pos.X, (int)pos.Y, tex.Width, tex.Height);
         }
@@ -47,11 +47,11 @@ namespace BlockBrawl
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(tex, rect, Color.White);
+            spriteBatch.Draw(Tex, rect, Color.White);
         }
         public virtual void Draw(SpriteBatch spriteBatch, Color color)
         {
-            spriteBatch.Draw(tex, rect, color * transparency);
+            spriteBatch.Draw(Tex, rect, color * transparency);
         }
     }
 }
