@@ -1705,6 +1705,8 @@ namespace BlockBrawl
                     break;
                 case PlayState.gameover:
                     spriteBatch.DrawString(FontManager.MenuText, "GameOver!", Vector2.Zero, Color.IndianRed);
+                    spriteBatch.DrawString(FontManager.MenuText, $"Player one score: {score[playerOneIndex].ToString()}", new Vector2(0, 80), Color.White);
+                    spriteBatch.DrawString(FontManager.MenuText, $"Player two score: {score[playerTwoIndex].ToString()}", new Vector2(0, 160), Color.White);
                     break;
                 case PlayState.qte:
                     qte.Draw(spriteBatch);
