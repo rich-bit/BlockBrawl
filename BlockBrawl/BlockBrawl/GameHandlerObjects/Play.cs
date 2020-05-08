@@ -115,7 +115,7 @@ namespace BlockBrawl
                 {
                     playfield[x, y] = new GameObject(new Vector2(
                         ((tilesX * tileSize.X)
-                        + (-tilesX * tileSize.X + x * tileSize.X) - tileSize.X)
+                        + (-tilesX * tileSize.X + x * tileSize.X)/* - tileSize.X*/)
                         + (gameWidth / 2)
                         - (tilesX * tileSize.X / 2),
                         gameHeight
