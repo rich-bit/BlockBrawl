@@ -30,6 +30,7 @@ namespace BlockBrawl
             this.graphicsDevice = graphicsDevice;
 
             new FontManager(contentManager);
+            new SoundManager(contentManager);
             new TextureManager(contentManager);
             settings = new SettingsManager(graphicsDeviceManager, gameWidth, gameHeight, fullscreen);
             spriteBatch = new SpriteBatch(graphicsDevice);

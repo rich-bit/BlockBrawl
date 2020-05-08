@@ -133,6 +133,24 @@
 /processorParam:TextureFormat=Color
 /build:emptyblock.png
 
+#begin GameSounds/explosion.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:GameSounds/explosion.wav
+
+#begin GameSounds/menuChoice.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:GameSounds/menuChoice.wav
+
+#begin GameSounds/rowfilled.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:GameSounds/rowfilled.wav
+
 #begin gameText.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor

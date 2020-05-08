@@ -101,6 +101,7 @@ namespace BlockBrawl
                 || iM.JustPressed(Keys.Enter) || iM.JustPressed(Keys.Space))
             {
                 EnterChoice = true;
+                SoundManager.menuChoice.Play();
             }
 
         }

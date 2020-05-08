@@ -189,7 +189,8 @@ namespace BlockBrawl
                             bloodOrb = null;
                         }
                     }
-                    if(explosion != null) { 
+                    if(explosion != null) {
+                        SoundManager.explosion.Play();
                         explosion.CycleSpriteSheetOnce(gameTime); 
                         if (explosion.Done) 
                         { 
@@ -727,6 +728,7 @@ namespace BlockBrawl
                             i++;
                         } while (i != x + 1);
                         UpdatePositionsStack(y);
+                        SoundManager.rowFilled.Play();
                     }
                 }
             }
