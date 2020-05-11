@@ -13,15 +13,15 @@ namespace BlockBrawl
         public static int gameWidth, gameHeight;
         public static bool gamePadVersion;
         public static Point tiles, arrowsInMenuMaxX;
-        public SettingsManager(GraphicsDeviceManager graphicsDeviceManager, int setGameWidth, int setGameHeight, bool fulllscreen)
+        public SettingsManager(GraphicsDeviceManager graphicsDeviceManager)
         {
-            gameWidth = setGameWidth;
-            gameHeight = setGameHeight;
+            gameWidth = PreConfigurations.gameWidth;
+            gameHeight = PreConfigurations.gameHeight;
             graphicsDeviceManager.PreferredBackBufferWidth = gameWidth;
             graphicsDeviceManager.PreferredBackBufferHeight = gameHeight;
 
-            graphicsDeviceManager.HardwareModeSwitch = false;
-            graphicsDeviceManager.IsFullScreen = fulllscreen;
+            //graphicsDeviceManager.HardwareModeSwitch = false;
+            graphicsDeviceManager.IsFullScreen = PreConfigurations.fullScreen;
             graphicsDeviceManager.ApplyChanges();
 
             speed = tileSize.X;

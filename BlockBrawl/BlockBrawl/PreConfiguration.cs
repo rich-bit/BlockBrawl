@@ -8,10 +8,10 @@ namespace BlockBrawl
     public partial class PreConfigurations : Form
     {
         FileRead fileRead = new FileRead();
-        public bool Fullscreen { get; set; }
+        public static bool fullScreen;/* { get; set; }*/
         public bool ShowPreConfigWindow { get; }
-        public int GameWidth { get; set; }
-        public int GameHeight { get; set; }
+        public static int gameWidth; /*{ get; set; }*/
+        public static int gameHeight; /*{ get; set; }*/
         public PreConfigurations()
         {
             InitializeComponent();
@@ -21,8 +21,8 @@ namespace BlockBrawl
 
             ShowPreConfigWindow = fileRead.ShowConfigWindowAtStart().Contains("True");
 
-            Fullscreen = fileRead.StartInFullScreen().Contains("True");
-            if (Fullscreen) { fullscreenchk.Checked = true; }
+            fullScreen = fileRead.StartInFullScreen().Contains("True");
+            if (fullScreen) { fullscreenchk.Checked = true; }
 
             string preferredResolution = fileRead.PreferredResolution();
 
@@ -36,8 +36,8 @@ namespace BlockBrawl
                     }
                 }
                 string[] split = preferredResolution.Split(new[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
-                GameWidth = Convert.ToInt32(split[0]);
-                GameHeight = Convert.ToInt32(split[1]);
+                gameWidth = Convert.ToInt32(split[0]);
+                gameHeight = Convert.ToInt32(split[1]);
             }
         }
         private void LocateASettingsFile()
@@ -76,9 +76,9 @@ namespace BlockBrawl
             }
             string choosenRes = resolutionslst.Text;
             string[] split = choosenRes.Split(new[] { "x" }, StringSplitOptions.RemoveEmptyEntries);
-            GameWidth = Convert.ToInt32(split[0]);
-            GameHeight = Convert.ToInt32(split[1]);
-            Fullscreen = fullscreenchk.Checked;
+            gameWidth = Convert.ToInt32(split[0]);
+            gameHeight = Convert.ToInt32(split[1]);
+            fullScreen = fullscreenchk.Checked;
             File.WriteAllLines("settings.txt", newSettings);
             Close();
         }

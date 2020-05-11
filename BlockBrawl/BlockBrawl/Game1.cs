@@ -6,21 +6,21 @@ namespace BlockBrawl
     {
         GraphicsDeviceManager graphics;
         GameHandler gameHandler;
-
-        bool fullscreen;
-        int gameWidth, gameHeight;
-        public Game1(bool fullscreen, int gameWidth, int gameHeight)
+        public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-
-            this.fullscreen = fullscreen;
-            this.gameHeight = gameHeight;
-            this.gameWidth = gameWidth;
+        }
+        protected override void Initialize()
+        {
+            base.Initialize();
         }
         protected override void LoadContent()
         {
-            gameHandler = new GameHandler(graphics, GraphicsDevice, Content, fullscreen, gameWidth, gameHeight);
+            gameHandler = new GameHandler(graphics, GraphicsDevice, Content);
+        }
+        protected override void UnloadContent()
+        {
         }
         protected override void Update(GameTime gameTime)
         {

@@ -23,8 +23,7 @@ namespace BlockBrawl
         //Management
         Play play;
         Menu menu;
-        public GameHandler(GraphicsDeviceManager graphicsDeviceManager, GraphicsDevice graphicsDevice, ContentManager contentManager,
-            bool fullscreen, int gameWidth, int gameHeight)
+        public GameHandler(GraphicsDeviceManager graphicsDeviceManager, GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
             //Construct stuff;                      
             this.graphicsDevice = graphicsDevice;
@@ -32,7 +31,7 @@ namespace BlockBrawl
             new FontManager(contentManager);
             new SoundManager(contentManager);
             new TextureManager(contentManager);
-            settings = new SettingsManager(graphicsDeviceManager, gameWidth, gameHeight, fullscreen);
+            settings = new SettingsManager(graphicsDeviceManager);
             spriteBatch = new SpriteBatch(graphicsDevice);
             iM = new InputManager(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
 
