@@ -1,4 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BlockBrawl.GameHandlerObjects;
+using BlockBrawl.Objects;
+using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -23,6 +27,7 @@ namespace BlockBrawl
         //Management
         Play play;
         Menu menu;
+        HighScore highScore;
         public GameHandler(GraphicsDeviceManager graphicsDeviceManager, GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
             //Construct stuff;                      
@@ -41,7 +46,7 @@ namespace BlockBrawl
                 SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo,
                 SettingsManager.playerOneColor, SettingsManager.playerTwoColor);
             menu = new Menu();
-
+            highScore = new HighScore();
             currentGameState = GameState.menu;
         }
         public void Update(GameTime gameTime)
