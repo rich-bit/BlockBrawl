@@ -4,14 +4,14 @@ using System.IO;
 
 namespace BlockBrawl
 {
-    class FileRead
+    class Fileread
     {
         private readonly string rootPath;
         private readonly string noCopySoundsPath;
         private readonly string otherSoundsPath;
         private readonly List<string> supportedResolutions;
 
-        public FileRead()
+        public Fileread()
         {
             rootPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
             rootPath = rootPath.Substring(6);

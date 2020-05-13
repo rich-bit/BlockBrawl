@@ -23,7 +23,7 @@ namespace BlockBrawl
 
             InitiateSoundEffects(content);
 
-            List<string> tempList = new FileRead().NoCopySounds();
+            List<string> tempList = new Fileread().NoCopySounds();
             if (tempList.Count > 0)
             {
                 for (int i = 0; i < tempList.Count; i++)
@@ -37,7 +37,7 @@ namespace BlockBrawl
                 }
             }
 
-            tempList = new FileRead().OtherSounds();
+            tempList = new Fileread().OtherSounds();
             if (tempList.Count > 0)
             {
                 for (int i = 0; i < tempList.Count; i++)

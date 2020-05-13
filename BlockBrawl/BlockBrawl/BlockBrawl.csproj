@@ -2,6 +2,7 @@
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
@@ -64,23 +65,25 @@
     <Compile Include="Blocks\L-block.cs" />
     <Compile Include="Blocks\O-block.cs" />
     <Compile Include="Blocks\T-block.cs" />
-    <Compile Include="FileRead.cs" />
+    <Compile Include="Fileread.cs" />
     <Compile Include="Blocks\Z-block.cs" />
-    <Compile Include="GameHandlerObjects\HighScore.cs" />
-    <Compile Include="GameHandlerObjects\Menu.cs" />
-    <Compile Include="GameHandlerObjects\PlayObjects\BloodOrb.cs" />
-    <Compile Include="GameHandlerObjects\PlayObjects\QTE.cs" />
-    <Compile Include="GameHandlerObjects\PlayObjects\SideBars.cs" />
+    <Compile Include="Gamehandler\Highscore.cs" />
+    <Compile Include="Gamehandler\Highscore\HighScoreEntry.cs" />
+    <Compile Include="Gamehandler\Menu.cs" />
+    <Compile Include="Gamehandler\Play\Bloodorb.cs" />
+    <Compile Include="Gamehandler\Play\GameOver.cs" />
+    <Compile Include="Gamehandler\Play\QTE.cs" />
+    <Compile Include="Gamehandler\Play\SideBars.cs" />
     <Compile Include="Management\FontManager.cs" />
     <Compile Include="Management\SoundManager.cs" />
-    <Compile Include="Objects\DataRead.cs" />
+    <Compile Include="Objects\Dataread.cs" />
     <Compile Include="Objects\TetrisObject.cs" />
     <Compile Include="Management\InputManager.cs" />
     <Compile Include="Management\SettingsManager.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GameHandler.cs" />
     <Compile Include="Objects\GameObject.cs" />
-    <Compile Include="GameHandlerObjects\Play.cs" />
+    <Compile Include="Gamehandler\Play.cs" />
     <Compile Include="Other\AnimatedObject.cs" />
     <Compile Include="PreConfiguration.cs">
       <SubType>Form</SubType>

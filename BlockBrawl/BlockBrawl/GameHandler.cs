@@ -1,7 +1,4 @@
 ﻿using BlockBrawl.GameHandlerObjects;
-using BlockBrawl.Objects;
-using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -56,11 +53,18 @@ namespace BlockBrawl
             switch (currentGameState)
             {
                 case GameState.play:
-                    play.Update(gameTime, iM, spriteBatch);
+                    play.Update(gameTime, iM);
+                    if (play.GoToMenu)
+                    {
+                        currentGameState = GameState.menu;
+                        play.GoToMenu = false;
+                    }
                     break;
                 case GameState.settings:
                     break;
                 case GameState.highscore:
+                    highScore.Update(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
+                    if (highScore.GoToMenu) { currentGameState = GameState.menu; highScore.GoToMenu = false; }
                     break;
                 case GameState.controlls:
                     break;
@@ -103,6 +107,7 @@ namespace BlockBrawl
                 case GameState.settings:
                     break;
                 case GameState.highscore:
+                    highScore.Draw(spriteBatch);
                     break;
                 case GameState.controlls:
                     break;

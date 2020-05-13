@@ -7,7 +7,7 @@ namespace BlockBrawl
 {
     public partial class PreConfigurations : Form
     {
-        FileRead fileRead = new FileRead();
+        Fileread fileRead = new Fileread();
         public static bool fullScreen;/* { get; set; }*/
         public bool ShowPreConfigWindow { get; }
         public static int gameWidth; /*{ get; set; }*/

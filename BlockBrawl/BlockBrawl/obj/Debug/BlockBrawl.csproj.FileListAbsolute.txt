@@ -280,3 +280,4 @@ C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\System.Text.Json.xml
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\System.Threading.Tasks.Extensions.xml
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\System.ValueTuple.xml
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\obj\Debug\BlockBrawl.exe.config
