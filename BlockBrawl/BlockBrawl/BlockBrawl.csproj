@@ -74,6 +74,7 @@
     <Compile Include="Gamehandler\Play\GameOver.cs" />
     <Compile Include="Gamehandler\Play\QTE.cs" />
     <Compile Include="Gamehandler\Play\SideBars.cs" />
+    <Compile Include="Gamehandler\PrePlayScreen.cs" />
     <Compile Include="Management\FontManager.cs" />
     <Compile Include="Management\SoundManager.cs" />
     <Compile Include="Objects\Dataread.cs" />

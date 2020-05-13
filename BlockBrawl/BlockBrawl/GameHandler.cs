@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using BlockBrawl.Gamehandler;
 
 namespace BlockBrawl
 {
@@ -22,6 +23,7 @@ namespace BlockBrawl
         }
         GameState currentGameState;
         //Management
+        PrePlayScreen prePlayScreen;
         Play play;
         Menu menu;
         HighScore highScore;
@@ -37,11 +39,7 @@ namespace BlockBrawl
             spriteBatch = new SpriteBatch(graphicsDevice);
             iM = new InputManager(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
 
-            play = new Play(SettingsManager.gamePadVersion,
-                SettingsManager.tiles, SettingsManager.tileSize,
-                SettingsManager.gameWidth, SettingsManager.gameHeight,
-                SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo,
-                SettingsManager.playerOneColor, SettingsManager.playerTwoColor);
+            prePlayScreen = new PrePlayScreen(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
             menu = new Menu();
             highScore = new HighScore();
             currentGameState = GameState.menu;
@@ -53,11 +51,18 @@ namespace BlockBrawl
             switch (currentGameState)
             {
                 case GameState.play:
-                    play.Update(gameTime, iM);
-                    if (play.GoToMenu)
+                    if (play == null)
                     {
-                        currentGameState = GameState.menu;
-                        play.GoToMenu = false;
+                        prePlayScreen.Update(iM, SettingsManager.gamePadVersion);
+                    }
+                    if (prePlayScreen.ReadyEnterPlay)
+                    {
+                        play = prePlayScreen.Play;
+                        prePlayScreen.ReadyEnterPlay = false;
+                    }
+                    if (play != null)
+                    {
+                        play.Update(gameTime, iM);
                     }
                     break;
                 case GameState.settings:
@@ -72,13 +77,13 @@ namespace BlockBrawl
                     menu.Update(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo, gameTime);
                     break;
             }
-           // this.gameTime = gameTime;
+            // this.gameTime = gameTime;
         }
         public void MenuSwitcher()
         {
             if (menu.EnterChoice)
             {
-                if(menu.menuChoiceSwitch == Menu.MenuChoice.play)
+                if (menu.menuChoiceSwitch == Menu.MenuChoice.play)
                 {
                     currentGameState = GameState.play;
                     menu.EnterChoice = false;
@@ -102,7 +107,14 @@ namespace BlockBrawl
             switch (currentGameState)
             {
                 case GameState.play:
-                    play.Draw(spriteBatch);
+                    if (play == null)
+                    {
+                        prePlayScreen.Draw(spriteBatch);
+                    }
+                    if (play != null)
+                    {
+                        play.Draw(spriteBatch);
+                    }
                     break;
                 case GameState.settings:
                     break;
