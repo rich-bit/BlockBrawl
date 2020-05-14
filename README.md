@@ -1,7 +1,5 @@
 This game is under development, feel free to take a look. 
 
-Keyboardsteering how to use: Change gamePadVersion to false in settingsmanager to use keyboard version.
-
 Keyboard mapping: 
 
 Player One:
