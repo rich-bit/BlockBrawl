@@ -8,10 +8,11 @@ namespace BlockBrawl
     public partial class PreConfigurations : Form
     {
         Fileread fileRead = new Fileread();
-        public static bool fullScreen;/* { get; set; }*/
+        public static bool fullScreen;
+        public static bool gamePadVersion;
         public bool ShowPreConfigWindow { get; }
-        public static int gameWidth; /*{ get; set; }*/
-        public static int gameHeight; /*{ get; set; }*/
+        public static int gameWidth;
+        public static int gameHeight;
         public PreConfigurations()
         {
             InitializeComponent();
@@ -23,6 +24,8 @@ namespace BlockBrawl
 
             fullScreen = fileRead.StartInFullScreen().Contains("True");
             if (fullScreen) { fullscreenchk.Checked = true; }
+            gamePadVersion = fileRead.StartWithGamePads().Contains("True");
+            if (gamePadVersion) { chkGamePad.Checked = true; }
 
             string preferredResolution = fileRead.PreferredResolution();
 
@@ -64,6 +67,11 @@ namespace BlockBrawl
                     string newString = "fullscreen=" + fullscreenchk.Checked.ToString() + ";";
                     newSettings.Add(newString);
                 }
+                else if (oldSettings[i].Contains("startWithGamePad="))
+                {
+                    string newString = "startWithGamePad=" + chkGamePad.Checked.ToString() + ";";
+                    newSettings.Add(newString);
+                }
                 else if (oldSettings[i].Contains("PreferredResolution="))
                 {
                     string newString = "PreferredResolution=" + resolutionslst.Text + ";";
@@ -79,6 +87,7 @@ namespace BlockBrawl
             gameWidth = Convert.ToInt32(split[0]);
             gameHeight = Convert.ToInt32(split[1]);
             fullScreen = fullscreenchk.Checked;
+            gamePadVersion = chkGamePad.Checked;
             File.WriteAllLines("settings.txt", newSettings);
             Close();
         }

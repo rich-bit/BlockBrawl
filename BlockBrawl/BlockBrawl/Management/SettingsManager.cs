@@ -24,6 +24,8 @@ namespace BlockBrawl
             graphicsDeviceManager.IsFullScreen = PreConfigurations.fullScreen;
             graphicsDeviceManager.ApplyChanges();
 
+            gamePadVersion = PreConfigurations.gamePadVersion;
+
             speed = tileSize.X;
             fallTime = 1.3f;
             newSpeedCounter = 15f;
@@ -35,7 +37,6 @@ namespace BlockBrawl
 
             shotSpeed = new Vector2(10, 10);
             spawnBlockBazooka = 5f;
-            gamePadVersion = true;
 
             playerIndexOne = 0;
             playerIndexTwo = 1;

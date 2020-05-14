@@ -66,6 +66,7 @@ namespace BlockBrawl
             if (!File.Exists(settingsFile))
             {
                 settings.Add("fullscreen=False;");
+                settings.Add("startWithGamePad=True");
                 settings.Add("showPreConfig=True;");
                 foreach (string item in supportedResolutions) { settings.Add("Resolution: " + item); }
                 settings.Add("PreferredResolution=");
@@ -119,6 +120,25 @@ namespace BlockBrawl
                     if (item.Contains("fullscreen="))
                     {
                         string[] a = item.Split(new[] { "fullscreen=", ";" }, StringSplitOptions.RemoveEmptyEntries);
+                        dataRead = a[0];
+                    }
+                }
+            }
+            else if (!File.Exists(settingsFile)) { dataRead = "unsuccessful"; }
+            return dataRead;
+        }
+        public string StartWithGamePads()
+        {
+            string dataRead = "NotRead";
+            string settingsFile = "settings.txt";
+            if (File.Exists(settingsFile))
+            {
+                string[] settings = File.ReadAllLines(settingsFile);
+                foreach (string item in settings)
+                {
+                    if (item.Contains("startWithGamePad="))
+                    {
+                        string[] a = item.Split(new[] { "startWithGamePad=", ";" }, StringSplitOptions.RemoveEmptyEntries);
                         dataRead = a[0];
                     }
                 }
