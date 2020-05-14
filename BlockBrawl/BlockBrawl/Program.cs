@@ -15,7 +15,7 @@ namespace BlockBrawl
             {
                 Application.Run(preConfig);
             }
-            using (var game = new Game1(/*preConfig.fullScreen, preConfig.gameWidth, preConfig.gameHeight*/))
+            using (var game = new Game1())
                 game.Run();
         }
     }

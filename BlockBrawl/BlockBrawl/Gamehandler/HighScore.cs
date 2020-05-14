@@ -117,7 +117,7 @@ namespace BlockBrawl
             }
             else
             {
-                spriteBatch.DrawString(FontManager.MenuText, "Highscores!", GetAlignment(FontManager.MenuText, "Highscores!", 1), Color.Red);
+                spriteBatch.DrawString(FontManager.MenuText, "Best BlockBrawl scores:", GetAlignment(FontManager.MenuText, "Best BlockBrawl scores:", 1), Color.Gold);
                 if (currentRecords != null)
                 {
                     for (int i = 0; i < currentRecords.Count; i++)
