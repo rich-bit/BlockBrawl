@@ -4,36 +4,36 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blockblå.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blockgrön.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blockgul.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blocklila.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blockljusblå.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blockorange.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blockröd.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/spritesheetExp-1920x1080.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Bazooka/bazooka-shot.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/emptyblock.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/GameSounds/explosion.wav</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/GameSounds/menuChoice.wav</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/GameSounds/rowfilled.wav</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/gameText.spritefont</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/blockbrawl1.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/highscore1.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/menuArrowLeft.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/menuArrowRight.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/play1.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/settings1.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/MenuFont.spritefont</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/menuText.spritefont</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/neonText.spritefont</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/newround.spritefont</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/qteblock.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/qtedottedblock.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/scoreText.spritefont</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/spritesheetExp.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/spritesheetShot.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/transparentblock.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blockblå.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blockgrön.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blockgul.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blocklila.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blockljusblå.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blockorange.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/blockröd.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/1920x1080/spritesheetExp-1920x1080.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/Bazooka/bazooka-shot.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/emptyblock.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/GameSounds/explosion.wav</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/GameSounds/menuChoice.wav</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/GameSounds/rowfilled.wav</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/gameText.spritefont</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/blockbrawl1.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/highscore1.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/menuArrowLeft.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/menuArrowRight.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/play1.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/settings1.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/MenuFont.spritefont</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/menuText.spritefont</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/neonText.spritefont</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/newround.spritefont</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/qteblock.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/qtedottedblock.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/scoreText.spritefont</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/spritesheetExp.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/spritesheetShot.png</File>
+    <File>C:/Users/filip/Unity Projekt/BlockBrawl/BlockBrawl/BlockBrawl/Content/transparentblock.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

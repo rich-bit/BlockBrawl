@@ -1015,13 +1015,13 @@ namespace BlockBrawl
         private void KeyboardSteering(int playerIndex, InputManager iM)
         {
             Keys rotateClockWise = Keys.NumPad0;
-            Keys rotateCounterClockWise = Keys.Enter;
+            Keys rotateCounterClockWise = Keys.RightControl;
             Keys steerLeft = Keys.Left;
             Keys steerRight = Keys.Right;
             Keys steerDown = Keys.Down;
             if (playerIndex == playerOneIndex)
             {
-                rotateClockWise = Keys.Space;
+                rotateClockWise = Keys.F;
                 rotateCounterClockWise = Keys.LeftShift;
                 steerLeft = Keys.A;
                 steerRight = Keys.D;
