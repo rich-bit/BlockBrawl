@@ -12,12 +12,22 @@ namespace BlockBrawl.Gamehandler
         bool playerOneReady, playerTwoReady;
         int playerOneIndex, playerTwoIndex, playerOneChoice, playerTwoChoice;
         string instructionsPlayer1, instructionsPlayer2;
+        string playerOneName, playerTwoName;
+        Vector2 changeWriterPos;
+        enum Typer
+        {
+            playerOne,
+            playerTwo,
+        }
+        Typer playerTyping;
         List<GameObject> colorsP1, colorsP2;
 
         public PrePlayScreen(int playerOneIndex, int playerTwoIndex)
         {
             this.playerOneIndex = playerOneIndex;
             this.playerTwoIndex = playerTwoIndex;
+
+            playerTyping = Typer.playerOne;
 
             colorsP1 = new List<GameObject>();
             SetColors(colorsP1, playerOneIndex);
@@ -29,16 +39,52 @@ namespace BlockBrawl.Gamehandler
         }
         private void SetColors(List<GameObject> playerColors, int playerIndex)
         {
-            playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.blueBlock1920));
-            playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.greenBlock1920));
-            playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.lightBlueBlock1920));
-            playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.orangeBlock1920));
-            playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.purpleBlock1920));
-            playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.redBlock1920));
-            playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.yellowBlock1920));
+            if (playerIndex == playerOneChoice)
+            {
+                playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.blueBlock1920));
+                playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.greenBlock1920));
+                playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.lightBlueBlock1920));
+            }
+            else
+            {
+                playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.orangeBlock1920));
+                playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.purpleBlock1920));
+                playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.redBlock1920));
+                playerColors.Add(new GameObject(GetScreenAlignment(TextureManager.blueBlock1920.Width, SettingsManager.tileSize.X * 5, playerIndex), TextureManager.yellowBlock1920));
+            }
+        }
+        private void SetNames(InputManager iM)
+        {
+            switch (playerTyping)
+            {
+                case Typer.playerOne:
+                    if (iM.CapitalLetterTyped() != null) { playerOneName += iM.CapitalLetterTyped(); }
+                    if (playerOneName != null && playerOneName.Length > 9) { playerOneName = null; }
+                    changeWriterPos = GetScreenAlignment(FontManager.MenuText.MeasureString("Change with TAB").X, AlignmentTop(8), playerOneIndex);
+                    break;
+                case Typer.playerTwo:
+                    if (iM.CapitalLetterTyped() != null) { playerTwoName += iM.CapitalLetterTyped(); }
+                    if(playerTwoName != null && playerTwoName.Length > 9) { playerTwoName = null; }
+                    changeWriterPos = GetScreenAlignment(FontManager.MenuText.MeasureString("Change with TAB").X, AlignmentTop(8), playerTwoIndex);
+                    break;
+            }
+        }
+        private void UpdateNames()
+        {
+            if(playerOneName == null) { instructionsPlayer1 = "Player one please select color:"; }
+            else { instructionsPlayer1 = $"{playerOneName} please select color:"; }
+            if (playerTwoName == null) { instructionsPlayer2 = "Player one please select color:"; }
+            else { instructionsPlayer2 = $"{playerTwoName} please select color:"; }
         }
         public void Update(InputManager iM, bool gamePad)
         {
+            SetNames(iM);
+            UpdateNames();
+            if (iM.JustPressed(Keys.Tab))
+            {
+                if (playerTyping == Typer.playerOne) { playerTyping = Typer.playerTwo; }
+                else if (playerTyping == Typer.playerTwo) { playerTyping = Typer.playerOne; }
+            }
             CreatePlay();
             if (gamePad)
             {
@@ -124,6 +170,8 @@ namespace BlockBrawl.Gamehandler
                     SettingsManager.gameWidth, SettingsManager.gameHeight,
                     SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo,
                     colorsP1[playerOneChoice].Tex, colorsP2[playerTwoChoice].Tex);
+                if(playerOneName != null) { SettingsManager.playerOneName = playerOneName; }
+                if(playerTwoName != null) { SettingsManager.playerTwoName = playerTwoName; }
                 ReadyEnterPlay = true;
                 playerOneReady = false;
                 playerTwoReady = false;
@@ -131,31 +179,47 @@ namespace BlockBrawl.Gamehandler
         }
         public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.DrawString(FontManager.MenuText, "Change with TAB", changeWriterPos, Color.Aquamarine);
+
             spriteBatch.DrawString(FontManager.MenuText, instructionsPlayer1,
-                GetScreenAlignment(FontManager.MenuText.MeasureString(instructionsPlayer1).X, SettingsManager.tileSize.X * 3, playerOneIndex), Color.Red);
+                GetScreenAlignment(FontManager.MenuText.MeasureString(instructionsPlayer1).X, AlignmentTop(3), playerOneIndex), Color.Red);
             colorsP1[playerOneChoice].Draw(spriteBatch);
+            spriteBatch.DrawString(FontManager.MenuText, "Type your name:",
+                GetScreenAlignment(FontManager.MenuText.MeasureString("Type your name:").X, AlignmentTop(7), playerOneIndex), Color.Red);
+            if (playerOneName != null)
+            {
+                spriteBatch.DrawString(FontManager.MenuText, playerOneName,
+                    GetScreenAlignment(FontManager.MenuText.MeasureString(playerOneName).X, AlignmentTop(9), playerOneIndex), Color.Blue);
+            }
             if (playerOneReady)
             {
                 spriteBatch.DrawString(FontManager.MenuText, "Player One Ready!",
-                GetScreenAlignment(FontManager.MenuText.MeasureString("Player One Ready!").X, SettingsManager.tileSize.X * 7, playerOneIndex), Color.Yellow);
+                GetScreenAlignment(FontManager.MenuText.MeasureString("Player One Ready!").X, AlignmentTop(11), playerOneIndex), Color.Yellow);
             }
             else
             {
                 spriteBatch.DrawString(FontManager.MenuText, "Press start / Space when ready!",
-                GetScreenAlignment(FontManager.MenuText.MeasureString("Press start / Space when ready!").X, SettingsManager.tileSize.X * 7, playerOneIndex), Color.White);
+                GetScreenAlignment(FontManager.MenuText.MeasureString("Press start / Space when ready!").X, AlignmentTop(11), playerOneIndex), Color.White);
             }
             spriteBatch.DrawString(FontManager.MenuText, instructionsPlayer2,
-                GetScreenAlignment(FontManager.MenuText.MeasureString(instructionsPlayer2).X, SettingsManager.tileSize.X * 3, playerTwoIndex), Color.Red);
+                GetScreenAlignment(FontManager.MenuText.MeasureString(instructionsPlayer2).X, AlignmentTop(3), playerTwoIndex), Color.Red);
             colorsP2[playerTwoChoice].Draw(spriteBatch);
+            spriteBatch.DrawString(FontManager.MenuText, "Type your name:",
+                GetScreenAlignment(FontManager.MenuText.MeasureString("Type your name:").X, AlignmentTop(7), playerTwoIndex), Color.Red);
+            if (playerTwoName != null)
+            {
+                spriteBatch.DrawString(FontManager.MenuText, playerTwoName,
+        GetScreenAlignment(FontManager.MenuText.MeasureString(playerTwoName).X, AlignmentTop(9), playerTwoIndex), Color.Blue);
+            }
             if (playerTwoReady)
             {
                 spriteBatch.DrawString(FontManager.MenuText, "Player Two Ready!",
-                GetScreenAlignment(FontManager.MenuText.MeasureString("Player Two Ready!").X, SettingsManager.tileSize.X * 7, playerTwoIndex), Color.Yellow);
+                GetScreenAlignment(FontManager.MenuText.MeasureString("Player Two Ready!").X, AlignmentTop(11), playerTwoIndex), Color.Yellow);
             }
             else
             {
-                spriteBatch.DrawString(FontManager.MenuText, "Press start / Space when ready!",
-                GetScreenAlignment(FontManager.MenuText.MeasureString("Press start / Space when ready!").X, SettingsManager.tileSize.X * 7, playerTwoIndex), Color.White);
+                spriteBatch.DrawString(FontManager.MenuText, "Press start / Enter when ready!",
+                GetScreenAlignment(FontManager.MenuText.MeasureString("Press start / Space when ready!").X, AlignmentTop(11), playerTwoIndex), Color.White);
             }
         }
         private Vector2 GetScreenAlignment(float objectWidth, float marginTop, int playerIndex)
@@ -174,6 +238,10 @@ namespace BlockBrawl.Gamehandler
                 y = marginTop;
             }
             return new Vector2(x, y);
+        }
+        private float AlignmentTop(int row)
+        {
+            return SettingsManager.tileSize.X * row;
         }
     }
 }

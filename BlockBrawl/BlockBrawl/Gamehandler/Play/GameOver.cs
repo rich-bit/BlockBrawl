@@ -134,7 +134,7 @@ namespace BlockBrawl
             }
             if (!gamepad)
             {
-                if (iM.JustPressed(Keys.F5))
+                if (iM.JustPressed(Keys.Escape))
                 {
                     RequestGoToMenu = true;
                 }

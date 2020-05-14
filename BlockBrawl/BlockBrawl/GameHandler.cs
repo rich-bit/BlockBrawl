@@ -59,10 +59,12 @@ namespace BlockBrawl
                     {
                         play = prePlayScreen.Play;
                         prePlayScreen.ReadyEnterPlay = false;
+                        SoundManager.menuChoice.Play();
                     }
                     if (play != null)
                     {
                         play.Update(gameTime, iM);
+                        if (play.GoToMenu) { play = null; currentGameState = GameState.menu; }
                     }
                     break;
                 case GameState.settings:

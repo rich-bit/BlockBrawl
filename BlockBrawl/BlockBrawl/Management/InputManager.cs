@@ -45,5 +45,35 @@ namespace BlockBrawl
         {
             return keyboardState.IsKeyDown(keys) && oldKeyboardState.IsKeyDown(keys);
         }
+        public string CapitalLetterTyped()
+        {
+            if (JustPressed(Keys.A)) { return "A"; }
+            if (JustPressed(Keys.B)) { return "B"; }
+            if (JustPressed(Keys.C)) { return "C"; }
+            if (JustPressed(Keys.D)) { return "D"; }
+            if (JustPressed(Keys.E)) { return "E"; }
+            if (JustPressed(Keys.F)) { return "F"; }
+            if (JustPressed(Keys.G)) { return "G"; }
+            if (JustPressed(Keys.H)) { return "H"; }
+            if (JustPressed(Keys.I)) { return "I"; }
+            if (JustPressed(Keys.J)) { return "J"; }
+            if (JustPressed(Keys.K)) { return "K"; }
+            if (JustPressed(Keys.L)) { return "L"; }
+            if (JustPressed(Keys.M)) { return "M"; }
+            if (JustPressed(Keys.N)) { return "N"; }
+            if (JustPressed(Keys.O)) { return "O"; }
+            if (JustPressed(Keys.P)) { return "P"; }
+            if (JustPressed(Keys.Q)) { return "Q"; }
+            if (JustPressed(Keys.R)) { return "R"; }
+            if (JustPressed(Keys.S)) { return "S"; }
+            if (JustPressed(Keys.T)) { return "T"; }
+            if (JustPressed(Keys.U)) { return "U"; }
+            if (JustPressed(Keys.V)) { return "V"; }
+            if (JustPressed(Keys.W)) { return "W"; }
+            if (JustPressed(Keys.X)) { return "X"; }
+            if (JustPressed(Keys.Y)) { return "Y"; }
+            if (JustPressed(Keys.Z)) { return "Z"; }
+            return null;
+        }
     }
 }
