@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using BlockBrawl.Objects;
@@ -51,10 +52,9 @@ namespace BlockBrawl
                     }
                 }
             }
-            catch (NpgsqlException e)
+            catch
             {
                 unsuccesfullDataAccess = true;
-                string error = e.ToString();
                 if (gamepad)
                 {
                     scoreProcessed = "Please stay on this screen and try database again with A button!";
