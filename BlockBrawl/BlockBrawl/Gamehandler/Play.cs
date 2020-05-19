@@ -235,7 +235,7 @@ namespace BlockBrawl
             {
                 if (sideBars.QTEWinner == playerOneIndex && pistol == null)
                 {
-                    if (iM.JustPressed(Keys.F)) { sideBars.QTEWinner = int.MinValue; }
+                    if (iM.JustPressed(Keys.W)) { sideBars.QTEWinner = int.MinValue; }
                 }
                 else
                 {
