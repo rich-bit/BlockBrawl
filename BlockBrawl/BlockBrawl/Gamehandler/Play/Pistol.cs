@@ -39,10 +39,10 @@ namespace BlockBrawl
                 sender = playerTwoBlock;
             }
 
-            Keys fire = Keys.RightControl;
+            Keys fire = Keys.Up;
             if (!gamePad && PlayerIndexPistol == playerOneIndex)
             {
-                fire = Keys.F;
+                fire = Keys.W;
             }
 
             if (gamePad && iM.JustPressed(Buttons.Back, PlayerIndexPistol) && !fired)

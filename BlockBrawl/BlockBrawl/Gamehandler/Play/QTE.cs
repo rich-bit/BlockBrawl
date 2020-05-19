@@ -568,7 +568,7 @@ namespace BlockBrawl
             Keys left = Keys.A;
             Keys down = Keys.S;
             Keys right = Keys.D;
-            Keys rotateCW = Keys.Space;
+            Keys rotateCW = Keys.F;
             Keys rotateCC = Keys.LeftShift;
 
             if (playerIndex == playerTwoIndex)
@@ -578,7 +578,7 @@ namespace BlockBrawl
                 down = Keys.Down;
                 right = Keys.Right;
                 rotateCW = Keys.NumPad0;
-                rotateCC = Keys.Enter;
+                rotateCC = Keys.RightControl;
             }
             switch (playerBlocks[playerIndex])
             {
