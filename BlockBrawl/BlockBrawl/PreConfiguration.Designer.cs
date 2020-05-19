@@ -50,6 +50,7 @@
             // 
             // resolutionslst
             // 
+            this.resolutionslst.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.resolutionslst.FormattingEnabled = true;
             this.resolutionslst.Location = new System.Drawing.Point(16, 66);
             this.resolutionslst.Name = "resolutionslst";

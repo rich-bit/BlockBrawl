@@ -31,6 +31,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -72,6 +74,8 @@
     <Compile Include="Gamehandler\Menu.cs" />
     <Compile Include="Gamehandler\Play\Bloodorb.cs" />
     <Compile Include="Gamehandler\Play\GameOver.cs" />
+    <Compile Include="Gamehandler\Play\MusikPlayer.cs" />
+    <Compile Include="Gamehandler\Play\Pistol.cs" />
     <Compile Include="Gamehandler\Play\QTE.cs" />
     <Compile Include="Gamehandler\Play\SideBars.cs" />
     <Compile Include="Gamehandler\PrePlayScreen.cs" />

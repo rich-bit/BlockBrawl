@@ -19,11 +19,8 @@ namespace BlockBrawl
         {
             gameHandler = new GameHandler(graphics, GraphicsDevice, Content);
         }
-        protected override void UnloadContent()
-        {
-        }
         protected override void Update(GameTime gameTime)
-        {
+        {   
             gameHandler.Update(gameTime);
             base.Update(gameTime);
         }

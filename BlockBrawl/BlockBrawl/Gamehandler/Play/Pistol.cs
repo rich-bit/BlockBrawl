@@ -5,28 +5,30 @@ using BlockBrawl.Objects;
 
 namespace BlockBrawl
 {
-    class BloodOrb
+    class Pistol
     {
-        AnimatedObject shot;
+        GameObject shot;
+
         public Vector2 ShotPos { get; set; }
         Vector2 posStartMiddle, speed;
         float tileSeize;
         bool fired;
-        public int PlayerIndexBazooka { get; set; }
+        public bool EnemyDown { get; set; }
+        public int PlayerIndexPistol { get; set; }
         int playerOneIndex;
         TetrisObject[,] sender, reciever;
-        public BloodOrb(float timeToLive, int qteWinnerIndex, int playerOneIndex, int playerTwoIndex)
+        public Pistol(float timeToLive, int qteWinnerIndex, int playerOneIndex, int playerTwoIndex)
         {
-            PlayerIndexBazooka = qteWinnerIndex;
+            PlayerIndexPistol = qteWinnerIndex;
             this.playerOneIndex = playerOneIndex;
 
-            speed = SettingsManager.bazookaShotSpeed;
+            speed = SettingsManager.pistolShotSpeed;
 
             tileSeize = SettingsManager.tileSize.X;
         }
         public void Action(TetrisObject[,] playerOneBlock, TetrisObject[,] playerTwoBlock, InputManager iM, bool gamePad, GameTime gameTime)
         {
-            if (PlayerIndexBazooka == playerOneIndex)
+            if (PlayerIndexPistol == playerOneIndex)
             {
                 sender = playerOneBlock;
                 reciever = playerTwoBlock;
@@ -37,16 +39,17 @@ namespace BlockBrawl
                 sender = playerTwoBlock;
             }
 
-            Keys fire = Keys.Up;
-            if (!gamePad && PlayerIndexBazooka == playerOneIndex)
+            Keys fire = Keys.RightControl;
+            if (!gamePad && PlayerIndexPistol == playerOneIndex)
             {
-                fire = Keys.W;
+                fire = Keys.F;
             }
 
-            if (gamePad && iM.JustPressed(Buttons.Back, PlayerIndexBazooka) && !fired)
+            if (gamePad && iM.JustPressed(Buttons.Back, PlayerIndexPistol) && !fired)
             {
                 if (sender != null)
                 {
+                    SoundManager.laserShot.Play();
                     posStartMiddle = new Vector2(
                         (((sender[
                         sender.GetLength(0) - 1, 0
@@ -56,7 +59,7 @@ namespace BlockBrawl
                         sender.GetLength(1) - 1, 0
                         ].PosY + tileSeize)
                         - (sender[0, 0].PosY)) / 2));
-                    shot = new AnimatedObject(Vector2.Zero, TextureManager.spriteSheetShot, new Point(7, 1));
+                    shot = new GameObject(Vector2.Zero, TextureManager.bazookaShot);
                     shot.Pos = sender[0, 0].Pos + posStartMiddle;
                     fired = true;
                 }
@@ -65,7 +68,7 @@ namespace BlockBrawl
             {
                 if (sender != null)
                 {
-
+                    SoundManager.laserShot.Play();
                     posStartMiddle = new Vector2(
                         (((sender[
                         sender.GetLength(0) - 1, 0
@@ -75,19 +78,18 @@ namespace BlockBrawl
                         sender.GetLength(1) - 1, 0
                         ].PosY + tileSeize)
                         - (sender[0, 0].PosY)) / 2));
-                    shot = new AnimatedObject(Vector2.Zero, TextureManager.spriteSheetShot, new Point(7, 1));
+                    shot = new GameObject(Vector2.Zero, TextureManager.bazookaShot);
                     shot.Pos = sender[0, 0].Pos + posStartMiddle;
                     fired = true;
                 }
             }
             if (fired && !TargetHit)
             {
-                SeekOtherPlayer(reciever);
-                CheckCollision(reciever);
-            }
-            if (shot != null)
-            {
-                shot.CycleSpriteSheet(gameTime);
+                if (reciever != null)
+                {
+                    SeekOtherPlayer(reciever);
+                    CheckCollision(reciever);
+                }
             }
         }
         public bool TargetHit { get; private set; }
@@ -115,10 +117,25 @@ namespace BlockBrawl
                 if (item.alive && item.Rect.Intersects(shot.Rect))
                 {
                     TargetHit = true;
+                    item.Shot = true;
+                    item.ChangeState(true);
                     ShotPos = shot.Pos;
                     shot = null;
                     break;
                 }
+            }
+            bool reset = false;
+            for (int i = 0; i < target.GetLength(0); i++)
+            {
+                for (int j = 0; j < target.GetLength(1); j++)
+                {
+                    if (target[i, j].alive)
+                    {
+                        reset = true;
+                    }
+                    else if (i == target.GetLength(0) - 1 && j == target.GetLength(1) - 1) { EnemyDown = true; }
+                }
+                if (reset) { break; }
             }
         }
         public void Draw(SpriteBatch spriteBatch)

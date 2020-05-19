@@ -5,7 +5,7 @@ namespace BlockBrawl
 {
     class SettingsManager
     {
-        public static Vector2 tileSize, shotSpeed;
+        public static Vector2 tileSize, bazookaShotSpeed, pistolShotSpeed, effectPositionBloodSpatter;
         public static float speed, fallTime, newSpeedCounter, qteWaitTime, spawnBlockBazooka;
         public static Texture2D playerOneColor, playerTwoColor;
         public static string playerOneName, playerTwoName;
@@ -30,18 +30,21 @@ namespace BlockBrawl
             fallTime = 1.3f;
             newSpeedCounter = 15f;
 
+
             playerOneColor = TextureManager.blueBlock1920;
             playerTwoColor = TextureManager.greenBlock1920;
 
             qteWaitTime = 40f;
 
-            shotSpeed = new Vector2(10, 10);
+            bazookaShotSpeed = new Vector2(10, 10);
+            pistolShotSpeed = new Vector2(17, 17);
             spawnBlockBazooka = 5f;
 
             playerIndexOne = 0;
             playerIndexTwo = 1;
             tileSize = new Vector2(60, 60);//Note
             tiles = new Point(20, gameHeight / 60);
+            effectPositionBloodSpatter = new Vector2(0, tileSize.Y / 2);
 
             arrowsInMenuMaxX = new Point(10, 0); // Set y to 0 please.
 

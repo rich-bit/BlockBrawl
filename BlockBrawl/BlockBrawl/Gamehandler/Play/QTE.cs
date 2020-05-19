@@ -1074,43 +1074,43 @@ namespace BlockBrawl
                     break;
             }
         }
-        public void Draw(SpriteBatch spritebatch)
+        public void Draw(SpriteBatch spritebatch, GameTime gameTime)
         {
 
             if (i != null)
             {
-                iDotted.Draw(spritebatch, Color.White);
-                i.Draw(spritebatch, Color.White);
+                iDotted.Draw(spritebatch, Color.White, gameTime);
+                i.Draw(spritebatch, Color.White, gameTime);
             }
             if (j != null)
             {
-                jDotted.Draw(spritebatch, Color.White);
-                j.Draw(spritebatch, Color.White);
+                jDotted.Draw(spritebatch, Color.White, gameTime);
+                j.Draw(spritebatch, Color.White, gameTime);
             }
             if (l != null)
             {
-                lDotted.Draw(spritebatch, Color.White);
-                l.Draw(spritebatch, Color.White);
+                lDotted.Draw(spritebatch, Color.White, gameTime);
+                l.Draw(spritebatch, Color.White, gameTime);
             }
             if (s != null)
             {
-                sDotted.Draw(spritebatch, Color.White);
-                s.Draw(spritebatch, Color.White);
+                sDotted.Draw(spritebatch, Color.White, gameTime);
+                s.Draw(spritebatch, Color.White, gameTime);
             }
             if (z != null)
             {
-                zDotted.Draw(spritebatch, Color.White);
-                z.Draw(spritebatch, Color.White);
+                zDotted.Draw(spritebatch, Color.White, gameTime);
+                z.Draw(spritebatch, Color.White, gameTime);
             }
             if (t != null)
             {
-                tDotted.Draw(spritebatch, Color.White);
-                t.Draw(spritebatch, Color.White);
+                tDotted.Draw(spritebatch, Color.White, gameTime);
+                t.Draw(spritebatch, Color.White, gameTime);
             }
             if (o != null)
             {
-                oDotted.Draw(spritebatch, Color.White);
-                o.Draw(spritebatch, Color.White);
+                oDotted.Draw(spritebatch, Color.White, gameTime);
+                o.Draw(spritebatch, Color.White, gameTime);
             }
             spritebatch.DrawString(FontManager.MenuText, playerOneName,
                 TextPosition(
