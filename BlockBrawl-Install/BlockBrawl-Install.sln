@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockBrawl-Install", "Install-Template\BlockBrawl-Install.csproj", "{6968549C-0009-4908-B08F-D24B476293CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6968549C-0009-4908-B08F-D24B476293CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6968549C-0009-4908-B08F-D24B476293CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6968549C-0009-4908-B08F-D24B476293CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6968549C-0009-4908-B08F-D24B476293CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A55030EA-0CB6-4F74-9CDA-B6F16F6C71C4}
+	EndGlobalSection
+EndGlobal
