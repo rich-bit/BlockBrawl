@@ -150,7 +150,14 @@ namespace BlockBrawl
             }
             else
             {
-                spriteBatch.DrawString(FontManager.MenuText, $"{winnerName} beat {looserName} with {winnerScore} against {looserScore}", new Vector2(0, 0), Color.Yellow);
+                if (winnerScore > 0)
+                {
+                    spriteBatch.DrawString(FontManager.MenuText, $"{winnerName} beat {looserName} with {winnerScore} against {looserScore}", new Vector2(0, 0), Color.Yellow);
+                }
+                else
+                {
+                    spriteBatch.DrawString(FontManager.MenuText, $"Both players scored 0!", new Vector2(0, 0), Color.Yellow);
+                }
                 spriteBatch.DrawString(FontManager.MenuText, scoreProcessed, new Vector2(0, 80), Color.Yellow);
                 spriteBatch.DrawString(FontManager.MenuText, "Go to menu? Press Select/Esc", new Vector2(0, 160), Color.Yellow);
             }

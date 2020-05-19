@@ -11,7 +11,7 @@ namespace BlockBrawl
         private readonly List<SoundEffect> otherSounds;
         private List<SoundEffect> soundEffects;
 
-        public static SoundEffectInstance explosion, rowFilled, menuChoice;
+        public static SoundEffectInstance explosion, rowFilled, menuChoice, laserShot;
 
         public SoundManager(ContentManager content)
         {
@@ -63,6 +63,8 @@ namespace BlockBrawl
             rowFilled = soundEffects[1].CreateInstance();
             soundEffects.Add(content.Load<SoundEffect>(@"GameSounds/menuChoice"));
             menuChoice = soundEffects[2].CreateInstance();
+            soundEffects.Add(content.Load<SoundEffect>(@"GameSounds/laserShot"));
+            laserShot = soundEffects[3].CreateInstance();
         }
     }
 }

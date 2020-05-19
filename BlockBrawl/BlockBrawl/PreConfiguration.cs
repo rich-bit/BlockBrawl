@@ -17,7 +17,7 @@ namespace BlockBrawl
         {
             InitializeComponent();
             LocateASettingsFile();
-
+            
             resolutionslst.DataSource = fileRead.Resolutions();
 
             ShowPreConfigWindow = fileRead.ShowConfigWindowAtStart().Contains("True");

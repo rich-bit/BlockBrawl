@@ -97,6 +97,18 @@
 /processorParam:TextureFormat=Color
 /build:1920x1080/blockröd.png
 
+#begin 1920x1080/spritesheetBloods1920x1080.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:1920x1080/spritesheetBloods1920x1080.png
+
 #begin 1920x1080/spritesheetExp-1920x1080.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -108,6 +120,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:1920x1080/spritesheetExp-1920x1080.png
+
+#begin 1920x1080/spritesheetMagicFlame1920x1080.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:1920x1080/spritesheetMagicFlame1920x1080.png
+
+#begin 1920x1080/spritesheetMagicFlame1920x1080.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:1920x1080/spritesheetMagicFlame1920x1080.png
 
 #begin Bazooka/bazooka-shot.png
 /importer:TextureImporter
@@ -138,6 +174,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:GameSounds/explosion.wav
+
+#begin GameSounds/laserShot.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:GameSounds/laserShot.wav
 
 #begin GameSounds/menuChoice.wav
 /importer:WavImporter
@@ -300,6 +342,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:spritesheetExp.png
+
+#begin spritesheetMagicFlame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:spritesheetMagicFlame.png
 
 #begin spritesheetShot.png
 /importer:TextureImporter

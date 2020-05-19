@@ -15,10 +15,17 @@ namespace BlockBrawl
         string[] nextBlock;
         Texture2D[] playerColors;
         int playerOneIndex, playerTwoIndex;
-        public SideBars(Texture2D[] playerColors, float[] spawnBlock)
+        public int QTEWinner { get; set; }
+        bool gamepadVersion;
+        float blinkTime;
+        double betweenBlinks = 0.2;
+        public SideBars(Texture2D[] playerColors, float[] spawnBlock, bool gamepadVersion)
         {
             this.playerColors = playerColors;
             this.spawnWaitTime = spawnBlock;
+            this.gamepadVersion = gamepadVersion;
+            QTEWinner = int.MinValue;
+
             playerOneIndex = SettingsManager.playerIndexOne;
             playerTwoIndex = SettingsManager.playerIndexTwo;
 
@@ -83,7 +90,7 @@ namespace BlockBrawl
             }
             return previewBlock;
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.DrawString(FontManager.MenuText,
             $"{SettingsManager.playerOneName.ToString()}\nscore: " + score[playerOneIndex].ToString(),
@@ -148,9 +155,33 @@ namespace BlockBrawl
                     item.Draw(spriteBatch);
                 }
             }
-            if(spawnWaitTime[playerOneIndex] > 0f)
+            if (spawnWaitTime[playerOneIndex] > 0f)
             {
                 spriteBatch.DrawString(FontManager.MenuText, "Wait\nfor spawn!" + Convert.ToInt32(spawnWaitTime[playerOneIndex]).ToString(), GetPlayerOneAllignment(7), Color.Yellow);
+            }
+            if (QTEWinner == playerOneIndex && gamepadVersion)
+            {
+                blinkTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (blinkTime > betweenBlinks)
+                {
+                    if (blinkTime > betweenBlinks * 2) { blinkTime = 0f; }
+                }
+                else
+                {
+                    spriteBatch.DrawString(FontManager.ScoreText, "Press Select!", GetPlayerOneAllignment(9), Color.Gold);
+                }
+            }
+            if (QTEWinner == playerOneIndex && !gamepadVersion)
+            {
+                blinkTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (blinkTime > betweenBlinks)
+                {
+                    if (blinkTime > betweenBlinks * 2) { blinkTime = 0f; }
+                }
+                else
+                {
+                    spriteBatch.DrawString(FontManager.ScoreText, "Press F!", GetPlayerOneAllignment(9), Color.Gold);
+                }
             }
             if (spawnWaitTime[playerTwoIndex] > 0f)
             {
@@ -160,6 +191,30 @@ namespace BlockBrawl
                             ).X
                         , 7),
                     Color.Yellow);
+            }
+            if (QTEWinner == playerTwoIndex && gamepadVersion)
+            {
+                blinkTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (blinkTime > betweenBlinks)
+                {
+                    if (blinkTime > betweenBlinks * 2) { blinkTime = 0f; }
+                }
+                else
+                {
+                    spriteBatch.DrawString(FontManager.ScoreText, "Press Select!", GetPlayerTwoAllignment(FontManager.ScoreText.MeasureString("Press Select!").X, 9), Color.Gold);
+                }
+            }
+            if (QTEWinner == playerTwoIndex && !gamepadVersion)
+            {
+                blinkTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (blinkTime > betweenBlinks)
+                {
+                    if (blinkTime > betweenBlinks * 2) { blinkTime = 0f; }
+                }
+                else
+                {
+                    spriteBatch.DrawString(FontManager.ScoreText, "Press CTRL!", GetPlayerTwoAllignment(FontManager.ScoreText.MeasureString("Press Select!").X, 9), Color.Gold);
+                }
             }
         }
     }

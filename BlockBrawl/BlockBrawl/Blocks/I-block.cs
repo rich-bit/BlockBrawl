@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using BlockBrawl.Objects;
+using System.Collections.Generic;
 
 namespace BlockBrawl.Blocks
 {
@@ -9,6 +10,7 @@ namespace BlockBrawl.Blocks
     {
         public TetrisObject[,] iMatrix;
 
+        List<AnimatedObject> magicFlames;
 
         public Texture2D Color { get; set; }
         public float Time { get; set; }
@@ -22,6 +24,8 @@ namespace BlockBrawl.Blocks
         public IblockState Formation { get; set; }
         public I(Texture2D color, Vector2 startPos)
         {
+            magicFlames = new List<AnimatedObject>();
+
             Color = color;
             
             iMatrix = new TetrisObject[4, 4];
@@ -207,16 +211,26 @@ namespace BlockBrawl.Blocks
         }
         public void Fall(float lenght)
         {
+            magicFlames.Clear();
             foreach (TetrisObject item in iMatrix)
             {
                 item.PosY += lenght;
+                if (item.Shot)
+                {
+                    magicFlames.Add(new AnimatedObject(item.Pos - SettingsManager.effectPositionBloodSpatter, TextureManager.spritesheetBlodSpatter1920x1080, new Point(15, 1)));
+                }
             }
         }
         public void Move(float lenght)
         {
+            magicFlames.Clear();
             foreach (TetrisObject item in iMatrix)
             {
                 item.PosX += lenght;
+                if (item.Shot)
+                {
+                    magicFlames.Add(new AnimatedObject(item.Pos - SettingsManager.effectPositionBloodSpatter, TextureManager.spritesheetBlodSpatter1920x1080, new Point(15, 1)));
+                }
             }
         }
         public Vector2 MinValues()
@@ -358,18 +372,34 @@ namespace BlockBrawl.Blocks
             }
             return newPosition;
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             foreach (TetrisObject item in iMatrix)
             {
                 item.Draw(spriteBatch);
             }
+            if (magicFlames.Count > 0)
+            {
+                foreach (AnimatedObject item in magicFlames)
+                {
+                    item.CycleSpriteSheet(gameTime);
+                    item.Draw(spriteBatch);
+                }
+            }
         }
-        public void Draw(SpriteBatch spriteBatch, Color color)
+        public void Draw(SpriteBatch spriteBatch, Color color, GameTime gameTime)
         {
             foreach (TetrisObject item in iMatrix)
             {
                 item.Draw(spriteBatch, color);
+            }
+            if(magicFlames.Count > 0)
+            {
+                foreach(AnimatedObject item in magicFlames)
+                {
+                    item.CycleSpriteSheet(gameTime);
+                    item.Draw(spriteBatch);
+                }
             }
         }
     }

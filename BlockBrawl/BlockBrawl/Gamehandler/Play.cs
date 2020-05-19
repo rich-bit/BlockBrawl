@@ -4,8 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using BlockBrawl.Blocks;
 using BlockBrawl.Objects;
-using BlockBrawl.GameHandlerObjects.PlayObjects;
 using System.Collections.Generic;
+//using System.Windows.Forms;
 
 namespace BlockBrawl
 {
@@ -52,6 +52,7 @@ namespace BlockBrawl
 
         //Power-Ups
         BloodOrb bloodOrb;
+        Pistol pistol;
         //Special-Effects
         AnimatedObject explosion;
         enum PlayState
@@ -106,7 +107,7 @@ namespace BlockBrawl
             sArray = new S[2];
             zArray = new Z[2];
 
-            sideBars = new SideBars(playerColors, waitForSpawn);
+            sideBars = new SideBars(playerColors, waitForSpawn, gamePadVersion);
 
             score = new int[2];
             bonusRecieved = new int[2, stackedBlocks.GetLength(1)];
@@ -147,7 +148,18 @@ namespace BlockBrawl
         {
             if (qte.Cleared && qte.Winner != int.MinValue)
             {
-                bloodOrb = new BloodOrb(5f, qte.Winner, playerOneIndex, playerTwoIndex);
+                int numberPowerUps = 2;
+                int randomPowerUp = rnd.Next(numberPowerUps);
+                switch (randomPowerUp)
+                {
+                    case 0:
+                        bloodOrb = new BloodOrb(5f, qte.Winner, playerOneIndex, playerTwoIndex);
+                        break;
+                    case 1:
+                        pistol = new Pistol(5f, qte.Winner, playerOneIndex, playerTwoIndex);
+                        break;
+                }
+                sideBars.QTEWinner = qte.Winner;
                 qte = null;
                 currentPlayState = PlayState.play;
             }
@@ -184,29 +196,9 @@ namespace BlockBrawl
                     FallDownAddStack(playerTwoIndex);
                     GetBlocks(playerOneIndex);
                     GetBlocks(playerTwoIndex);
-                    if (bloodOrb != null)
-                    {
-                        bloodOrb.Action(
-                            LocateOtherPlayerMatrix(OtherPlayerIndex(playerOneIndex)),
-                            LocateOtherPlayerMatrix(OtherPlayerIndex(playerTwoIndex)),
-                            iM, gamePadVersion, gameTime);
-                        if (bloodOrb.TargetHit)
-                        {
-                            explosion = new AnimatedObject(bloodOrb.ShotPos, TextureManager.spriteSheetExplosion1920x1080, new Point(4, 4));
-                            RemoveOtherPlayerBlock(OtherPlayerIndex(bloodOrb.PlayerIndexBazooka));
-                            waitForSpawn[OtherPlayerIndex(bloodOrb.PlayerIndexBazooka)] += SettingsManager.spawnBlockBazooka;
-                            bloodOrb = null;
-                        }
-                    }
-                    if (explosion != null)
-                    {
-                        SoundManager.explosion.Play();
-                        explosion.CycleSpriteSheetOnce(gameTime);
-                        if (explosion.Done)
-                        {
-                            explosion = null;
-                        }
-                    }
+                    BloodOrbLogic(gameTime, iM);
+                    PistolLogic(gameTime, iM);
+                    ResetPowerUpNotice(gamePadVersion, iM);
                     if (gamePadVersion && iM.JustPressed(Buttons.Start, playerOneIndex) || iM.JustPressed(Buttons.Start, playerTwoIndex)) { currentPlayState = PlayState.pause; }
                     else if (!gamePadVersion && iM.JustPressed(Keys.Escape) || iM.JustPressed(Keys.NumLock)) { currentPlayState = PlayState.pause; }
                     break;
@@ -226,6 +218,92 @@ namespace BlockBrawl
                     break;
             }
         }
+        private void ResetPowerUpNotice(bool gamepadVersion, InputManager iM)
+        {
+            if (gamepadVersion)
+            {
+                if (sideBars.QTEWinner == playerOneIndex && pistol == null)
+                {
+                    if (iM.JustPressed(Buttons.Back, playerOneIndex)) { sideBars.QTEWinner = int.MinValue; }
+                }
+                else
+                {
+                    if (iM.JustPressed(Buttons.Back, playerTwoIndex)) { sideBars.QTEWinner = int.MinValue; }
+                }
+            }
+            else
+            {
+                if (sideBars.QTEWinner == playerOneIndex && pistol == null)
+                {
+                    if (iM.JustPressed(Keys.F)) { sideBars.QTEWinner = int.MinValue; }
+                }
+                else
+                {
+                    if (iM.JustPressed(Keys.RightControl)) { sideBars.QTEWinner = int.MinValue; }
+                }
+            }
+        }
+        private void BloodOrbLogic(GameTime gameTime, InputManager iM)
+        {
+            if (bloodOrb != null)
+            {
+                bloodOrb.Action(
+                    LocateOtherPlayerMatrix(OtherPlayerIndex(playerOneIndex)),
+                    LocateOtherPlayerMatrix(OtherPlayerIndex(playerTwoIndex)),
+                    iM, gamePadVersion, gameTime);
+                if (bloodOrb.TargetHit)
+                {
+                    explosion = new AnimatedObject(bloodOrb.ShotPos, TextureManager.spriteSheetExplosion1920x1080, new Point(4, 4));
+                    RemoveOtherPlayerBlock(OtherPlayerIndex(bloodOrb.PlayerIndexBazooka));
+                    waitForSpawn[OtherPlayerIndex(bloodOrb.PlayerIndexBazooka)] += SettingsManager.spawnBlockBazooka;
+                    bloodOrb = null;
+                }
+            }
+            if (explosion != null)
+            {
+                SoundManager.explosion.Play();
+                explosion.CycleSpriteSheetOnce(gameTime);
+                if (explosion.Done)
+                {
+                    explosion = null;
+                }
+            }
+        }
+
+        private void PistolLogic(GameTime gameTime, InputManager iM)
+        {
+            if (pistol != null)
+            {
+                float pistolTTL = 6f;
+                playfield[playfield.GetLength(0) - 1, 0].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                float pistolTime = playfield[playfield.GetLength(0) - 1, 0].Time; // Just a measure of time...
+                int pistolIndex = pistol.PlayerIndexPistol;
+
+                pistol.Action(
+                    LocateOtherPlayerMatrix(OtherPlayerIndex(playerOneIndex)),
+                    LocateOtherPlayerMatrix(OtherPlayerIndex(playerTwoIndex)),
+                    iM, gamePadVersion, gameTime);
+                if (pistol.TargetHit && pistolTime < pistolTTL)
+                {
+                    if (!pistol.EnemyDown)
+                    {
+                        pistol = new Pistol(5f, pistolIndex, playerOneIndex, playerTwoIndex);
+                    }
+                    else
+                    {
+                        RemoveOtherPlayerBlock(OtherPlayerIndex(pistol.PlayerIndexPistol));
+                        pistol = new Pistol(5f, pistolIndex, playerOneIndex, playerTwoIndex);
+                    }
+                }
+                else if (pistolTime > pistolTTL)
+                {
+                    pistol = null;
+                    sideBars.QTEWinner = int.MinValue;
+                    playfield[playfield.GetLength(0) - 1, 0].Time = 0f;
+                }
+            }
+        }
+
         private void DrawBonus()
         {
             for (int playerIndex = 0; playerIndex < bonusRecieved.GetLength(0); playerIndex++)
@@ -1762,31 +1840,32 @@ namespace BlockBrawl
             switch (currentPlayState)
             {
                 case PlayState.play:
-                    sideBars.Draw(spriteBatch);
+                    sideBars.Draw(spriteBatch, gameTime);
                     foreach (GameObject item in playfield)
                     {
                         item.Draw(spriteBatch);
                     }
                     //Draw for blocks
-                    if (jArray[playerOneIndex] != null) { jArray[playerOneIndex].Draw(spriteBatch); }
-                    if (iArray[playerOneIndex] != null) { iArray[playerOneIndex].Draw(spriteBatch); }
-                    if (tArray[playerOneIndex] != null) { tArray[playerOneIndex].Draw(spriteBatch); }
-                    if (oArray[playerOneIndex] != null) { oArray[playerOneIndex].Draw(spriteBatch); }
-                    if (lArray[playerOneIndex] != null) { lArray[playerOneIndex].Draw(spriteBatch); }
-                    if (sArray[playerOneIndex] != null) { sArray[playerOneIndex].Draw(spriteBatch); }
-                    if (zArray[playerOneIndex] != null) { zArray[playerOneIndex].Draw(spriteBatch); }
-                    if (jArray[playerTwoIndex] != null) { jArray[playerTwoIndex].Draw(spriteBatch); }
-                    if (iArray[playerTwoIndex] != null) { iArray[playerTwoIndex].Draw(spriteBatch); }
-                    if (tArray[playerTwoIndex] != null) { tArray[playerTwoIndex].Draw(spriteBatch); }
-                    if (oArray[playerTwoIndex] != null) { oArray[playerTwoIndex].Draw(spriteBatch); }
-                    if (lArray[playerTwoIndex] != null) { lArray[playerTwoIndex].Draw(spriteBatch); }
-                    if (sArray[playerTwoIndex] != null) { sArray[playerTwoIndex].Draw(spriteBatch); }
-                    if (zArray[playerTwoIndex] != null) { zArray[playerTwoIndex].Draw(spriteBatch); }
+                    if (jArray[playerOneIndex] != null) { jArray[playerOneIndex].Draw(spriteBatch, gameTime); }
+                    if (iArray[playerOneIndex] != null) { iArray[playerOneIndex].Draw(spriteBatch, gameTime); }
+                    if (tArray[playerOneIndex] != null) { tArray[playerOneIndex].Draw(spriteBatch, gameTime); }
+                    if (oArray[playerOneIndex] != null) { oArray[playerOneIndex].Draw(spriteBatch, gameTime); }
+                    if (lArray[playerOneIndex] != null) { lArray[playerOneIndex].Draw(spriteBatch, gameTime); }
+                    if (sArray[playerOneIndex] != null) { sArray[playerOneIndex].Draw(spriteBatch, gameTime); }
+                    if (zArray[playerOneIndex] != null) { zArray[playerOneIndex].Draw(spriteBatch, gameTime); }
+                    if (jArray[playerTwoIndex] != null) { jArray[playerTwoIndex].Draw(spriteBatch, gameTime); }
+                    if (iArray[playerTwoIndex] != null) { iArray[playerTwoIndex].Draw(spriteBatch, gameTime); }
+                    if (tArray[playerTwoIndex] != null) { tArray[playerTwoIndex].Draw(spriteBatch, gameTime); }
+                    if (oArray[playerTwoIndex] != null) { oArray[playerTwoIndex].Draw(spriteBatch, gameTime); }
+                    if (lArray[playerTwoIndex] != null) { lArray[playerTwoIndex].Draw(spriteBatch, gameTime); }
+                    if (sArray[playerTwoIndex] != null) { sArray[playerTwoIndex].Draw(spriteBatch, gameTime); }
+                    if (zArray[playerTwoIndex] != null) { zArray[playerTwoIndex].Draw(spriteBatch, gameTime); }
                     ///The stack of dead blocks
                     if (stackedBlocks.Length > 0) { foreach (TetrisObject item in stackedBlocks) { if (item != null) { item.Draw(spriteBatch, Color.White); } } }
 
                     //Weapons
                     if (bloodOrb != null) { bloodOrb.Draw(spriteBatch); }
+                    if (pistol != null) { pistol.Draw(spriteBatch); }
                     //Effects
                     if (explosion != null) { explosion.Draw(spriteBatch); }
                     break;
@@ -1797,7 +1876,7 @@ namespace BlockBrawl
                     gameOver.Draw(spriteBatch);
                     break;
                 case PlayState.qte:
-                    qte.Draw(spriteBatch);
+                    qte.Draw(spriteBatch, gameTime);
                     break;
             }
         }
