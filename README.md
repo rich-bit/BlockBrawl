@@ -6,18 +6,18 @@ Player One:
 Left: A
 Right: D
 Down: S
-RotateClockWise: Space
-RotateCounterClockwise: Shift. 
+RotateClockWise: Left-Shift
+RotateCounterClockwise: F. 
 Pause: Esc.
-Power up: F
+Power up: W
 
 PlayerTwo:
 Left: LeftArrow
 Right: RightArrow
 Down: DownArrow
 RotateClockWise: NUM0
-RotateCounterClockwise: Enter. 
+RotateCounterClockwise: Right-CTRL. 
 Pause: NUMLOCK.
-Power-Up: Left-CTRL
+Power-Up: UpArrow
 
 The gamepads we are using ( cool [+..••] NES-replicas ) map like this: Buttons.back = NES select, Buttons.Y = NES B, Buttons.B = NES A, the rest is correct. If you have a different gamepad the mapping might need a fix.
