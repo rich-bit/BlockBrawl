@@ -36,6 +36,7 @@
             this.btnChangeDir = new System.Windows.Forms.Button();
             this.rtxInstallDir = new System.Windows.Forms.RichTextBox();
             this.fldBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            this.btnClose = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -58,6 +59,7 @@
             this.rtxInfoBox.Size = new System.Drawing.Size(776, 353);
             this.rtxInfoBox.TabIndex = 1;
             this.rtxInfoBox.Text = "";
+            this.rtxInfoBox.TextChanged += new System.EventHandler(this.rtxInfoBox_TextChanged);
             // 
             // chkShortCDesk
             // 
@@ -87,9 +89,9 @@
             // 
             this.btnInstall.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnInstall.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnInstall.Location = new System.Drawing.Point(642, 427);
+            this.btnInstall.Location = new System.Drawing.Point(642, 416);
             this.btnInstall.Name = "btnInstall";
-            this.btnInstall.Size = new System.Drawing.Size(146, 29);
+            this.btnInstall.Size = new System.Drawing.Size(146, 40);
             this.btnInstall.TabIndex = 6;
             this.btnInstall.Text = "Install";
             this.btnInstall.UseVisualStyleBackColor = true;
@@ -123,12 +125,25 @@
             // 
             this.fldBrowser.RootFolder = System.Environment.SpecialFolder.MyComputer;
             // 
+            // btnClose
+            // 
+            this.btnClose.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClose.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnClose.Location = new System.Drawing.Point(12, 427);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(146, 29);
+            this.btnClose.TabIndex = 10;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
             // Installation
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlText;
             this.ClientSize = new System.Drawing.Size(801, 468);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.rtxInstallDir);
             this.Controls.Add(this.btnChangeDir);
             this.Controls.Add(this.btnInstall);
@@ -155,6 +170,7 @@
         private System.Windows.Forms.Button btnChangeDir;
         private System.Windows.Forms.RichTextBox rtxInstallDir;
         private System.Windows.Forms.FolderBrowserDialog fldBrowser;
+        private System.Windows.Forms.Button btnClose;
     }
 }
 

@@ -108,6 +108,7 @@ namespace Install_Template
         private void btnInstall_Click(object sender, EventArgs e)
         {
             btnInstall.Enabled = false;
+            btnInstall.Text = "Install\n(Disabled)";
             new Thread(() =>
             {
                 if (!Directory.Exists(installPath))
@@ -135,14 +136,14 @@ namespace Install_Template
                     }
 
                     //Verify everything is created...
-                    if (i == folders.Count) { rtxInfoBox.Invoke(new Action(() => { rtxInfoBox.Text += $"\nAll folders(s) created!"; rtxInfoBox.Select(rtxInfoBox.Text.Length, 0); })); }
-                    else { rtxInfoBox.Invoke(new Action(() => { rtxInfoBox.Text += $"\n{i} folders(s) created! NOT all folders could be created by install!"; rtxInfoBox.Select(rtxInfoBox.Text.Length, 0); })); }
+                    if (i == folders.Count) { rtxInfoBox.Invoke(new Action(() => { rtxInfoBox.Text += $"\nAll folders(s) created!"; })); }
+                    else { rtxInfoBox.Invoke(new Action(() => { rtxInfoBox.Text += $"\n{i} folders(s) created! NOT all folders could be created by install!"; })); }
 
                     if (j == files.Count)
                     {
-                        rtxInfoBox.Invoke(new Action(() => { rtxInfoBox.Text += $"\nAll file(s) copied!"; rtxInfoBox.Select(rtxInfoBox.Text.Length, 0); }));
+                        rtxInfoBox.Invoke(new Action(() => { rtxInfoBox.Text += $"\nAll file(s) copied!"; }));
                     }
-                    else { rtxInfoBox.Invoke(new Action(() => { rtxInfoBox.Text += $"\n{j} file(s) copied! NOT all files could be created by install!"; rtxInfoBox.Select(rtxInfoBox.Text.Length, 0); })); }
+                    else { rtxInfoBox.Invoke(new Action(() => { rtxInfoBox.Text += $"\n{j} file(s) copied! NOT all files could be created by install!"; })); }
                     HandleShortCuts(chkShortCDesk.Checked, chkShortCStartMenu.Checked);
                 }
                 catch (Exception ex)
@@ -167,10 +168,11 @@ namespace Install_Template
             if (desktopShortcut)
             {
                 CreateShortcut("BlockBrawl", desktopPath, installPath + "\\BlockBrawl.exe");
-                rtxInfoBox.Invoke(new Action(() => { rtxInfoBox.Text += $"\nDesktop shortcut created:\n";
-                    rtxInfoBox.Text += desktopPath; 
-                    
-                    rtxInfoBox.Select(rtxInfoBox.Text.Length, 0); }));
+                rtxInfoBox.Invoke(new Action(() =>
+                {
+                    rtxInfoBox.Text += $"\nDesktop shortcut created:\n";
+                    rtxInfoBox.Text += desktopPath;
+                }));
             }
             if (startmenuShortcut)
             {
@@ -179,10 +181,11 @@ namespace Install_Template
                     Directory.CreateDirectory(startmenuPath + "\\Programs\\BlockBrawl");
                 }
                 CreateShortcut("BlockBrawl", startmenuPath + "\\Programs\\BlockBrawl", installPath + "\\BlockBrawl.exe");
-                rtxInfoBox.Invoke(new Action(() => {
+                rtxInfoBox.Invoke(new Action(() =>
+                {
                     rtxInfoBox.Text += $"\nStartmenu shortcut created:\n";
-                    rtxInfoBox.Text += startmenuPath + "\\Programs\\BlockBrawl\n"; 
-                    rtxInfoBox.Select(rtxInfoBox.Text.Length, 0); }));
+                    rtxInfoBox.Text += startmenuPath + "\\Programs\\BlockBrawl\n";
+                }));
             }
         }
         private void CreateShortcut(string shortcutName, string shortcutPath, string targetFileLocation)
@@ -212,6 +215,19 @@ namespace Install_Template
             }
             installPath = fldBrowser.SelectedPath;
             rtxInstallDir.Text = installPath;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            System.Environment.Exit(System.Environment.ExitCode);
+        }
+
+        private void rtxInfoBox_TextChanged(object sender, EventArgs e)
+        {
+            // set the current caret position to the end
+            rtxInfoBox.SelectionStart = rtxInfoBox.Text.Length;
+            // scroll it automatically
+            rtxInfoBox.ScrollToCaret();//Ty stackOverflow
         }
     }
 }
