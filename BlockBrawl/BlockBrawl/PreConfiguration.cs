@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace BlockBrawl
 {
@@ -13,11 +14,21 @@ namespace BlockBrawl
         public bool ShowPreConfigWindow { get; }
         public static int gameWidth;
         public static int gameHeight;
+        string programPath = "";
         public PreConfigurations()
         {
             InitializeComponent();
             LocateASettingsFile();
-            
+
+            try
+            {
+                if (File.Exists(@"installConfig.txt)"))
+                    programPath = File.ReadAllText(@"installConfig.txt");
+            }
+            catch (Exception e)
+            {
+                string s = e.ToString();
+            }
             resolutionslst.DataSource = fileRead.Resolutions();
 
             ShowPreConfigWindow = fileRead.ShowConfigWindowAtStart().Contains("True");
@@ -31,9 +42,9 @@ namespace BlockBrawl
 
             if (preferredResolution != "NotRead")
             {
-                for(int i = 0; i < fileRead.Resolutions().Count; i++)
+                for (int i = 0; i < fileRead.Resolutions().Count; i++)
                 {
-                    if(preferredResolution != resolutionslst.Text)
+                    if (preferredResolution != resolutionslst.Text)
                     {
                         resolutionslst.SelectedIndex++;
                     }
@@ -47,7 +58,8 @@ namespace BlockBrawl
         {
             if (!fileRead.SettingsExist())
             {
-                File.WriteAllLines("settings.txt", fileRead.SettingsFile());
+                if (programPath != "")
+                    File.WriteAllLines(programPath + "\\settings.txt", fileRead.SettingsFile());
             }
         }
         private void runGamebtn_Click(object sender, EventArgs e)
@@ -88,7 +100,8 @@ namespace BlockBrawl
             gameHeight = Convert.ToInt32(split[1]);
             fullScreen = fullscreenchk.Checked;
             gamePadVersion = chkGamePad.Checked;
-            File.WriteAllLines("settings.txt", newSettings);
+            if (programPath != "")
+                File.WriteAllLines(programPath + "\\settings.txt", newSettings);
             Close();
         }
     }

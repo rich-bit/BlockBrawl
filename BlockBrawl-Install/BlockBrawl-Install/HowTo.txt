@@ -1,0 +1,5 @@
+The blockbrawl install needs the following to install:
+
+RunUninstall.bat
+Release folder (contains the program)
+Uninstall build

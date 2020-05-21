@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Install_Template
 {
-    public partial class Installation : Form
+    public partial class Installation : Form//Some stuff here could be simplyfied
     {
         string rootPath;
         string installFilesPath;
@@ -18,6 +18,8 @@ namespace Install_Template
         List<string> folders = new List<string>();
         public Installation()
         {
+            chkShortCDesk.Enabled = false;
+            chkShortCStartMenu.Enabled = false;// Cant get them to work atm
             InitializeComponent();
             FindInstallDir();
             rootPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
@@ -109,6 +111,7 @@ namespace Install_Template
         {
             btnInstall.Enabled = false;
             btnInstall.Text = "Install\n(Disabled)";
+            System.IO.File.WriteAllText(installPath + "\\installConfig.txt", $"{installPath}");
             new Thread(() =>
             {
                 if (!Directory.Exists(installPath))
@@ -125,7 +128,6 @@ namespace Install_Template
                 }
                 try
                 {
-
                     int j = 0;
                     while (j != files.Count)
                     {
@@ -186,6 +188,7 @@ namespace Install_Template
                     rtxInfoBox.Text += $"\nStartmenu shortcut created:\n";
                     rtxInfoBox.Text += startmenuPath + "\\Programs\\BlockBrawl\n";
                 }));
+                CreateShortcut("BlockBrawl.Uninstall", startmenuPath + "\\Programs\\BlockBrawl", installPath + "\\RunUninstall.bat");
             }
         }
         private void CreateShortcut(string shortcutName, string shortcutPath, string targetFileLocation)
@@ -209,7 +212,7 @@ namespace Install_Template
         {
             DialogResult result = fldBrowser.ShowDialog();
 
-            while (result != DialogResult.OK)
+            while (result != DialogResult.OK || result != DialogResult.Cancel)
             {
 
             }

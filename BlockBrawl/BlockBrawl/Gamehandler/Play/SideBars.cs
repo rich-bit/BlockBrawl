@@ -180,7 +180,7 @@ namespace BlockBrawl
                 }
                 else
                 {
-                    spriteBatch.DrawString(FontManager.ScoreText, "Press F!", GetPlayerOneAllignment(9), Color.Gold);
+                    spriteBatch.DrawString(FontManager.ScoreText, "Press W!", GetPlayerOneAllignment(9), Color.Gold);
                 }
             }
             if (spawnWaitTime[playerTwoIndex] > 0f)
@@ -213,7 +213,7 @@ namespace BlockBrawl
                 }
                 else
                 {
-                    spriteBatch.DrawString(FontManager.ScoreText, "Press CTRL!", GetPlayerTwoAllignment(FontManager.ScoreText.MeasureString("Press Select!").X, 9), Color.Gold);
+                    spriteBatch.DrawString(FontManager.ScoreText, "Press UP!", GetPlayerTwoAllignment(FontManager.ScoreText.MeasureString("Press Select!").X, 9), Color.Gold);
                 }
             }
         }
