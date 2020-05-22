@@ -59,12 +59,14 @@ namespace BlockBrawl
             {
                 case Typer.playerOne:
                     if (iM.CapitalLetterTyped() != null) { playerOneName += iM.CapitalLetterTyped(); }
+                    if (iM.JustPressed(Keys.Back) && playerOneName.Length > 0) { playerOneName = playerOneName.Remove(playerOneName.Length - 1, 1); }
                     if (playerOneName != null && playerOneName.Length > 9) { playerOneName = null; }
                     changeWriterPos = GetScreenAlignment(FontManager.MenuText.MeasureString("Change with TAB").X, AlignmentTop(8), playerOneIndex);
                     break;
                 case Typer.playerTwo:
                     if (iM.CapitalLetterTyped() != null) { playerTwoName += iM.CapitalLetterTyped(); }
-                    if(playerTwoName != null && playerTwoName.Length > 9) { playerTwoName = null; }
+                    if (iM.JustPressed(Keys.Back) && playerTwoName.Length > 0) { playerTwoName = playerTwoName.Remove(playerTwoName.Length - 1, 1); }
+                    if (playerTwoName != null && playerTwoName.Length > 9) { playerTwoName = null; }
                     changeWriterPos = GetScreenAlignment(FontManager.MenuText.MeasureString("Change with TAB").X, AlignmentTop(8), playerTwoIndex);
                     break;
             }

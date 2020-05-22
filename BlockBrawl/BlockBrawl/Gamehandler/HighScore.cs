@@ -74,6 +74,10 @@ namespace BlockBrawl
                 UpdateHighScore = true;
                 rowForDraw = 0;
             }
+            if(iM.JustPressed(Buttons.Start, playerOneIndex) || iM.JustPressed(Buttons.Start, playerTwoIndex) || iM.JustPressed(Keys.F5))
+            {
+                UpdateHighScore = true;
+            }
             if (UpdateHighScore)
             {
                 CreateHighScore();
@@ -135,6 +139,8 @@ namespace BlockBrawl
             }
             spriteBatch.DrawString(FontManager.MenuText, "To go menu? Use ESC / Select", new Vector2(0, 
                 SettingsManager.gameHeight - FontManager.MenuText.MeasureString("To go menu? Use ESC / Select").Y), Color.Yellow);
+            spriteBatch.DrawString(FontManager.MenuText, "Refresh with F5/Start", new Vector2(SettingsManager.gameWidth  - FontManager.MenuText.MeasureString("Refresh with F5/Start").X,
+                SettingsManager.gameHeight - FontManager.MenuText.MeasureString("Refresh with F5/Start").Y), Color.Yellow);
         }
     }
 }
