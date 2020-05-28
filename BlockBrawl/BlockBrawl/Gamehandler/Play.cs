@@ -266,6 +266,7 @@ namespace BlockBrawl
                 if (explosion.Done)
                 {
                     explosion = null;
+                    sideBars.QTEWinner = int.MinValue;
                 }
             }
         }
