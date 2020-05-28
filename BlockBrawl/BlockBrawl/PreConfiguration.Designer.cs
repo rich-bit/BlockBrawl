@@ -111,9 +111,9 @@
             this.chkGamePad.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.chkGamePad.Location = new System.Drawing.Point(16, 115);
             this.chkGamePad.Name = "chkGamePad";
-            this.chkGamePad.Size = new System.Drawing.Size(136, 16);
+            this.chkGamePad.Size = new System.Drawing.Size(144, 16);
             this.chkGamePad.TabIndex = 6;
-            this.chkGamePad.Text = "Gamepad Vesion";
+            this.chkGamePad.Text = "Gamepad Version";
             this.chkGamePad.UseVisualStyleBackColor = true;
             // 
             // PreConfigurations
