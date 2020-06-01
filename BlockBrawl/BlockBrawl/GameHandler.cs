@@ -11,7 +11,7 @@ namespace BlockBrawl
         GraphicsDevice graphicsDevice;
         //GameTime gameTime;
         InputManager iM;
-        SettingsManager settings;
+        SettingsManager settingsManager;
         public enum GameState
         {
             play,
@@ -24,6 +24,7 @@ namespace BlockBrawl
         //Management
         PrePlayScreen prePlayScreen;
         Play play;
+        Settings settings;
         Menu menu;
         HighScore highScore;
         public GameHandler(GraphicsDeviceManager graphicsDeviceManager, GraphicsDevice graphicsDevice, ContentManager contentManager)
@@ -34,12 +35,13 @@ namespace BlockBrawl
             new FontManager(contentManager);
             new SoundManager(contentManager);
             new TextureManager(contentManager);
-            settings = new SettingsManager(graphicsDeviceManager);
+            settingsManager = new SettingsManager(graphicsDeviceManager);
             spriteBatch = new SpriteBatch(graphicsDevice);
             iM = new InputManager(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
 
             prePlayScreen = new PrePlayScreen(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
             menu = new Menu();
+            settings = new Settings();
             highScore = new HighScore();
             currentGameState = GameState.menu;
         }
@@ -67,6 +69,7 @@ namespace BlockBrawl
                     }
                     break;
                 case GameState.settings:
+                    settings.Update(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo, gameTime);
                     break;
                 case GameState.highscore:
                     highScore.Update(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
@@ -118,6 +121,7 @@ namespace BlockBrawl
                     }
                     break;
                 case GameState.settings:
+                    settings.Draw(spriteBatch);
                     break;
                 case GameState.highscore:
                     highScore.Draw(spriteBatch);

@@ -64,6 +64,7 @@
             // chkShortCDesk
             // 
             this.chkShortCDesk.AutoSize = true;
+            this.chkShortCDesk.Enabled = false;
             this.chkShortCDesk.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkShortCDesk.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.chkShortCDesk.Location = new System.Drawing.Point(364, 439);
@@ -72,10 +73,12 @@
             this.chkShortCDesk.TabIndex = 2;
             this.chkShortCDesk.Text = "Create Desktop Shortcut";
             this.chkShortCDesk.UseVisualStyleBackColor = true;
+            this.chkShortCDesk.Visible = false;
             // 
             // chkShortCStartMenu
             // 
             this.chkShortCStartMenu.AutoSize = true;
+            this.chkShortCStartMenu.Enabled = false;
             this.chkShortCStartMenu.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkShortCStartMenu.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.chkShortCStartMenu.Location = new System.Drawing.Point(364, 416);
@@ -84,6 +87,7 @@
             this.chkShortCStartMenu.TabIndex = 3;
             this.chkShortCStartMenu.Text = "Create Start-Menu Shortcut";
             this.chkShortCStartMenu.UseVisualStyleBackColor = true;
+            this.chkShortCStartMenu.Visible = false;
             // 
             // btnInstall
             // 

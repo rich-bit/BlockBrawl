@@ -18,9 +18,9 @@ namespace Install_Template
         List<string> folders = new List<string>();
         public Installation()
         {
+            InitializeComponent();
             chkShortCDesk.Enabled = false;
             chkShortCStartMenu.Enabled = false;// Cant get them to work atm
-            InitializeComponent();
             FindInstallDir();
             rootPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
             rootPath = rootPath.Substring(6);
@@ -212,10 +212,10 @@ namespace Install_Template
         {
             DialogResult result = fldBrowser.ShowDialog();
 
-            while (result != DialogResult.OK || result != DialogResult.Cancel)
-            {
-
-            }
+            //while (result != DialogResult.OK)
+            //{
+            //    Thread.Sleep(20);
+            //}
             installPath = fldBrowser.SelectedPath;
             rtxInstallDir.Text = installPath;
         }
