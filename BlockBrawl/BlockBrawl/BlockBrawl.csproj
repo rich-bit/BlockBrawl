@@ -79,6 +79,7 @@
     <Compile Include="Gamehandler\Play\QTE.cs" />
     <Compile Include="Gamehandler\Play\SideBars.cs" />
     <Compile Include="Gamehandler\PrePlayScreen.cs" />
+    <Compile Include="Gamehandler\Settings.cs" />
     <Compile Include="Management\FontManager.cs" />
     <Compile Include="Management\SoundManager.cs" />
     <Compile Include="Objects\Dataread.cs" />
@@ -211,6 +212,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="blockbrawl.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gamehandler\Settings\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
