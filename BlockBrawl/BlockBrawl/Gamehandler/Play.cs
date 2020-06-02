@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using BlockBrawl.Blocks;
 using BlockBrawl.Objects;
 using System.Collections.Generic;
+using BlockBrawl.Gamehandler.Play;
 //using System.Windows.Forms;
 
 namespace BlockBrawl
@@ -53,6 +54,7 @@ namespace BlockBrawl
         //Power-Ups
         BloodOrb bloodOrb;
         Pistol pistol;
+        MusikPlayer musikPlayer;
         //Special-Effects
         AnimatedObject explosion;
         enum PlayState
@@ -66,6 +68,7 @@ namespace BlockBrawl
 
         //Gamestate obj.
         CheckGameOver gameOver;
+        public Pause Pause { get; set; }
 
         public bool GoToMenu { get; set; }
 
@@ -115,6 +118,9 @@ namespace BlockBrawl
             currentPlayState = PlayState.play;
 
             gameOver = new CheckGameOver();
+            Pause = new Pause();
+
+            musikPlayer = new MusikPlayer(rnd);
         }
         private void PopulatePlayfield(int tilesX, int tilesY, Vector2 tileSize, int gameWidth, int gameHeight)//Get drawable textures and pos for the playfield
         {
@@ -148,18 +154,33 @@ namespace BlockBrawl
         {
             if (qte.Cleared && qte.Winner != int.MinValue)
             {
-                int numberPowerUps = 2;
+                int numberPowerUps;
+                if (musikPlayer.SongsToPlay)
+                {
+                    numberPowerUps = 3;
+                }
+                else
+                {
+                    numberPowerUps = 2;
+                }
+
                 int randomPowerUp = rnd.Next(numberPowerUps);
+                
                 switch (randomPowerUp)
                 {
                     case 0:
                         bloodOrb = new BloodOrb(5f, qte.Winner, playerOneIndex, playerTwoIndex);
+                        sideBars.QTEWinner = qte.Winner;
                         break;
                     case 1:
                         pistol = new Pistol(5f, qte.Winner, playerOneIndex, playerTwoIndex);
+                        sideBars.QTEWinner = qte.Winner;
+                        break;
+                    case 2:
+                        musikPlayer.PlayRandomSong();
+                        sideBars.Music = true;
                         break;
                 }
-                sideBars.QTEWinner = qte.Winner;
                 qte = null;
                 currentPlayState = PlayState.play;
             }
@@ -203,8 +224,9 @@ namespace BlockBrawl
                     else if (!gamePadVersion && iM.JustPressed(Keys.Escape) || iM.JustPressed(Keys.NumLock)) { currentPlayState = PlayState.pause; }
                     break;
                 case PlayState.pause:
+                    Pause.Update(iM, playerOneIndex, playerTwoIndex);
                     if (gamePadVersion && iM.JustPressed(Buttons.Start, playerOneIndex) || iM.JustPressed(Buttons.Start, playerTwoIndex)) { currentPlayState = PlayState.play; }
-                    else if (!gamePadVersion && iM.JustPressed(Keys.Escape) || iM.JustPressed(Keys.NumLock)) { currentPlayState = PlayState.play; }
+                    else if (!gamePadVersion && iM.JustPressed(Keys.Enter) || iM.JustPressed(Keys.NumLock)) { currentPlayState = PlayState.play; }
                     break;
                 case PlayState.gameover:
                     gameOver.Update(iM, gamePadVersion, playerOneIndex, playerTwoIndex);
@@ -1871,7 +1893,7 @@ namespace BlockBrawl
                     if (explosion != null) { explosion.Draw(spriteBatch); }
                     break;
                 case PlayState.pause:
-                    spriteBatch.DrawString(FontManager.MenuText, "Pause!", Vector2.Zero, Color.IndianRed);
+                    Pause.Draw(spriteBatch);
                     break;
                 case PlayState.gameover:
                     gameOver.Draw(spriteBatch);

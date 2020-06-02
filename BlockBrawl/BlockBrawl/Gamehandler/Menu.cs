@@ -15,13 +15,14 @@ namespace BlockBrawl
             play,
             settings,
             highscore,
+            quit,
         }
         public MenuChoice menuChoiceSwitch;
         int CurrentMenuChoice { get; set; }
         public bool EnterChoice { get; set; }
         int badImgMarginFix = 3;
         Point marginFromMenuObj;
-        GameObject blockBrawlMenu, settingsMenu, playMenu, highScoreMenu, arrowOneLeft, arrowTwoLeft, arrowOneRight, arrowTwoRight;
+        GameObject blockBrawlMenu, settingsMenu, playMenu, highScoreMenu, arrowOneLeft, arrowTwoLeft, arrowOneRight, arrowTwoRight, quit;
 
         List<GameObject> menuObjs = new List<GameObject>();
         public Menu()
@@ -38,14 +39,15 @@ namespace BlockBrawl
             playMenu = new GameObject(Vector2.Zero, TextureManager.menuPlay);
             settingsMenu = new GameObject(Vector2.Zero, TextureManager.menuSettings);
             highScoreMenu = new GameObject(Vector2.Zero, TextureManager.menuHighScore);
-            menuObjs.Add(blockBrawlMenu); menuObjs.Add(playMenu); menuObjs.Add(settingsMenu); menuObjs.Add(highScoreMenu);
+            quit = new GameObject(Vector2.Zero, TextureManager.menuQuit);
+            menuObjs.Add(blockBrawlMenu); menuObjs.Add(playMenu); menuObjs.Add(settingsMenu); menuObjs.Add(highScoreMenu); menuObjs.Add(quit);
             AssignPos();
         }
         private void AssignPos()
         {
             float lengthOfPics = 0f;
             float heightCount = 0f;
-            float arbitraryMargin = 25f;
+            float arbitraryMargin = 5f;
             for (int i = 0; i < menuObjs.Count; i++)
             {
                 lengthOfPics += menuObjs[i].Tex.Height;
@@ -110,6 +112,7 @@ namespace BlockBrawl
             if(CurrentMenuChoice == 1) { menuChoiceSwitch = MenuChoice.play; }
             else if (CurrentMenuChoice == 2) { menuChoiceSwitch = MenuChoice.settings; }
             else if (CurrentMenuChoice == 3) { menuChoiceSwitch = MenuChoice.highscore; }
+            else if (CurrentMenuChoice == 4) { menuChoiceSwitch = MenuChoice.quit; }
         }
         private void SetLeftArrowPos()
         {

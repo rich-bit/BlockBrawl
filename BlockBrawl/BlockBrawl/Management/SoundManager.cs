@@ -7,8 +7,8 @@ namespace BlockBrawl
 {
     class SoundManager
     {
-        private readonly List<SoundEffect> noCopySounds;
-        private readonly List<SoundEffect> otherSounds;
+        private List<SoundEffect> noCopySounds;
+        private List<SoundEffect> otherSounds;
         private List<SoundEffect> soundEffects;
 
         public static SoundEffectInstance explosion, rowFilled, menuChoice, laserShot;
@@ -51,8 +51,8 @@ namespace BlockBrawl
                 }
             }
         }
-        public List<SoundEffectInstance> NoCopySounds { get; }
-        public List<SoundEffectInstance> OtherSounds { get; }
+        public static List<SoundEffectInstance> NoCopySounds { get; set; }
+        public static List<SoundEffectInstance> OtherSounds { get; set; }
 
         private void InitiateSoundEffects(ContentManager content)
         {

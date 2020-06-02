@@ -75,11 +75,14 @@
     <Compile Include="Gamehandler\Play\Bloodorb.cs" />
     <Compile Include="Gamehandler\Play\GameOver.cs" />
     <Compile Include="Gamehandler\Play\MusikPlayer.cs" />
+    <Compile Include="Gamehandler\Play\Pause.cs" />
     <Compile Include="Gamehandler\Play\Pistol.cs" />
     <Compile Include="Gamehandler\Play\QTE.cs" />
     <Compile Include="Gamehandler\Play\SideBars.cs" />
     <Compile Include="Gamehandler\PrePlayScreen.cs" />
     <Compile Include="Gamehandler\Settings.cs" />
+    <Compile Include="Gamehandler\Settings\ConfigureGamePads.cs" />
+    <Compile Include="Gamehandler\Settings\ViewControls.cs" />
     <Compile Include="Management\FontManager.cs" />
     <Compile Include="Management\SoundManager.cs" />
     <Compile Include="Objects\Dataread.cs" />
@@ -213,9 +216,7 @@
   <ItemGroup>
     <Content Include="blockbrawl.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Gamehandler\Settings\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

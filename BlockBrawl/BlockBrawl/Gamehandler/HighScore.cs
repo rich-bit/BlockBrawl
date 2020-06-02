@@ -117,11 +117,11 @@ namespace BlockBrawl
         {
             if (unsuccesfullDataAccess)
             {
-                spriteBatch.DrawString(FontManager.MenuText, unsuccesfullDataAccessMsg, Vector2.Zero, Color.Red);
+                spriteBatch.DrawString(FontManager.GeneralText, unsuccesfullDataAccessMsg, Vector2.Zero, Color.Red);
             }
             else
             {
-                spriteBatch.DrawString(FontManager.MenuText, "Best BlockBrawl scores:", GetAlignment(FontManager.MenuText, "Best BlockBrawl scores:", 1), Color.Gold);
+                spriteBatch.DrawString(FontManager.GeneralText, "Best BlockBrawl scores:", GetAlignment(FontManager.GeneralText, "Best BlockBrawl scores:", 1), Color.Gold);
                 if (currentRecords != null)
                 {
                     for (int i = 0; i < currentRecords.Count; i++)
@@ -134,13 +134,13 @@ namespace BlockBrawl
                 }
                 if(currentRecords == null || currentRecords.Count == 0)
                 {
-                    spriteBatch.DrawString(FontManager.MenuText, "No records to show!", GetAlignment(FontManager.MenuText, "Highscores!", 3), Color.Yellow);
+                    spriteBatch.DrawString(FontManager.GeneralText, "No records to show!", GetAlignment(FontManager.GeneralText, "Highscores!", 3), Color.Yellow);
                 }
             }
-            spriteBatch.DrawString(FontManager.MenuText, "To go menu? Use ESC / Select", new Vector2(0, 
-                SettingsManager.gameHeight - FontManager.MenuText.MeasureString("To go menu? Use ESC / Select").Y), Color.Yellow);
-            spriteBatch.DrawString(FontManager.MenuText, "Refresh with F5/Start", new Vector2(SettingsManager.gameWidth  - FontManager.MenuText.MeasureString("Refresh with F5/Start").X,
-                SettingsManager.gameHeight - FontManager.MenuText.MeasureString("Refresh with F5/Start").Y), Color.Yellow);
+            spriteBatch.DrawString(FontManager.GeneralText, "To go menu? Use ESC / Select", new Vector2(0, 
+                SettingsManager.gameHeight - FontManager.GeneralText.MeasureString("To go menu? Use ESC / Select").Y), Color.Yellow);
+            spriteBatch.DrawString(FontManager.GeneralText, "Refresh with F5/Start", new Vector2(SettingsManager.gameWidth  - FontManager.GeneralText.MeasureString("Refresh with F5/Start").X,
+                SettingsManager.gameHeight - FontManager.GeneralText.MeasureString("Refresh with F5/Start").Y), Color.Yellow);
         }
     }
 }

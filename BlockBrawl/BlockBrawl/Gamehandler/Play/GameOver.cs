@@ -16,6 +16,7 @@ namespace BlockBrawl
         string connectionString;
         List<Dataread> dataReads;
         NpgsqlConnection connection;
+        bool newHighscore;
         bool unsuccesfullDataAccess = false;
         string unsuccesfullDataAccessMsg;
         int winnerScore, looserScore, playedTime;
@@ -44,6 +45,7 @@ namespace BlockBrawl
                     {
                         scoreProcessed = $"You made the Highscore {winnerScore} points! Place # {dataReads[i].id.ToString()}!";
                         UpdateDatabase(dataReads[i].id, winnerScore, looserScore, winnerName, looserName, playedTime);
+                        newHighscore = true;
                         break;
                     }
                     else
@@ -144,22 +146,27 @@ namespace BlockBrawl
         {
             if (unsuccesfullDataAccess)
             {
-                spriteBatch.DrawString(FontManager.MenuText, unsuccesfullDataAccessMsg, new Vector2(0, 0), Color.Red);
-                spriteBatch.DrawString(FontManager.MenuText, scoreProcessed, new Vector2(0, 80), Color.Yellow);
-                spriteBatch.DrawString(FontManager.MenuText, "Go to menu? Press Select/Esc", new Vector2(0, 160), Color.Yellow);
+                spriteBatch.DrawString(FontManager.GeneralText, unsuccesfullDataAccessMsg, new Vector2(0, 0), Color.Red);
+                spriteBatch.DrawString(FontManager.GeneralText, scoreProcessed, new Vector2(0, 80), Color.Yellow);
+                spriteBatch.DrawString(FontManager.GeneralText, "Go to menu? Press Select/Esc", new Vector2(0, 160), Color.Yellow);
             }
             else
             {
                 if (winnerScore > 0)
                 {
-                    spriteBatch.DrawString(FontManager.MenuText, $"{winnerName} beat {looserName} with {winnerScore} against {looserScore}", new Vector2(0, 0), Color.Yellow);
+                    spriteBatch.DrawString(FontManager.GeneralText, $"{winnerName} beat {looserName} with {winnerScore} against {looserScore}", new Vector2(0, 0), Color.Yellow);
                 }
                 else
                 {
-                    spriteBatch.DrawString(FontManager.MenuText, $"Both players scored 0!", new Vector2(0, 0), Color.Yellow);
+                    spriteBatch.DrawString(FontManager.GeneralText, $"Both players scored 0!", new Vector2(0, 0), Color.Yellow);
                 }
-                spriteBatch.DrawString(FontManager.MenuText, scoreProcessed, new Vector2(0, 80), Color.Yellow);
-                spriteBatch.DrawString(FontManager.MenuText, "Go to menu? Press Select/Esc", new Vector2(0, 160), Color.Yellow);
+                spriteBatch.DrawString(FontManager.GeneralText, scoreProcessed, new Vector2(0, 80), Color.Yellow);
+                spriteBatch.DrawString(FontManager.GeneralText, "Go to menu? Press Select/Esc", new Vector2(0, 160), Color.Yellow);
+                if (newHighscore)
+                {
+                    spriteBatch.Draw(TextureManager.menuHighScore, new Vector2(SettingsManager.gameWidth / 2 - TextureManager.menuHighScore.Width / 2,
+                        SettingsManager.gameHeight / 2 - TextureManager.menuHighScore.Height / 2), Color.White);
+                }
             }
         }
     }

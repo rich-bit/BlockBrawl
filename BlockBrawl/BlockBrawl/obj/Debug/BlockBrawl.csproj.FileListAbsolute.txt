@@ -83,11 +83,8 @@ C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\GameSounds\rowfilled.xnb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Bazooka\bazooka-shot.xnb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\blockbrawl1.xnb
-C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\highscore1.xnb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\menuArrowLeft.xnb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\menuArrowRight.xnb
-C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\play1.xnb
-C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\settings1.xnb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\1920x1080\blockblå.xnb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\1920x1080\blockgrön.xnb
 C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\1920x1080\blockgul.xnb
@@ -608,3 +605,14 @@ C:\Users\niitl\OneDrive\Dokument\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\obj\Deb
 C:\Users\niitl\OneDrive\Dokument\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\obj\Debug\BlockBrawl.csproj.CopyComplete
 C:\Users\niitl\OneDrive\Dokument\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\obj\Debug\BlockBrawl.exe
 C:\Users\niitl\OneDrive\Dokument\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\obj\Debug\BlockBrawl.pdb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\highscore.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\play.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\settings.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\quit.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\settings\configureGamepads.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\settings\resetPreConfig.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\settings\viewControls.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\pause.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\settings\keyboard.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\Menu.Images\settings\gamepad.xnb
+C:\Users\Richard\Documents\GitHub\BlockBrawl\BlockBrawl\BlockBrawl\bin\DesktopGL\AnyCPU\Debug\Content\playmusic.xnb

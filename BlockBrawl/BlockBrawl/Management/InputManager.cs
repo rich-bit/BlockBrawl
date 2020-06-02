@@ -73,5 +73,10 @@ namespace BlockBrawl
             if (JustPressed(Keys.Z)) { return "Z"; }
             return null;
         }
+        //public Buttons FindPressedButton(int playerIndex)
+        //{
+        //    if (JustPressed(Buttons.A, playerIndex)) { return Buttons.A; }
+        //    return null;
+        //}
     }
 }

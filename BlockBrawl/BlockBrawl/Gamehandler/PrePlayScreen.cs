@@ -61,13 +61,13 @@ namespace BlockBrawl
                     if (iM.CapitalLetterTyped() != null) { playerOneName += iM.CapitalLetterTyped(); }
                     if (iM.JustPressed(Keys.Back) && playerOneName.Length > 0) { playerOneName = playerOneName.Remove(playerOneName.Length - 1, 1); }
                     if (playerOneName != null && playerOneName.Length > 9) { playerOneName = null; }
-                    changeWriterPos = GetScreenAlignment(FontManager.MenuText.MeasureString("Change with TAB").X, AlignmentTop(8), playerOneIndex);
+                    changeWriterPos = GetScreenAlignment(FontManager.GeneralText.MeasureString("Change with TAB").X, AlignmentTop(8), playerOneIndex);
                     break;
                 case Typer.playerTwo:
                     if (iM.CapitalLetterTyped() != null) { playerTwoName += iM.CapitalLetterTyped(); }
                     if (iM.JustPressed(Keys.Back) && playerTwoName.Length > 0) { playerTwoName = playerTwoName.Remove(playerTwoName.Length - 1, 1); }
                     if (playerTwoName != null && playerTwoName.Length > 9) { playerTwoName = null; }
-                    changeWriterPos = GetScreenAlignment(FontManager.MenuText.MeasureString("Change with TAB").X, AlignmentTop(8), playerTwoIndex);
+                    changeWriterPos = GetScreenAlignment(FontManager.GeneralText.MeasureString("Change with TAB").X, AlignmentTop(8), playerTwoIndex);
                     break;
             }
         }
@@ -181,47 +181,47 @@ namespace BlockBrawl
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.DrawString(FontManager.MenuText, "Change with TAB", changeWriterPos, Color.Aquamarine);
+            spriteBatch.DrawString(FontManager.GeneralText, "Change with TAB", changeWriterPos, Color.Aquamarine);
 
-            spriteBatch.DrawString(FontManager.MenuText, instructionsPlayer1,
-                GetScreenAlignment(FontManager.MenuText.MeasureString(instructionsPlayer1).X, AlignmentTop(3), playerOneIndex), Color.Red);
+            spriteBatch.DrawString(FontManager.GeneralText, instructionsPlayer1,
+                GetScreenAlignment(FontManager.GeneralText.MeasureString(instructionsPlayer1).X, AlignmentTop(3), playerOneIndex), Color.Red);
             colorsP1[playerOneChoice].Draw(spriteBatch);
-            spriteBatch.DrawString(FontManager.MenuText, "Type your name:",
-                GetScreenAlignment(FontManager.MenuText.MeasureString("Type your name:").X, AlignmentTop(7), playerOneIndex), Color.Red);
+            spriteBatch.DrawString(FontManager.GeneralText, "Type your name:",
+                GetScreenAlignment(FontManager.GeneralText.MeasureString("Type your name:").X, AlignmentTop(7), playerOneIndex), Color.Red);
             if (playerOneName != null)
             {
-                spriteBatch.DrawString(FontManager.MenuText, playerOneName,
-                    GetScreenAlignment(FontManager.MenuText.MeasureString(playerOneName).X, AlignmentTop(9), playerOneIndex), Color.Blue);
+                spriteBatch.DrawString(FontManager.GeneralText, playerOneName,
+                    GetScreenAlignment(FontManager.GeneralText.MeasureString(playerOneName).X, AlignmentTop(9), playerOneIndex), Color.Blue);
             }
             if (playerOneReady)
             {
-                spriteBatch.DrawString(FontManager.MenuText, "Player One Ready!",
-                GetScreenAlignment(FontManager.MenuText.MeasureString("Player One Ready!").X, AlignmentTop(11), playerOneIndex), Color.Yellow);
+                spriteBatch.DrawString(FontManager.GeneralText, "Player One Ready!",
+                GetScreenAlignment(FontManager.GeneralText.MeasureString("Player One Ready!").X, AlignmentTop(11), playerOneIndex), Color.Yellow);
             }
             else
             {
-                spriteBatch.DrawString(FontManager.MenuText, "Press start / Space when ready!",
-                GetScreenAlignment(FontManager.MenuText.MeasureString("Press start / Space when ready!").X, AlignmentTop(11), playerOneIndex), Color.White);
+                spriteBatch.DrawString(FontManager.GeneralText, "Press start / Space when ready!",
+                GetScreenAlignment(FontManager.GeneralText.MeasureString("Press start / Space when ready!").X, AlignmentTop(11), playerOneIndex), Color.White);
             }
-            spriteBatch.DrawString(FontManager.MenuText, instructionsPlayer2,
-                GetScreenAlignment(FontManager.MenuText.MeasureString(instructionsPlayer2).X, AlignmentTop(3), playerTwoIndex), Color.Red);
+            spriteBatch.DrawString(FontManager.GeneralText, instructionsPlayer2,
+                GetScreenAlignment(FontManager.GeneralText.MeasureString(instructionsPlayer2).X, AlignmentTop(3), playerTwoIndex), Color.Red);
             colorsP2[playerTwoChoice].Draw(spriteBatch);
-            spriteBatch.DrawString(FontManager.MenuText, "Type your name:",
-                GetScreenAlignment(FontManager.MenuText.MeasureString("Type your name:").X, AlignmentTop(7), playerTwoIndex), Color.Red);
+            spriteBatch.DrawString(FontManager.GeneralText, "Type your name:",
+                GetScreenAlignment(FontManager.GeneralText.MeasureString("Type your name:").X, AlignmentTop(7), playerTwoIndex), Color.Red);
             if (playerTwoName != null)
             {
-                spriteBatch.DrawString(FontManager.MenuText, playerTwoName,
-        GetScreenAlignment(FontManager.MenuText.MeasureString(playerTwoName).X, AlignmentTop(9), playerTwoIndex), Color.Blue);
+                spriteBatch.DrawString(FontManager.GeneralText, playerTwoName,
+        GetScreenAlignment(FontManager.GeneralText.MeasureString(playerTwoName).X, AlignmentTop(9), playerTwoIndex), Color.Blue);
             }
             if (playerTwoReady)
             {
-                spriteBatch.DrawString(FontManager.MenuText, "Player Two Ready!",
-                GetScreenAlignment(FontManager.MenuText.MeasureString("Player Two Ready!").X, AlignmentTop(11), playerTwoIndex), Color.Yellow);
+                spriteBatch.DrawString(FontManager.GeneralText, "Player Two Ready!",
+                GetScreenAlignment(FontManager.GeneralText.MeasureString("Player Two Ready!").X, AlignmentTop(11), playerTwoIndex), Color.Yellow);
             }
             else
             {
-                spriteBatch.DrawString(FontManager.MenuText, "Press start / Enter when ready!",
-                GetScreenAlignment(FontManager.MenuText.MeasureString("Press start / Space when ready!").X, AlignmentTop(11), playerTwoIndex), Color.White);
+                spriteBatch.DrawString(FontManager.GeneralText, "Press start / Enter when ready!",
+                GetScreenAlignment(FontManager.GeneralText.MeasureString("Press start / Space when ready!").X, AlignmentTop(11), playerTwoIndex), Color.White);
             }
         }
         private Vector2 GetScreenAlignment(float objectWidth, float marginTop, int playerIndex)

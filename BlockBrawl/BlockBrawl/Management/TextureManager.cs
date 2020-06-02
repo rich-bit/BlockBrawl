@@ -6,7 +6,8 @@ namespace BlockBrawl
     class TextureManager
     {
         public static Texture2D emptyBlock, transBlock, menuArrowLeft, menuArrowRight,
-            menuPlay, menuSettings, menuHighScore, menuBlockBrawl, qteColor, qteDotted,
+            menuPlay, menuSettings, menuHighScore, menuBlockBrawl, menuQuit, qteColor, qteDotted,
+            settingsConfigureGamePad, settingsShowPreConfig, settingsViewControls, pause, keyboard, gamepad, playMusic,
             blueBlock1920, greenBlock1920, yellowBlock1920, purpleBlock1920, lightBlueBlock1920, orangeBlock1920, redBlock1920,
             bazookaShot, spriteSheetExplosion, spritesheetBlodSpatter1920x1080, spriteSheetExplosion1920x1080, spriteSheetShot;
 
@@ -15,12 +16,23 @@ namespace BlockBrawl
             menuArrowLeft = content.Load<Texture2D>(@"Menu.Images/menuArrowLeft");
             menuArrowRight = content.Load<Texture2D>(@"Menu.Images/menuArrowRight");
 
+            settingsConfigureGamePad = content.Load<Texture2D>(@"Menu.Images/settings/configureGamepads");
+            settingsShowPreConfig = content.Load<Texture2D>(@"Menu.Images/settings/resetPreConfig");
+            settingsViewControls = content.Load<Texture2D>(@"Menu.Images/settings/viewControls");
+            keyboard = content.Load<Texture2D>(@"Menu.Images/settings/keyboard");
+            gamepad = content.Load<Texture2D>(@"Menu.Images/settings/gamepad");
+            playMusic = content.Load<Texture2D>(@"playmusic");
+
             emptyBlock = content.Load<Texture2D>(@"emptyblock");
             transBlock = content.Load<Texture2D>(@"transparentblock");
-            menuPlay = content.Load<Texture2D>(@"Menu.Images/play1");
-            menuSettings = content.Load<Texture2D>(@"Menu.Images/settings1");
-            menuHighScore = content.Load<Texture2D>(@"Menu.Images/highscore1");
+            menuPlay = content.Load<Texture2D>(@"Menu.Images/play");
+            menuQuit = content.Load<Texture2D>(@"Menu.Images/quit");
+            menuSettings = content.Load<Texture2D>(@"Menu.Images/settings");
+            menuHighScore = content.Load<Texture2D>(@"Menu.Images/highscore");
             menuBlockBrawl = content.Load<Texture2D>(@"Menu.Images/blockbrawl1");
+
+            pause = content.Load<Texture2D>(@"Menu.Images/pause");
+
             qteColor = content.Load<Texture2D>(@"qteblock");
             qteDotted = content.Load<Texture2D>(@"qtedottedblock");
             bazookaShot = content.Load<Texture2D>(@"Bazooka/bazooka-shot");

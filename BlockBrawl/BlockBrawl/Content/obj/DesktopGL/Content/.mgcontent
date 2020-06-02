@@ -22,15 +22,23 @@
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/GameSounds/rowfilled.wav</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/gameText.spritefont</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/blockbrawl1.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/highscore1.PNG</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/highscore.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/menuArrowLeft.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/menuArrowRight.png</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/play1.PNG</File>
-    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/settings1.PNG</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/pause.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/play.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/quit.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/settings.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/settings/configureGamepads.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/settings/gamepad.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/settings/keyboard.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/settings/resetPreConfig.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/settings/viewControls.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/MenuFont.spritefont</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/menuText.spritefont</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/neonText.spritefont</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/newround.spritefont</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/playmusic.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/qteblock.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/qtedottedblock.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/scoreText.spritefont</File>
@@ -40,6 +48,14 @@
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/transparentblock.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

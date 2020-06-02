@@ -6,6 +6,8 @@ namespace BlockBrawl
 {
     public static class Program
     {
+        public static Game1 Game;
+
         [STAThread]
 
         static void Main()
@@ -15,8 +17,12 @@ namespace BlockBrawl
             {
                 Application.Run(preConfig);
             }
+
             using (var game = new Game1())
-                game.Run();
+            {
+                Game = game;
+                Game.Run();
+            }
         }
     }
 }

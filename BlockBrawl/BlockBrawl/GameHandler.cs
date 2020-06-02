@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using BlockBrawl.Gamehandler;
+using System;
 
 namespace BlockBrawl
 {
@@ -67,9 +67,15 @@ namespace BlockBrawl
                         play.Update(gameTime, iM);
                         if (play.GoToMenu) { play = null; currentGameState = GameState.menu; }
                     }
+                    if (play != null && play.Pause != null && play.Pause.GoToMenu)
+                    {
+                        play = null;
+                        currentGameState = GameState.menu;
+                    }
                     break;
                 case GameState.settings:
                     settings.Update(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo, gameTime);
+                    if (settings.GoToMenu) { currentGameState = GameState.menu; settings.GoToMenu = false; }
                     break;
                 case GameState.highscore:
                     highScore.Update(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
@@ -101,6 +107,10 @@ namespace BlockBrawl
                 {
                     currentGameState = GameState.highscore;
                     menu.EnterChoice = false;
+                }
+                else if (menu.menuChoiceSwitch == Menu.MenuChoice.quit)
+                {
+                    Program.Game.Exit();
                 }
             }
         }

@@ -1112,34 +1112,34 @@ namespace BlockBrawl
                 oDotted.Draw(spritebatch, Color.White, gameTime);
                 o.Draw(spritebatch, Color.White, gameTime);
             }
-            spritebatch.DrawString(FontManager.MenuText, playerOneName,
+            spritebatch.DrawString(FontManager.GeneralText, playerOneName,
                 TextPosition(
-                playerOneIndex, gameBoundaries, FontManager.MenuText, playerOneName
+                playerOneIndex, gameBoundaries, FontManager.GeneralText, playerOneName
                 ),
                 Color.Red * textTransparecy);
-            spritebatch.DrawString(FontManager.MenuText, "VS",
+            spritebatch.DrawString(FontManager.GeneralText, "VS",
             TextPosition(
-            gameBoundaries, FontManager.MenuText, "VS"
+            gameBoundaries, FontManager.GeneralText, "VS"
                 ),
             Color.Red * textTransparecy);
-            spritebatch.DrawString(FontManager.MenuText, playerTwoName,
+            spritebatch.DrawString(FontManager.GeneralText, playerTwoName,
                 TextPosition(
-                playerTwoIndex, gameBoundaries, FontManager.MenuText, playerTwoName
+                playerTwoIndex, gameBoundaries, FontManager.GeneralText, playerTwoName
                 ),
                 Color.Red * textTransparecy);
-            spritebatch.DrawString(FontManager.MenuText, "Time Left " + Convert.ToInt32(timeLeft).ToString(),
+            spritebatch.DrawString(FontManager.GeneralText, "Time Left " + Convert.ToInt32(timeLeft).ToString(),
             TextPosition(
                 gameBoundaries,
-                FontManager.MenuText, "Time Left " + Convert.ToInt32(timeLeft).ToString(),
+                FontManager.GeneralText, "Time Left " + Convert.ToInt32(timeLeft).ToString(),
                 SettingsManager.gameHeight / 2
                 ),
             Color.Red * textTransparecy);
             if (Winner != int.MinValue)
             {
-                spritebatch.DrawString(FontManager.MenuText, "Player " + (Winner + 1).ToString() + " wins!!",
+                spritebatch.DrawString(FontManager.GeneralText, "Player " + (Winner + 1).ToString() + " wins!!",
                     TextPosition(
                         gameBoundaries,
-                        FontManager.MenuText, "Player " + (Winner + 1).ToString() + " wins!!",
+                        FontManager.GeneralText, "Player " + (Winner + 1).ToString() + " wins!!",
                         SettingsManager.gameHeight - tileSizeQTE.Y
                         ),
                             Color.Yellow * textTransparecy);

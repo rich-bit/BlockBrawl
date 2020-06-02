@@ -16,6 +16,8 @@ namespace BlockBrawl
         Texture2D[] playerColors;
         int playerOneIndex, playerTwoIndex;
         public int QTEWinner { get; set; }
+        public bool Music { get; set; }
+        GameObject playMusicP1, playMusicP2;
         bool gamepadVersion;
         float blinkTime;
         double betweenBlinks = 0.2;
@@ -25,12 +27,15 @@ namespace BlockBrawl
             this.spawnWaitTime = spawnBlock;
             this.gamepadVersion = gamepadVersion;
             QTEWinner = int.MinValue;
-
+            
             playerOneIndex = SettingsManager.playerIndexOne;
             playerTwoIndex = SettingsManager.playerIndexTwo;
 
             playerOnePos = Vector2.Zero;
             playerTwoPos = new Vector2(SettingsManager.gameWidth, 0);
+
+            playMusicP1 = new GameObject(GetPlayerOneAllignment(9), TextureManager.playMusic);
+            playMusicP2 = new GameObject(GetPlayerTwoAllignment(TextureManager.playMusic.Width, 9), TextureManager.playMusic);
         }
         private Vector2 GetPlayerTwoAllignment(float width, int row)
         {
@@ -92,15 +97,15 @@ namespace BlockBrawl
         }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.DrawString(FontManager.MenuText,
+            spriteBatch.DrawString(FontManager.GeneralText,
             $"{SettingsManager.playerOneName.ToString()}\nscore: " + score[playerOneIndex].ToString(),
             playerOnePos,
             Color.Red);
 
-            spriteBatch.DrawString(FontManager.MenuText,
+            spriteBatch.DrawString(FontManager.GeneralText,
             $"{SettingsManager.playerTwoName.ToString()}\nscore: " + score[playerTwoIndex].ToString(),
             GetPlayerTwoAllignment(
-                FontManager.MenuText.MeasureString(
+                FontManager.GeneralText.MeasureString(
                     $"{SettingsManager.playerTwoName.ToString()}\nscore: " + score[playerTwoIndex].ToString()
                     ).X
                 , 0
@@ -115,17 +120,17 @@ namespace BlockBrawl
                     {
                         if (playerIndex == playerOneIndex)
                         {
-                            spriteBatch.DrawString(FontManager.MenuText,
+                            spriteBatch.DrawString(FontManager.GeneralText,
                             "Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString(),
                             new Vector2(playerOnePos.X, playerTwoPos.Y + SettingsManager.tileSize.Y * bonusRow),
                             Color.Blue);
                         }
                         else if (playerIndex == playerTwoIndex)
                         {
-                            spriteBatch.DrawString(FontManager.MenuText,
+                            spriteBatch.DrawString(FontManager.GeneralText,
                             "Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString(),
                             GetPlayerTwoAllignment(
-                                FontManager.MenuText.MeasureString(
+                                FontManager.GeneralText.MeasureString(
                             "Bonus: " + bonusRecieved[playerIndex, bonusRow].ToString()).X
                             , bonusRow),
                             Color.Blue);
@@ -133,7 +138,7 @@ namespace BlockBrawl
                     }
                 }
             }
-            spriteBatch.DrawString(FontManager.MenuText, "NextBlock", GetPlayerOneAllignment(3), Color.Red);
+            spriteBatch.DrawString(FontManager.GeneralText, "NextBlock", GetPlayerOneAllignment(3), Color.Red);
             if (NextBlock(playerOneIndex) != null)
             {
                 foreach (TetrisObject item in NextBlock(playerOneIndex))
@@ -141,9 +146,9 @@ namespace BlockBrawl
                     item.Draw(spriteBatch);
                 }
             }
-            spriteBatch.DrawString(FontManager.MenuText, "NextBlock",
+            spriteBatch.DrawString(FontManager.GeneralText, "NextBlock",
                 GetPlayerTwoAllignment(
-                    FontManager.MenuText.MeasureString(
+                    FontManager.GeneralText.MeasureString(
                         "NextBlock"
                         ).X
                     , 3),
@@ -157,7 +162,7 @@ namespace BlockBrawl
             }
             if (spawnWaitTime[playerOneIndex] > 0f)
             {
-                spriteBatch.DrawString(FontManager.MenuText, "Wait\nfor spawn!" + Convert.ToInt32(spawnWaitTime[playerOneIndex]).ToString(), GetPlayerOneAllignment(7), Color.Yellow);
+                spriteBatch.DrawString(FontManager.GeneralText, "Wait\nfor spawn!" + Convert.ToInt32(spawnWaitTime[playerOneIndex]).ToString(), GetPlayerOneAllignment(7), Color.Yellow);
             }
             if (QTEWinner == playerOneIndex && gamepadVersion)
             {
@@ -185,9 +190,9 @@ namespace BlockBrawl
             }
             if (spawnWaitTime[playerTwoIndex] > 0f)
             {
-                spriteBatch.DrawString(FontManager.MenuText, "Wait\nfor spawn!\n" + Convert.ToInt32(spawnWaitTime[playerTwoIndex]).ToString(),
+                spriteBatch.DrawString(FontManager.GeneralText, "Wait\nfor spawn!\n" + Convert.ToInt32(spawnWaitTime[playerTwoIndex]).ToString(),
                     GetPlayerTwoAllignment(
-                        FontManager.MenuText.MeasureString("Wait\nfor spawn!\n" + Convert.ToInt32(spawnWaitTime[playerTwoIndex]).ToString()
+                        FontManager.GeneralText.MeasureString("Wait\nfor spawn!\n" + Convert.ToInt32(spawnWaitTime[playerTwoIndex]).ToString()
                             ).X
                         , 7),
                     Color.Yellow);
@@ -215,6 +220,13 @@ namespace BlockBrawl
                 {
                     spriteBatch.DrawString(FontManager.ScoreText, "Press UP!", GetPlayerTwoAllignment(FontManager.ScoreText.MeasureString("Press Select!").X, 9), Color.Gold);
                 }
+            }
+            if (Music)
+            {
+                playMusicP1.Draw(spriteBatch);
+                playMusicP2.Draw(spriteBatch);
+                playMusicP1.Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if(playMusicP1.Time > 6f) { playMusicP1.Time = 0f; Music = false; }
             }
         }
     }
