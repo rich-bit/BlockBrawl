@@ -26,7 +26,8 @@ namespace BlockBrawl
         List<GameObject> menuObjs = new List<GameObject>();
 
         ViewControls showControls;
-        public Settings()
+        ConfigureGamePads configureGamePads;
+        public Settings(InputManager iM, int playerOneIndex, int playerTwoIndex)
         {
             settingsChoiceSwitcher = SettingsChoice.settings;
 
@@ -46,6 +47,7 @@ namespace BlockBrawl
             AssignPos();
 
             showControls = new ViewControls();
+            configureGamePads = new ConfigureGamePads(iM, playerOneIndex, playerTwoIndex);
         }
         private void AssignPos()
         {
@@ -120,6 +122,8 @@ namespace BlockBrawl
                     }
                     break;
                 case SettingsChoice.configureGamePad:
+                    configureGamePads.Update(gameTime);
+                    if (configureGamePads.GoBack) { settingsChoiceSwitcher = SettingsChoice.settings; configureGamePads.GoBack = false; }
                     break;
                 case SettingsChoice.resetPreConfig:
                     if (File.Exists("settings.txt"))
@@ -193,11 +197,14 @@ namespace BlockBrawl
                 case SettingsChoice.viewSteerings:
                     showControls.Draw(sb);
                     sb.DrawString(FontManager.GeneralText, "To go menu? Use ESC / Select", new Vector2(0,
-    SettingsManager.gameHeight - FontManager.GeneralText.MeasureString("To go menu? Use ESC / Select").Y), Color.Yellow);
+                    SettingsManager.gameHeight - FontManager.GeneralText.MeasureString("To go menu? Use ESC / Select").Y), Color.Yellow);
                     break;
                 case SettingsChoice.resetPreConfig:
                     break;
                 case SettingsChoice.configureGamePad:
+                    sb.DrawString(FontManager.GeneralText, "To go menu? Use ESC / Select", new Vector2(0,
+                    SettingsManager.gameHeight - FontManager.GeneralText.MeasureString("To go menu? Use ESC / Select").Y), Color.Yellow);
+                    configureGamePads.Draw(sb);
                     break;
             }
         }

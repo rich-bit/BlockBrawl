@@ -9,6 +9,9 @@ namespace BlockBrawl
         KeyboardState keyboardState, oldKeyboardState;
 
         int playerOneIndex, playerTwoIndex;
+
+        public Buttons PressedButton { get; set; }
+
         public InputManager(int playerOneIndex, int playerTwoIndex)
         {
             this.playerOneIndex = playerOneIndex;
@@ -73,10 +76,34 @@ namespace BlockBrawl
             if (JustPressed(Keys.Z)) { return "Z"; }
             return null;
         }
-        //public Buttons FindPressedButton(int playerIndex)
-        //{
-        //    if (JustPressed(Buttons.A, playerIndex)) { return Buttons.A; }
-        //    return null;
-        //}
+        public bool SavedButtonPress(int playerIndex)
+        {
+            if (JustPressed(Buttons.Back, playerIndex)) { PressedButton = Buttons.Back; return true; }
+            if (JustPressed(Buttons.A, playerIndex)) { PressedButton = Buttons.A; return true; }
+            if (JustPressed(Buttons.B, playerIndex)) { PressedButton = Buttons.B; return true; }
+            if (JustPressed(Buttons.BigButton, playerIndex)) { PressedButton = Buttons.BigButton; return true; }
+            if (JustPressed(Buttons.DPadDown, playerIndex)) { PressedButton = Buttons.DPadDown; return true; }
+            if (JustPressed(Buttons.DPadLeft, playerIndex)) { PressedButton = Buttons.DPadLeft; return true; }
+            if (JustPressed(Buttons.DPadRight, playerIndex)) { PressedButton = Buttons.DPadRight; return true; }
+            if (JustPressed(Buttons.DPadUp, playerIndex)) { PressedButton = Buttons.DPadUp; return true; }
+            if (JustPressed(Buttons.LeftShoulder, playerIndex)) { PressedButton = Buttons.LeftShoulder; return true; }
+            if (JustPressed(Buttons.LeftStick, playerIndex)) { PressedButton = Buttons.LeftStick; return true; }
+            if (JustPressed(Buttons.LeftThumbstickDown, playerIndex)) { PressedButton = Buttons.LeftThumbstickDown; return true; }
+            if (JustPressed(Buttons.LeftThumbstickLeft, playerIndex)) { PressedButton = Buttons.LeftThumbstickLeft; return true; }
+            if (JustPressed(Buttons.LeftThumbstickRight, playerIndex)) { PressedButton = Buttons.LeftThumbstickRight; return true; }
+            if (JustPressed(Buttons.LeftThumbstickUp, playerIndex)) { PressedButton = Buttons.LeftThumbstickUp; return true; }
+            if (JustPressed(Buttons.LeftTrigger, playerIndex)) { PressedButton = Buttons.LeftTrigger; return true; }
+            if (JustPressed(Buttons.RightShoulder, playerIndex)) { PressedButton = Buttons.RightShoulder; return true; }
+            if (JustPressed(Buttons.RightStick, playerIndex)) { PressedButton = Buttons.RightStick; return true; }
+            if (JustPressed(Buttons.RightThumbstickDown, playerIndex)) { PressedButton = Buttons.RightThumbstickDown; return true; }
+            if (JustPressed(Buttons.RightThumbstickLeft, playerIndex)) { PressedButton = Buttons.RightThumbstickLeft; return true; }
+            if (JustPressed(Buttons.RightThumbstickRight, playerIndex)) { PressedButton = Buttons.RightThumbstickRight; return true; }
+            if (JustPressed(Buttons.RightThumbstickUp, playerIndex)) { PressedButton = Buttons.RightThumbstickUp; return true; }
+            if (JustPressed(Buttons.RightTrigger, playerIndex)) { PressedButton = Buttons.RightTrigger; return true; }
+            if (JustPressed(Buttons.Start, playerIndex)) { PressedButton = Buttons.Start; return true; }
+            if (JustPressed(Buttons.X, playerIndex)) { PressedButton = Buttons.X; return true; }
+            if (JustPressed(Buttons.Y, playerIndex)) { PressedButton = Buttons.Y; return true; }
+            return false;
+        }
     }
 }

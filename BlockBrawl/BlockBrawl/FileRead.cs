@@ -45,6 +45,22 @@ namespace BlockBrawl
             }
             return noCopySounds;
         }
+        public List<string> LookForGamePadConfig()
+        {
+            List<string> preGamePadConfig = new List<string>();
+            try
+            {
+                if (File.Exists("gamepadConfig.txt"))
+                {
+                    preGamePadConfig.AddRange(File.ReadAllLines("gamepadConfig.txt"));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+            return preGamePadConfig;
+        }
         public List<string> OtherSounds()
         {
             List<string> otherSounds = new List<string>();

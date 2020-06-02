@@ -1,5 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using System;
 
 namespace BlockBrawl
 {
@@ -13,8 +16,11 @@ namespace BlockBrawl
         public static int gameWidth, gameHeight;
         public static bool gamePadVersion;
         public static Point tiles, arrowsInMenuMaxX;
-        public SettingsManager(GraphicsDeviceManager graphicsDeviceManager)
+        public static Buttons p1MoveLeft, p1MoveRight, p1MoveDown, p1PowerUp, p1RotateCW, p1RotateCC, p1Start;
+        public static Buttons p2MoveLeft, p2MoveRight, p2MoveDown, p2PowerUp, p2RotateCW, p2RotateCC, p2Start;
+        public SettingsManager(GraphicsDeviceManager graphicsDeviceManager, InputManager iM)
         {
+            SetDefaultButtons(iM);
             gameWidth = PreConfigurations.gameWidth;
             gameHeight = PreConfigurations.gameHeight;
             graphicsDeviceManager.PreferredBackBufferWidth = gameWidth;
@@ -50,6 +56,117 @@ namespace BlockBrawl
 
             playerOneName = "Player One";
             playerTwoName = "Player Two";
+        }
+        private void SetDefaultButtons(InputManager iM)
+        {
+            p1MoveDown = Buttons.DPadDown;
+            p1MoveLeft = Buttons.DPadLeft;
+            p1MoveRight = Buttons.DPadRight;
+            p1PowerUp = Buttons.Back;
+            p1RotateCC = Buttons.B;
+            p1RotateCW = Buttons.Y;
+            p1Start = Buttons.Start;
+
+            p2MoveDown = Buttons.DPadDown;
+            p2MoveLeft = Buttons.DPadLeft;
+            p2MoveRight = Buttons.DPadRight;
+            p2PowerUp = Buttons.Back;
+            p2RotateCC = Buttons.B;
+            p2RotateCW = Buttons.Y;
+            p2Start = Buttons.Start;
+            CheckForGamePadConfig(iM);
+        }
+        private void CheckForGamePadConfig(InputManager iM)
+        {
+            try
+            {
+                List<string> preGamePadConfigs = new Fileread().LookForGamePadConfig();
+                List<string> p1Config = new List<string>();
+                List<string> p2Config = new List<string>();
+                for (int i = 0; i < preGamePadConfigs.Count; i++)
+                {
+                    if (preGamePadConfigs[i] != "Player two:")
+                    {
+                        if (preGamePadConfigs[i] != "Player one:")
+                            p1Config.Add(preGamePadConfigs[i]);
+                    }
+                    else { break; }
+                }
+
+                bool leave = false;
+                for (int i = 0; i < preGamePadConfigs.Count; i++)
+                {
+                    if (preGamePadConfigs[i] == "Player two:")
+                    {
+                        for (int j = i; j < preGamePadConfigs.Count; j++)
+                        {
+                            if (preGamePadConfigs[j] != "Player two:")
+                            {
+                                p2Config.Add(preGamePadConfigs[j]);
+                            }
+                            if(j == preGamePadConfigs.Count - 1) { leave = true; break; }
+                        }
+                    }
+                    if (leave) { break; }
+                }
+                SetPreConfig(iM, p1Config, p2Config);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+        private void SetPreConfig(InputManager iM, List<string> config1, List<string> config2)
+        {
+            p1MoveDown = FromString(iM, FindStringRepresentation(config1[0], ": "));            
+            p1MoveLeft = FromString(iM, FindStringRepresentation(config1[1], ": "));
+            p1MoveRight = FromString(iM, FindStringRepresentation(config1[2], ": "));
+            p1PowerUp = FromString(iM, FindStringRepresentation(config1[3], ": "));
+            p1RotateCC = FromString(iM, FindStringRepresentation(config1[4], ": "));
+            p1RotateCW = FromString(iM, FindStringRepresentation(config1[5], ": "));
+            p1Start = FromString(iM, FindStringRepresentation(config1[6], ": "));
+
+            p2MoveDown = FromString(iM, FindStringRepresentation(config2[0], ": "));
+            p2MoveLeft = FromString(iM, FindStringRepresentation(config2[1], ": "));
+            p2MoveRight = FromString(iM, FindStringRepresentation(config2[2], ": "));
+            p2PowerUp = FromString(iM, FindStringRepresentation(config2[3], ": "));
+            p2RotateCC = FromString(iM, FindStringRepresentation(config2[4], ": "));
+            p2RotateCW = FromString(iM, FindStringRepresentation(config2[5], ": "));
+            p2Start = FromString(iM, FindStringRepresentation(config2[6], ": "));
+        }
+        private string FindStringRepresentation(string s, string splitter)
+        {
+            string[] split = s.Split(new[] { $"{splitter}" }, StringSplitOptions.RemoveEmptyEntries);
+            return split[1];
+        }
+        private Buttons FromString(InputManager iM, string s)
+        {
+            if (s == "Back") { return Buttons.Back; }
+            else if (s == "A") { return Buttons.A; }
+            else if (s == "B") { return Buttons.B; }
+            else if (s == "BigButton") { return Buttons.BigButton; }
+            else if (s == "DPadDown") { return Buttons.DPadDown; }
+            else if (s == "DPadLeft") { return Buttons.DPadLeft; }
+            else if (s == "DPadRight") { return Buttons.DPadRight; }
+            else if (s == "DPadUp") { return Buttons.DPadUp; }
+            else if (s == "LeftShoulder") { return Buttons.LeftShoulder; }
+            else if (s == "LeftStick") { return Buttons.LeftStick; }
+            else if (s == "LeftThumbstickDown") { return Buttons.LeftThumbstickDown; }
+            else if (s == "LeftThumbstickLeft") { return Buttons.LeftThumbstickLeft; }
+            else if (s == "LeftThumbstickRight") { return Buttons.LeftThumbstickRight; }
+            else if (s == "LeftThumbstickUp") { return Buttons.LeftThumbstickUp; }
+            else if (s == "LeftTrigger") { return Buttons.LeftTrigger; }
+            else if (s == "RightShoulder") { return Buttons.RightShoulder; }
+            else if (s == "RightStick") { return Buttons.RightStick; }
+            else if (s == "RightThumbstickDown") { return Buttons.RightThumbstickDown; }
+            else if (s == "RightThumbstickLeft") { return Buttons.RightThumbstickLeft; }
+            else if (s == "RightThumbstickRight") { return Buttons.RightThumbstickRight; }
+            else if (s == "RightThumbstickUp") { return Buttons.RightThumbstickUp; }
+            else if (s == "RightTrigger") { return Buttons.RightTrigger; }
+            else if (s == "Start") { return Buttons.Start; }
+            else if (s == "X") { return Buttons.X; }
+            else if (s == "Y") { return Buttons.Y; }
+            else { return Buttons.Start; }//must return smth...:/
         }
     }
 }

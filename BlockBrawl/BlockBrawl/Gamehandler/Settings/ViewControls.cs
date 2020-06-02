@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace BlockBrawl.Gamehandler.Settings
 {
@@ -28,7 +27,7 @@ namespace BlockBrawl.Gamehandler.Settings
                     "F - Rotate Clockwise\n" +
                     "Esc - Pause\n";
                 controlMapPlayerTwo = "" +
-                    "Player Two\n" +
+                    "Player Two:\n" +
                     "Up - Use Power-Up\n" +
                     "Left - Move Left\n" +
                     "Right - Move Right\n" +

@@ -32,16 +32,17 @@ namespace BlockBrawl
             //Construct stuff;                      
             this.graphicsDevice = graphicsDevice;
 
+            iM = new InputManager(0, 1);
+
             new FontManager(contentManager);
             new SoundManager(contentManager);
             new TextureManager(contentManager);
-            settingsManager = new SettingsManager(graphicsDeviceManager);
+            settingsManager = new SettingsManager(graphicsDeviceManager, iM);
             spriteBatch = new SpriteBatch(graphicsDevice);
-            iM = new InputManager(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
 
             prePlayScreen = new PrePlayScreen(SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
             menu = new Menu();
-            settings = new Settings();
+            settings = new Settings(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
             highScore = new HighScore();
             currentGameState = GameState.menu;
         }
