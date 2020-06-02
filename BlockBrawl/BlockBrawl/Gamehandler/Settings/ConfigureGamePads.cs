@@ -65,7 +65,7 @@ namespace BlockBrawl.Gamehandler.Settings
             p2Buttons.Add("Rotate counter clockwise: " + SettingsManager.p2RotateCW.ToString());
             p2Buttons.Add("Start / Pause: " + SettingsManager.p2Start.ToString());
         }
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, SettingsManager settingsManager)
         {
             if (!changeButton && (
                 iM.JustPressed(Buttons.Back, playerOneIndex) || iM.JustPressed(Buttons.Back, playerTwoIndex)
@@ -86,6 +86,7 @@ namespace BlockBrawl.Gamehandler.Settings
                     allInputs.AddRange(p1Buttons);
                     allInputs.AddRange(p2Buttons);
                     File.WriteAllLines("gamepadConfig.txt", allInputs);
+                    settingsManager.SetDefaultButtons(iM);
                     saved = true;
                 }
                 catch(Exception e)

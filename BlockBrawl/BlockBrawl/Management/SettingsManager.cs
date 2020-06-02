@@ -57,7 +57,7 @@ namespace BlockBrawl
             playerOneName = "Player One";
             playerTwoName = "Player Two";
         }
-        private void SetDefaultButtons(InputManager iM)
+        public void SetDefaultButtons(InputManager iM)
         {
             p1MoveDown = Buttons.DPadDown;
             p1MoveLeft = Buttons.DPadLeft;

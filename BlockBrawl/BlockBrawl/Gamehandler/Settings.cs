@@ -71,7 +71,7 @@ namespace BlockBrawl
                 heightCount += arbitraryMargin;
             }
         }
-        public void Update(InputManager iM, int playerOneIndex, int playerTwoIndex, GameTime gameTime)
+        public void Update(InputManager iM, int playerOneIndex, int playerTwoIndex, GameTime gameTime, SettingsManager settingsManager)
         {
             switch (settingsChoiceSwitcher)
             {
@@ -122,7 +122,7 @@ namespace BlockBrawl
                     }
                     break;
                 case SettingsChoice.configureGamePad:
-                    configureGamePads.Update(gameTime);
+                    configureGamePads.Update(gameTime, settingsManager);
                     if (configureGamePads.GoBack) { settingsChoiceSwitcher = SettingsChoice.settings; configureGamePads.GoBack = false; }
                     break;
                 case SettingsChoice.resetPreConfig:

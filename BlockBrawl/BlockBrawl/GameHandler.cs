@@ -75,7 +75,7 @@ namespace BlockBrawl
                     }
                     break;
                 case GameState.settings:
-                    settings.Update(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo, gameTime);
+                    settings.Update(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo, gameTime, settingsManager);
                     if (settings.GoToMenu) { currentGameState = GameState.menu; settings.GoToMenu = false; }
                     break;
                 case GameState.highscore:
