@@ -23,8 +23,14 @@ namespace BlockBrawl
         string winnerName, looserName, scoreProcessed;
         public bool RequestGoToMenu { get; set; }
 
+        Buttons p1A, p1Select, p2A, p2Select;
         public CheckGameOver()
         {
+            p1A = SettingsManager.p1RotateCW;
+            p1Select = SettingsManager.p1PowerUp;
+            p2A = SettingsManager.p2RotateCW;
+            p2Select = SettingsManager.p2PowerUp;
+
             connectionString = ConfigurationManager.ConnectionStrings["visualstudio"].ConnectionString;
             unsuccesfullDataAccessMsg = "Cannot access Database!";
         }
@@ -114,7 +120,7 @@ namespace BlockBrawl
             {
                 if (gamepad)
                 {
-                    if (iM.JustPressed(Buttons.B, playerOneIndex) || iM.JustPressed(Buttons.B, playerTwoIndex))
+                    if (iM.JustPressed(p1A, playerOneIndex) || iM.JustPressed(p2A, playerTwoIndex))
                     {
                         CheckHighScore(winnerScore, winnerName, looserScore, looserName, playedTime, gamepad);
                     }
@@ -129,7 +135,7 @@ namespace BlockBrawl
             }
             if (gamepad)
             {
-                if (iM.JustPressed(Buttons.Back, playerOneIndex) || iM.JustPressed(Buttons.Back, playerTwoIndex))
+                if (iM.JustPressed(p1Select, playerOneIndex) || iM.JustPressed(p2Select, playerTwoIndex))
                 {
                     RequestGoToMenu = true;
                 }

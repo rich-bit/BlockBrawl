@@ -14,21 +14,11 @@ namespace BlockBrawl
         public bool ShowPreConfigWindow { get; }
         public static int gameWidth;
         public static int gameHeight;
-        //string programPath = "";
         public PreConfigurations()
         {
             InitializeComponent();
             LocateASettingsFile();
 
-            //try
-            //{
-            //    if (File.Exists(@"installConfig.txt)"))
-            //        programPath = File.ReadAllText(@"installConfig.txt");
-            //}
-            //catch (Exception e)
-            //{
-            //    string s = e.ToString();
-            //}
             resolutionslst.DataSource = fileRead.Resolutions();
 
             ShowPreConfigWindow = fileRead.ShowConfigWindowAtStart().Contains("True");
@@ -58,14 +48,18 @@ namespace BlockBrawl
         {
             if (!fileRead.SettingsExist())
             {
-                //if (programPath != "")
-                    File.WriteAllLines(/*programPath + */"settings.txt", fileRead.SettingsFile());
+                File.WriteAllLines("settings.txt", fileRead.SettingsFile());
             }
         }
         private void runGamebtn_Click(object sender, EventArgs e)
         {
             List<string> oldSettings = fileRead.SettingsFile();
             List<string> newSettings = new List<string>();
+
+            if (chkResetCtrl.Checked)
+            {
+                if (File.Exists("gamepadConfig.txt")) { File.Delete("gamepadConfig.txt"); }
+            }
 
             for (int i = 0; i < oldSettings.Count; i++)
             {
@@ -100,8 +94,8 @@ namespace BlockBrawl
             gameHeight = Convert.ToInt32(split[1]);
             fullScreen = fullscreenchk.Checked;
             gamePadVersion = chkGamePad.Checked;
-            //if (programPath != "")
-                File.WriteAllLines(/*programPath + */"settings.txt", newSettings);
+            
+            File.WriteAllLines("settings.txt", newSettings);
             Close();
         }
     }

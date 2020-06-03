@@ -173,7 +173,7 @@ namespace BlockBrawl
                 }
                 else
                 {
-                    spriteBatch.DrawString(FontManager.ScoreText, "Press Select!", GetPlayerOneAllignment(9), Color.Gold);
+                    spriteBatch.DrawString(FontManager.ScoreText, "Press for Power-Up!", GetPlayerOneAllignment(9), Color.Gold);
                 }
             }
             if (QTEWinner == playerOneIndex && !gamepadVersion)
@@ -206,7 +206,7 @@ namespace BlockBrawl
                 }
                 else
                 {
-                    spriteBatch.DrawString(FontManager.ScoreText, "Press Select!", GetPlayerTwoAllignment(FontManager.ScoreText.MeasureString("Press Select!").X, 9), Color.Gold);
+                    spriteBatch.DrawString(FontManager.ScoreText, "Press for Power-Up!", GetPlayerTwoAllignment(FontManager.ScoreText.MeasureString("Press for Power-Up!").X, 9), Color.Gold);
                 }
             }
             if (QTEWinner == playerTwoIndex && !gamepadVersion)

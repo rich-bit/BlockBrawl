@@ -72,12 +72,33 @@ namespace BlockBrawl
 
         public bool GoToMenu { get; set; }
 
+        Buttons p1MoveLeft, p1MoveRight, p1MoveDown, p1PowerUp, p1RotateCW, p1RotateCC, p1Start;
+        Buttons p2MoveLeft, p2MoveRight, p2MoveDown, p2PowerUp, p2RotateCW, p2RotateCC, p2Start;
+
         public Play(bool gamePadVersion, Point tiles, Vector2 tileSize, int gameWidth, int gameHeight, int playerOneIndex, int playerTwoIndex, Texture2D playerOneColor, Texture2D playerTwoColor)
         {
             this.tileSize = tileSize;
             this.playerOneIndex = playerOneIndex;
             this.playerTwoIndex = playerTwoIndex;
             this.gamePadVersion = gamePadVersion;
+
+            //Assigning buttons
+
+            p1MoveLeft = SettingsManager.p1MoveLeft;
+            p1MoveRight = SettingsManager.p1MoveRight;
+            p1MoveDown = SettingsManager.p1MoveDown;
+            p1PowerUp = SettingsManager.p1PowerUp;
+            p1RotateCC = SettingsManager.p1RotateCC;
+            p1RotateCW = SettingsManager.p1RotateCW;
+            p1Start = SettingsManager.p1Start;
+
+            p2MoveLeft = SettingsManager.p2MoveLeft;
+            p2MoveRight = SettingsManager.p2MoveRight;
+            p2MoveDown = SettingsManager.p2MoveDown;
+            p2PowerUp = SettingsManager.p2PowerUp;
+            p2RotateCC = SettingsManager.p2RotateCC;
+            p2RotateCW = SettingsManager.p2RotateCW;
+            p2Start = SettingsManager.p2Start;
 
             fallWaitTime = SettingsManager.fallTime;
             newSpeedCounter = SettingsManager.newSpeedCounter;
@@ -220,12 +241,12 @@ namespace BlockBrawl
                     BloodOrbLogic(gameTime, iM);
                     PistolLogic(gameTime, iM);
                     ResetPowerUpNotice(gamePadVersion, iM);
-                    if (gamePadVersion && iM.JustPressed(Buttons.Start, playerOneIndex) || iM.JustPressed(Buttons.Start, playerTwoIndex)) { currentPlayState = PlayState.pause; }
+                    if (gamePadVersion && iM.JustPressed(p1Start, playerOneIndex) || iM.JustPressed(p2Start, playerTwoIndex)) { currentPlayState = PlayState.pause; }
                     else if (!gamePadVersion && iM.JustPressed(Keys.Escape) || iM.JustPressed(Keys.NumLock)) { currentPlayState = PlayState.pause; }
                     break;
                 case PlayState.pause:
                     Pause.Update(iM, playerOneIndex, playerTwoIndex);
-                    if (gamePadVersion && iM.JustPressed(Buttons.Start, playerOneIndex) || iM.JustPressed(Buttons.Start, playerTwoIndex)) { currentPlayState = PlayState.play; }
+                    if (gamePadVersion && iM.JustPressed(p1Start, playerOneIndex) || iM.JustPressed(p2Start, playerTwoIndex)) { currentPlayState = PlayState.play; }
                     else if (!gamePadVersion && iM.JustPressed(Keys.Enter) || iM.JustPressed(Keys.NumLock)) { currentPlayState = PlayState.play; }
                     break;
                 case PlayState.gameover:
@@ -246,11 +267,11 @@ namespace BlockBrawl
             {
                 if (sideBars.QTEWinner == playerOneIndex && pistol == null)
                 {
-                    if (iM.JustPressed(Buttons.Back, playerOneIndex)) { sideBars.QTEWinner = int.MinValue; }
+                    if (iM.JustPressed(p1PowerUp, playerOneIndex)) { sideBars.QTEWinner = int.MinValue; }
                 }
                 else
                 {
-                    if (iM.JustPressed(Buttons.Back, playerTwoIndex)) { sideBars.QTEWinner = int.MinValue; }
+                    if (iM.JustPressed(p2PowerUp, playerTwoIndex)) { sideBars.QTEWinner = int.MinValue; }
                 }
             }
             else
@@ -1492,34 +1513,53 @@ namespace BlockBrawl
         }
         private void GamePadSteering(GameTime gameTime, int playerIndex, InputManager iM)//unfortunately not a very practical/nice method but it works ( we will se what can be done later about this )
         {
+            Buttons moveLeft = p1MoveLeft;
+            Buttons moveRight = p1MoveRight;
+            Buttons moveDown = p1MoveDown;
+            Buttons powerUp = p1PowerUp;
+            Buttons start = p1Start;
+            Buttons rotateCW = p1RotateCC;
+            Buttons rotateCC = p1RotateCW;
+
+            if(playerIndex == playerTwoIndex)
+            {
+                moveLeft = p2MoveLeft;
+                moveRight = p2MoveRight;
+                moveDown = p2MoveDown;
+                powerUp = p2PowerUp;
+                start = p2Start;
+                rotateCW = p2RotateCC;
+                rotateCC = p2RotateCW;
+            }
+
             if (jArray[playerIndex] != null)
             {
-                if (iM.JustPressed(Buttons.B, playerIndex)
+                if (iM.JustPressed(rotateCW, playerIndex)
                     && jArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(jArray[playerIndex].NextRotatePosition(true))
                     && !PlayerIntersect(playerIndex, true))
                 {
                     jArray[playerIndex].Rotate(true);
                 }
-                if (iM.JustPressed(Buttons.Y, playerIndex)
+                if (iM.JustPressed(rotateCC, playerIndex)
                     && jArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(jArray[playerIndex].NextRotatePosition(false))
                     && !PlayerIntersect(playerIndex, false))
                 { jArray[playerIndex].Rotate(false); }
-                if (iM.JustPressed(Buttons.DPadLeft, playerIndex)
+                if (iM.JustPressed(moveLeft, playerIndex)
                     && !CheckLeftSide(jArray[playerIndex].jMatrix)
                     && !CheckStackLeft(jArray[playerIndex].jMatrix)
                     && !PlayerMovementLeftIntersect(playerIndex, jArray[playerIndex].jMatrix))
                 { jArray[playerIndex].Move(-tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadRight, playerIndex)
+                if (iM.JustPressed(moveRight, playerIndex)
                     && !CheckRightSide(jArray[playerIndex].jMatrix)
                     && !CheckStackRight(jArray[playerIndex].jMatrix)
                     && !PlayerMovementRightIntersect(playerIndex, jArray[playerIndex].jMatrix))
                 { jArray[playerIndex].Move(tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadDown, playerIndex)
+                if (iM.JustPressed(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, jArray[playerIndex].jMatrix))
                 { if (!CheckFloor(jArray[playerIndex].jMatrix)) { jArray[playerIndex].Fall(tileSize.Y); } }
-                if (iM.IsHeld(Buttons.DPadDown, playerIndex)
+                if (iM.IsHeld(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, jArray[playerIndex].jMatrix))
                 {
                     if (!CheckFloor(jArray[playerIndex].jMatrix))
@@ -1546,32 +1586,32 @@ namespace BlockBrawl
             }
             if (iArray[playerIndex] != null)
             {
-                if (iM.JustPressed(Buttons.B, playerIndex)
+                if (iM.JustPressed(rotateCW, playerIndex)
                     && iArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(iArray[playerIndex].NextRotatePosition(true))
                     && !PlayerIntersect(playerIndex, true))
                 {
                     iArray[playerIndex].Rotate(true);
                 }
-                if (iM.JustPressed(Buttons.Y, playerIndex)
+                if (iM.JustPressed(rotateCC, playerIndex)
                     && iArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(iArray[playerIndex].NextRotatePosition(false))
                     && !PlayerIntersect(playerIndex, false))
                 { iArray[playerIndex].Rotate(false); }
-                if (iM.JustPressed(Buttons.DPadLeft, playerIndex)
+                if (iM.JustPressed(moveLeft, playerIndex)
                     && !CheckLeftSide(iArray[playerIndex].iMatrix)
                     && !CheckStackLeft(iArray[playerIndex].iMatrix)
                     && !PlayerMovementLeftIntersect(playerIndex, iArray[playerIndex].iMatrix))
                 { iArray[playerIndex].Move(-tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadRight, playerIndex)
+                if (iM.JustPressed(moveRight, playerIndex)
                     && !CheckRightSide(iArray[playerIndex].iMatrix)
                     && !CheckStackRight(iArray[playerIndex].iMatrix)
                     && !PlayerMovementRightIntersect(playerIndex, iArray[playerIndex].iMatrix))
                 { iArray[playerIndex].Move(tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadDown, playerIndex)
+                if (iM.JustPressed(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, iArray[playerIndex].iMatrix))
                 { if (!CheckFloor(iArray[playerIndex].iMatrix)) { iArray[playerIndex].Fall(tileSize.Y); } }
-                if (iM.IsHeld(Buttons.DPadDown, playerIndex)
+                if (iM.IsHeld(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, iArray[playerIndex].iMatrix))
                 {
                     if (!CheckFloor(iArray[playerIndex].iMatrix))
@@ -1597,32 +1637,32 @@ namespace BlockBrawl
             }
             if (tArray[playerIndex] != null)
             {
-                if (iM.JustPressed(Buttons.B, playerIndex)
+                if (iM.JustPressed(rotateCW, playerIndex)
                     && tArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(tArray[playerIndex].NextRotatePosition(true))
                     && !PlayerIntersect(playerIndex, true))
                 {
                     tArray[playerIndex].Rotate(true);
                 }
-                if (iM.JustPressed(Buttons.Y, playerIndex)
+                if (iM.JustPressed(rotateCC, playerIndex)
                     && tArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(tArray[playerIndex].NextRotatePosition(false))
                     && !PlayerIntersect(playerIndex, false))
                 { tArray[playerIndex].Rotate(false); }
-                if (iM.JustPressed(Buttons.DPadLeft, playerIndex)
+                if (iM.JustPressed(moveLeft, playerIndex)
                     && !CheckLeftSide(tArray[playerIndex].tMatrix)
                     && !CheckStackLeft(tArray[playerIndex].tMatrix)
                     && !PlayerMovementLeftIntersect(playerIndex, tArray[playerIndex].tMatrix))
                 { tArray[playerIndex].Move(-tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadRight, playerIndex)
+                if (iM.JustPressed(moveRight, playerIndex)
                     && !CheckRightSide(tArray[playerIndex].tMatrix)
                     && !CheckStackRight(tArray[playerIndex].tMatrix)
                     && !PlayerMovementRightIntersect(playerIndex, tArray[playerIndex].tMatrix))
                 { tArray[playerIndex].Move(tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadDown, playerIndex)
+                if (iM.JustPressed(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, tArray[playerIndex].tMatrix))
                 { if (!CheckFloor(tArray[playerIndex].tMatrix)) { tArray[playerIndex].Fall(tileSize.Y); } }
-                if (iM.IsHeld(Buttons.DPadDown, playerIndex)
+                if (iM.IsHeld(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, tArray[playerIndex].tMatrix))
                 {
                     if (!CheckFloor(tArray[playerIndex].tMatrix))
@@ -1648,32 +1688,32 @@ namespace BlockBrawl
             }
             if (oArray[playerIndex] != null)
             {
-                if (iM.JustPressed(Buttons.B, playerIndex)
+                if (iM.JustPressed(rotateCW, playerIndex)
                     && oArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(oArray[playerIndex].NextRotatePosition(true))
                     && !PlayerIntersect(playerIndex, true))
                 {
                     oArray[playerIndex].Rotate(true);
                 }
-                if (iM.JustPressed(Buttons.Y, playerIndex)
+                if (iM.JustPressed(rotateCC, playerIndex)
                     && oArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(oArray[playerIndex].NextRotatePosition(false))
                     && !PlayerIntersect(playerIndex, false))
                 { oArray[playerIndex].Rotate(false); }
-                if (iM.JustPressed(Buttons.DPadLeft, playerIndex)
+                if (iM.JustPressed(moveLeft, playerIndex)
                     && !CheckLeftSide(oArray[playerIndex].oMatrix)
                     && !CheckStackLeft(oArray[playerIndex].oMatrix)
                     && !PlayerMovementLeftIntersect(playerIndex, oArray[playerIndex].oMatrix))
                 { oArray[playerIndex].Move(-tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadRight, playerIndex)
+                if (iM.JustPressed(moveRight, playerIndex)
                     && !CheckRightSide(oArray[playerIndex].oMatrix)
                     && !CheckStackRight(oArray[playerIndex].oMatrix)
                     && !PlayerMovementRightIntersect(playerIndex, oArray[playerIndex].oMatrix))
                 { oArray[playerIndex].Move(tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadDown, playerIndex)
+                if (iM.JustPressed(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, oArray[playerIndex].oMatrix))
                 { if (!CheckFloor(oArray[playerIndex].oMatrix)) { oArray[playerIndex].Fall(tileSize.Y); } }
-                if (iM.IsHeld(Buttons.DPadDown, playerIndex)
+                if (iM.IsHeld(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, oArray[playerIndex].oMatrix))
                 {
                     if (!CheckFloor(oArray[playerIndex].oMatrix))
@@ -1699,32 +1739,32 @@ namespace BlockBrawl
             }
             if (lArray[playerIndex] != null)
             {
-                if (iM.JustPressed(Buttons.B, playerIndex)
+                if (iM.JustPressed(rotateCW, playerIndex)
                     && lArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(lArray[playerIndex].NextRotatePosition(true))
                     && !PlayerIntersect(playerIndex, true))
                 {
                     lArray[playerIndex].Rotate(true);
                 }
-                if (iM.JustPressed(Buttons.Y, playerIndex)
+                if (iM.JustPressed(rotateCC, playerIndex)
                     && lArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(lArray[playerIndex].NextRotatePosition(false))
                     && !PlayerIntersect(playerIndex, false))
                 { lArray[playerIndex].Rotate(false); }
-                if (iM.JustPressed(Buttons.DPadLeft, playerIndex)
+                if (iM.JustPressed(moveLeft, playerIndex)
                     && !CheckLeftSide(lArray[playerIndex].lMatrix)
                     && !CheckStackLeft(lArray[playerIndex].lMatrix)
                     && !PlayerMovementLeftIntersect(playerIndex, lArray[playerIndex].lMatrix))
                 { lArray[playerIndex].Move(-tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadRight, playerIndex)
+                if (iM.JustPressed(moveRight, playerIndex)
                     && !CheckRightSide(lArray[playerIndex].lMatrix)
                     && !CheckStackRight(lArray[playerIndex].lMatrix)
                     && !PlayerMovementRightIntersect(playerIndex, lArray[playerIndex].lMatrix))
                 { lArray[playerIndex].Move(tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadDown, playerIndex)
+                if (iM.JustPressed(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, lArray[playerIndex].lMatrix))
                 { if (!CheckFloor(lArray[playerIndex].lMatrix)) { lArray[playerIndex].Fall(tileSize.Y); } }
-                if (iM.IsHeld(Buttons.DPadDown, playerIndex)
+                if (iM.IsHeld(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, lArray[playerIndex].lMatrix))
                 {
                     if (!CheckFloor(lArray[playerIndex].lMatrix))
@@ -1750,32 +1790,32 @@ namespace BlockBrawl
             }
             if (sArray[playerIndex] != null)
             {
-                if (iM.JustPressed(Buttons.B, playerIndex)
+                if (iM.JustPressed(rotateCW, playerIndex)
                     && sArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(sArray[playerIndex].NextRotatePosition(true))
                     && !PlayerIntersect(playerIndex, true))
                 {
                     sArray[playerIndex].Rotate(true);
                 }
-                if (iM.JustPressed(Buttons.Y, playerIndex)
+                if (iM.JustPressed(rotateCC, playerIndex)
                     && sArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(sArray[playerIndex].NextRotatePosition(false))
                     && !PlayerIntersect(playerIndex, false))
                 { sArray[playerIndex].Rotate(false); }
-                if (iM.JustPressed(Buttons.DPadLeft, playerIndex)
+                if (iM.JustPressed(moveLeft, playerIndex)
                     && !CheckLeftSide(sArray[playerIndex].sMatrix)
                     && !CheckStackLeft(sArray[playerIndex].sMatrix)
                     && !PlayerMovementLeftIntersect(playerIndex, sArray[playerIndex].sMatrix))
                 { sArray[playerIndex].Move(-tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadRight, playerIndex)
+                if (iM.JustPressed(moveRight, playerIndex)
                     && !CheckRightSide(sArray[playerIndex].sMatrix)
                     && !CheckStackRight(sArray[playerIndex].sMatrix)
                     && !PlayerMovementRightIntersect(playerIndex, sArray[playerIndex].sMatrix))
                 { sArray[playerIndex].Move(tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadDown, playerIndex)
+                if (iM.JustPressed(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, sArray[playerIndex].sMatrix))
                 { if (!CheckFloor(sArray[playerIndex].sMatrix)) { sArray[playerIndex].Fall(tileSize.Y); } }
-                if (iM.IsHeld(Buttons.DPadDown, playerIndex)
+                if (iM.IsHeld(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, sArray[playerIndex].sMatrix))
                 {
                     if (!CheckFloor(sArray[playerIndex].sMatrix))
@@ -1801,32 +1841,32 @@ namespace BlockBrawl
             }
             if (zArray[playerIndex] != null)
             {
-                if (iM.JustPressed(Buttons.B, playerIndex)
+                if (iM.JustPressed(rotateCW, playerIndex)
                     && zArray[playerIndex].AllowRotation(true, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(zArray[playerIndex].NextRotatePosition(true))
                     && !PlayerIntersect(playerIndex, true))
                 {
                     zArray[playerIndex].Rotate(true);
                 }
-                if (iM.JustPressed(Buttons.Y, playerIndex)
+                if (iM.JustPressed(rotateCC, playerIndex)
                     && zArray[playerIndex].AllowRotation(false, playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Pos, playfield[0, 0].Pos)
                     && !StackIntersect(zArray[playerIndex].NextRotatePosition(false))
                     && !PlayerIntersect(playerIndex, false))
                 { zArray[playerIndex].Rotate(false); }
-                if (iM.JustPressed(Buttons.DPadLeft, playerIndex)
+                if (iM.JustPressed(moveLeft, playerIndex)
                     && !CheckLeftSide(zArray[playerIndex].zMatrix)
                     && !CheckStackLeft(zArray[playerIndex].zMatrix)
                     && !PlayerMovementLeftIntersect(playerIndex, zArray[playerIndex].zMatrix))
                 { zArray[playerIndex].Move(-tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadRight, playerIndex)
+                if (iM.JustPressed(moveRight, playerIndex)
                     && !CheckRightSide(zArray[playerIndex].zMatrix)
                     && !CheckStackRight(zArray[playerIndex].zMatrix)
                     && !PlayerMovementRightIntersect(playerIndex, zArray[playerIndex].zMatrix))
                 { zArray[playerIndex].Move(tileSize.X); }
-                if (iM.JustPressed(Buttons.DPadDown, playerIndex)
+                if (iM.JustPressed(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, zArray[playerIndex].zMatrix))
                 { if (!CheckFloor(zArray[playerIndex].zMatrix)) { zArray[playerIndex].Fall(tileSize.Y); } }
-                if (iM.IsHeld(Buttons.DPadDown, playerIndex)
+                if (iM.IsHeld(moveDown, playerIndex)
                     && !PlayerMovementDownIntersect(playerIndex, zArray[playerIndex].zMatrix))
                 {
                     if (!CheckFloor(zArray[playerIndex].zMatrix))

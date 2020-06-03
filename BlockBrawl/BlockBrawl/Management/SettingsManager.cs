@@ -16,8 +16,8 @@ namespace BlockBrawl
         public static int gameWidth, gameHeight;
         public static bool gamePadVersion;
         public static Point tiles, arrowsInMenuMaxX;
-        public static Buttons p1MoveLeft, p1MoveRight, p1MoveDown, p1PowerUp, p1RotateCW, p1RotateCC, p1Start;
-        public static Buttons p2MoveLeft, p2MoveRight, p2MoveDown, p2PowerUp, p2RotateCW, p2RotateCC, p2Start;
+        public static Buttons p1MoveLeft, p1MoveRight, p1MoveDown, p1MoveUp, p1PowerUp, p1RotateCW, p1RotateCC, p1Start;
+        public static Buttons p2MoveLeft, p2MoveRight, p2MoveDown, p2MoveUp, p2PowerUp, p2RotateCW, p2RotateCC, p2Start;
         public SettingsManager(GraphicsDeviceManager graphicsDeviceManager, InputManager iM)
         {
             SetDefaultButtons(iM);
@@ -62,6 +62,7 @@ namespace BlockBrawl
             p1MoveDown = Buttons.DPadDown;
             p1MoveLeft = Buttons.DPadLeft;
             p1MoveRight = Buttons.DPadRight;
+            p1MoveUp = Buttons.DPadUp;
             p1PowerUp = Buttons.Back;
             p1RotateCC = Buttons.B;
             p1RotateCW = Buttons.Y;
@@ -70,6 +71,7 @@ namespace BlockBrawl
             p2MoveDown = Buttons.DPadDown;
             p2MoveLeft = Buttons.DPadLeft;
             p2MoveRight = Buttons.DPadRight;
+            p2MoveUp = Buttons.DPadUp;
             p2PowerUp = Buttons.Back;
             p2RotateCC = Buttons.B;
             p2RotateCW = Buttons.Y;
@@ -121,18 +123,20 @@ namespace BlockBrawl
             p1MoveDown = FromString(iM, FindStringRepresentation(config1[0], ": "));            
             p1MoveLeft = FromString(iM, FindStringRepresentation(config1[1], ": "));
             p1MoveRight = FromString(iM, FindStringRepresentation(config1[2], ": "));
-            p1PowerUp = FromString(iM, FindStringRepresentation(config1[3], ": "));
-            p1RotateCC = FromString(iM, FindStringRepresentation(config1[4], ": "));
-            p1RotateCW = FromString(iM, FindStringRepresentation(config1[5], ": "));
-            p1Start = FromString(iM, FindStringRepresentation(config1[6], ": "));
+            p1MoveUp = FromString(iM, FindStringRepresentation(config1[3], ": "));
+            p1PowerUp = FromString(iM, FindStringRepresentation(config1[4], ": "));
+            p1RotateCC = FromString(iM, FindStringRepresentation(config1[5], ": "));
+            p1RotateCW = FromString(iM, FindStringRepresentation(config1[6], ": "));
+            p1Start = FromString(iM, FindStringRepresentation(config1[7], ": "));
 
             p2MoveDown = FromString(iM, FindStringRepresentation(config2[0], ": "));
             p2MoveLeft = FromString(iM, FindStringRepresentation(config2[1], ": "));
             p2MoveRight = FromString(iM, FindStringRepresentation(config2[2], ": "));
-            p2PowerUp = FromString(iM, FindStringRepresentation(config2[3], ": "));
-            p2RotateCC = FromString(iM, FindStringRepresentation(config2[4], ": "));
-            p2RotateCW = FromString(iM, FindStringRepresentation(config2[5], ": "));
-            p2Start = FromString(iM, FindStringRepresentation(config2[6], ": "));
+            p2MoveUp = FromString(iM, FindStringRepresentation(config2[3], ": "));
+            p2PowerUp = FromString(iM, FindStringRepresentation(config2[4], ": "));
+            p2RotateCC = FromString(iM, FindStringRepresentation(config2[5], ": "));
+            p2RotateCW = FromString(iM, FindStringRepresentation(config2[6], ": "));
+            p2Start = FromString(iM, FindStringRepresentation(config2[7], ": "));
         }
         private string FindStringRepresentation(string s, string splitter)
         {

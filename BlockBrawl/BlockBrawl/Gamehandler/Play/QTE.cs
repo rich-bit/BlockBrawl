@@ -25,8 +25,26 @@ namespace BlockBrawl
         float timeLeft, textTransparecy;
         public bool Cleared { get; set; }
         public int Winner { get; set; }
+
+        Buttons p1MoveLeft, p1MoveRight, p1MoveUp, p1MoveDown, p1RotateCW, p1RotateCC;
+        Buttons p2MoveLeft, p2MoveRight, p2MoveUp, p2MoveDown, p2RotateCW, p2RotateCC;
+
         public QTE()
         {
+            p1MoveLeft = SettingsManager.p1MoveLeft;
+            p1MoveRight = SettingsManager.p1MoveRight;
+            p1MoveUp = SettingsManager.p1MoveUp;
+            p1MoveDown = SettingsManager.p1MoveDown;
+            p1RotateCC = SettingsManager.p1RotateCC;
+            p1RotateCW = SettingsManager.p1RotateCW;
+
+            p2MoveLeft = SettingsManager.p2MoveLeft;
+            p2MoveRight = SettingsManager.p2MoveRight;
+            p2MoveUp = SettingsManager.p2MoveUp;
+            p2MoveDown = SettingsManager.p2MoveDown;
+            p2RotateCC = SettingsManager.p2RotateCC;
+            p2RotateCW = SettingsManager.p2RotateCW;
+
             timeLeft = 5;
             textTransparecy = 0f;
             Winner = int.MinValue;
@@ -768,195 +786,212 @@ namespace BlockBrawl
         }
         private void CheckGamePadInputs(int playerIndex, InputManager iM)
         {
-            if (iM.JustPressed(Buttons.DPadUp, playerIndex) ||
-                iM.JustPressed(Buttons.DPadLeft, playerIndex) ||
-                iM.JustPressed(Buttons.DPadRight, playerIndex) ||
-                iM.JustPressed(Buttons.DPadDown, playerIndex) ||
-                iM.JustPressed(Buttons.B, playerIndex) ||
-                iM.JustPressed(Buttons.Y, playerIndex))
+            Buttons moveLeft = p1MoveLeft;
+            Buttons moveRight = p1MoveRight;
+            Buttons moveUp = p1MoveUp;
+            Buttons moveDown = p1MoveDown;
+            Buttons rotateCW = p1RotateCW;
+            Buttons rotateCC = p1RotateCC;
+
+            if(playerIndex == playerTwoIndex)
+            {
+                moveLeft = p2MoveLeft;
+                moveRight = p2MoveRight;
+                moveUp = p2MoveUp;
+                moveDown = p2MoveDown;
+                rotateCW = p2RotateCW;
+                rotateCC = p2RotateCC;
+            }
+
+            if (iM.JustPressed(moveUp, playerIndex) ||
+                iM.JustPressed(moveLeft, playerIndex) ||
+                iM.JustPressed(moveRight, playerIndex) ||
+                iM.JustPressed(moveDown, playerIndex) ||
+                iM.JustPressed(rotateCW, playerIndex) ||
+                iM.JustPressed(rotateCC, playerIndex))
             {
                 CheckWinner(playerIndex);
             }
             switch (playerBlocks[playerIndex])
             {
                 case "J":
-                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    if (iM.JustPressed(rotateCW, playerIndex))
                     {
                         j.Rotate(true);
                     }
-                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    if (iM.JustPressed(rotateCC, playerIndex))
                     {
                         j.Rotate(false);
                     }
-                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    if (iM.JustPressed(moveUp, playerIndex))
                     {
                         j.Fall(-tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    if (iM.JustPressed(moveDown, playerIndex))
                     {
                         j.Fall(tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    if (iM.JustPressed(moveLeft, playerIndex))
                     {
                         j.Move(-tileSizeQTE.X);
                     }
-                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    if (iM.JustPressed(moveRight, playerIndex))
                     {
                         j.Move(tileSizeQTE.X);
                     }
                     break;
                 case "I":
-                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    if (iM.JustPressed(rotateCW, playerIndex))
                     {
                         i.Rotate(true);
                     }
-                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    if (iM.JustPressed(rotateCC, playerIndex))
                     {
                         i.Rotate(false);
                     }
-                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    if (iM.JustPressed(moveUp, playerIndex))
                     {
                         i.Fall(-tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    if (iM.JustPressed(moveDown, playerIndex))
                     {
                         i.Fall(tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    if (iM.JustPressed(moveLeft, playerIndex))
                     {
                         i.Move(-tileSizeQTE.X);
                     }
-                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    if (iM.JustPressed(moveRight, playerIndex))
                     {
                         i.Move(tileSizeQTE.X);
                     }
                     break;
                 case "T":
-                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    if (iM.JustPressed(rotateCW, playerIndex))
                     {
                         t.Rotate(true);
                     }
-                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    if (iM.JustPressed(rotateCC, playerIndex))
                     {
                         t.Rotate(false);
                     }
-                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    if (iM.JustPressed(moveUp, playerIndex))
                     {
                         t.Fall(-tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    if (iM.JustPressed(moveDown, playerIndex))
                     {
                         t.Fall(tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    if (iM.JustPressed(moveLeft, playerIndex))
                     {
                         t.Move(-tileSizeQTE.X);
                     }
-                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    if (iM.JustPressed(moveRight, playerIndex))
                     {
                         t.Move(tileSizeQTE.X);
                     }
                     break;
                 case "O":
-                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    if (iM.JustPressed(rotateCW, playerIndex))
                     {
                         o.Rotate(true);
                     }
-                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    if (iM.JustPressed(rotateCC, playerIndex))
                     {
                         o.Rotate(false);
                     }
-                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    if (iM.JustPressed(moveUp, playerIndex))
                     {
                         o.Fall(-tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    if (iM.JustPressed(moveDown, playerIndex))
                     {
                         o.Fall(tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    if (iM.JustPressed(moveLeft, playerIndex))
                     {
                         o.Move(-tileSizeQTE.X);
                     }
-                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    if (iM.JustPressed(moveRight, playerIndex))
                     {
                         o.Move(tileSizeQTE.X);
                     }
                     break;
                 case "L":
-                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    if (iM.JustPressed(rotateCW, playerIndex))
                     {
                         l.Rotate(true);
                     }
-                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    if (iM.JustPressed(rotateCC, playerIndex))
                     {
                         l.Rotate(false);
                     }
-                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    if (iM.JustPressed(moveUp, playerIndex))
                     {
                         l.Fall(-tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    if (iM.JustPressed(moveDown, playerIndex))
                     {
                         l.Fall(tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    if (iM.JustPressed(moveLeft, playerIndex))
                     {
                         l.Move(-tileSizeQTE.X);
                     }
-                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    if (iM.JustPressed(moveRight, playerIndex))
                     {
                         l.Move(tileSizeQTE.X);
                     }
                     break;
                 case "S":
-                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    if (iM.JustPressed(rotateCW, playerIndex))
                     {
                         s.Rotate(true);
                     }
-                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    if (iM.JustPressed(rotateCC, playerIndex))
                     {
                         s.Rotate(false);
                     }
-                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    if (iM.JustPressed(moveUp, playerIndex))
                     {
                         s.Fall(-tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    if (iM.JustPressed(moveDown, playerIndex))
                     {
                         s.Fall(tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    if (iM.JustPressed(moveLeft, playerIndex))
                     {
                         s.Move(-tileSizeQTE.X);
                     }
-                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    if (iM.JustPressed(moveRight, playerIndex))
                     {
                         s.Move(tileSizeQTE.X);
                     }
                     break;
                 case "Z":
-                    if (iM.JustPressed(Buttons.B, playerIndex))
+                    if (iM.JustPressed(rotateCW, playerIndex))
                     {
                         z.Rotate(true);
                     }
-                    if (iM.JustPressed(Buttons.Y, playerIndex))
+                    if (iM.JustPressed(rotateCC, playerIndex))
                     {
                         z.Rotate(false);
                     }
-                    if (iM.JustPressed(Buttons.DPadUp, playerIndex))
+                    if (iM.JustPressed(moveUp, playerIndex))
                     {
                         z.Fall(-tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadDown, playerIndex))
+                    if (iM.JustPressed(moveDown, playerIndex))
                     {
                         z.Fall(tileSizeQTE.Y);
                     }
-                    if (iM.JustPressed(Buttons.DPadLeft, playerIndex))
+                    if (iM.JustPressed(moveLeft, playerIndex))
                     {
                         z.Move(-tileSizeQTE.X);
                     }
-                    if (iM.JustPressed(Buttons.DPadRight, playerIndex))
+                    if (iM.JustPressed(moveRight, playerIndex))
                     {
                         z.Move(tileSizeQTE.X);
                     }

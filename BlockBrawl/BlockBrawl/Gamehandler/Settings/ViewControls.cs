@@ -42,22 +42,22 @@ namespace BlockBrawl.Gamehandler.Settings
                 gamepad.Pos = PicPos(gamepad.Tex);
                 controlMapPlayerOne = "" +
                 "Player one:\n" +
-                "Select - Use Power-Up\n" +
-                "Dpad Left - Move Left\n" +
-                "Dpad Right - Move Right\n" +
-                "Dpad Down - Move Down\n" +
-                "A - Rotate Clockwise\n" +
-                "B - Rotate Counter Clockwise\n" +
-                "Start - Pause\n";
+                $"{SettingsManager.p1PowerUp.ToString()} - Use Power-Up\n" +
+                $"{SettingsManager.p1MoveLeft.ToString()} - Move Left\n" +
+                $"{SettingsManager.p1MoveRight.ToString()} - Move Right\n" +
+                $"{SettingsManager.p1MoveDown.ToString()} - Move Down\n" +
+                $"{SettingsManager.p1RotateCW.ToString()} - Rotate Clockwise\n" +
+                $"{SettingsManager.p1RotateCC.ToString()} - Rotate Counter Clockwise\n" +
+                $"{SettingsManager.p1Start.ToString()} - Pause\n";
                 controlMapPlayerTwo = "" +
                     "Player two:\n" +
-                "Select - Use Power-Up\n" +
-                "Dpad Left - Move Left\n" +
-                "Dpad Right - Move Right\n" +
-                "Dpad Down - Move Down\n" +
-                "A - Rotate Clockwise\n" +
-                "B - Rotate Counter Clockwise\n" +
-                "Start - Pause\n";
+                $"{SettingsManager.p2PowerUp.ToString()} - Use Power-Up\n" +
+                $"{SettingsManager.p2MoveLeft.ToString()} - Move Left\n" +
+                $"{SettingsManager.p2MoveRight.ToString()} - Move Right\n" +
+                $"{SettingsManager.p2MoveDown.ToString()} - Move Down\n" +
+                $"{SettingsManager.p2RotateCW.ToString()} - Rotate Clockwise\n" +
+                $"{SettingsManager.p2RotateCC.ToString()} - Rotate Counter Clockwise\n" +
+                $"{SettingsManager.p2Start.ToString()} - Pause\n";
             }
         }
         private Vector2 PicPos(Texture2D tex)

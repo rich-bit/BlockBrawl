@@ -22,8 +22,15 @@ namespace BlockBrawl
         int rowForDraw;
         public bool GoToMenu { get; set; }
         public bool UpdateHighScore { get; set; }
+
+        Buttons p1Start, p1Select, p2Start, p2Select;
         public HighScore()
         {
+            p1Start = SettingsManager.p1Start;
+            p1Select = SettingsManager.p1PowerUp;
+            p2Start = SettingsManager.p2Start;
+            p2Select = SettingsManager.p2PowerUp;
+
             connectionString = ConfigurationManager.ConnectionStrings["visualstudio"].ConnectionString;
             unsuccesfullDataAccessMsg = "Cannot access Database";
             CreateHighScore();
@@ -68,13 +75,13 @@ namespace BlockBrawl
         }
         public void Update(InputManager iM, int playerOneIndex, int playerTwoIndex) 
         {
-            if(iM.JustPressed(Buttons.Back, playerOneIndex) || iM.JustPressed(Buttons.Back, playerTwoIndex) || iM.JustPressed(Keys.Escape))
+            if(iM.JustPressed(p1Select, playerOneIndex) || iM.JustPressed(p2Select, playerTwoIndex) || iM.JustPressed(Keys.Escape))
             {
                 GoToMenu = true;
                 UpdateHighScore = true;
                 rowForDraw = 0;
             }
-            if(iM.JustPressed(Buttons.Start, playerOneIndex) || iM.JustPressed(Buttons.Start, playerTwoIndex) || iM.JustPressed(Keys.F5))
+            if(iM.JustPressed(p1Start, playerOneIndex) || iM.JustPressed(p2Start, playerTwoIndex) || iM.JustPressed(Keys.F5))
             {
                 UpdateHighScore = true;
             }

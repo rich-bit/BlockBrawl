@@ -15,10 +15,18 @@ namespace BlockBrawl
         public int PlayerIndexBazooka { get; set; }
         int playerOneIndex;
         TetrisObject[,] sender, reciever;
+
+        Buttons fireOrb;
         public BloodOrb(float timeToLive, int qteWinnerIndex, int playerOneIndex, int playerTwoIndex)
         {
             PlayerIndexBazooka = qteWinnerIndex;
             this.playerOneIndex = playerOneIndex;
+
+            if (qteWinnerIndex == playerOneIndex)
+            {
+                fireOrb = SettingsManager.p1PowerUp;
+            }
+            else { fireOrb = SettingsManager.p2PowerUp; }
 
             speed = SettingsManager.bazookaShotSpeed;
 
@@ -43,7 +51,7 @@ namespace BlockBrawl
                 fire = Keys.W;
             }
 
-            if (gamePad && iM.JustPressed(Buttons.Back, PlayerIndexBazooka) && !fired)
+            if (gamePad && iM.JustPressed(fireOrb, PlayerIndexBazooka) && !fired)
             {
                 if (sender != null)
                 {

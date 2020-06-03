@@ -25,11 +25,21 @@ namespace BlockBrawl.Gamehandler.Settings
         int rowMarginTop = 5;
         int badImgMarginFix = 3;
 
+        Buttons p1Up, p1Down, p1Select, p2Up, p2Down, p2Select;
+
         public ConfigureGamePads(InputManager iM, int playerOneIndex, int playerTwoIndex)
         {
             this.iM = iM;
             this.playerOneIndex = playerOneIndex;
             this.playerTwoIndex = playerTwoIndex;
+
+            p1Up = SettingsManager.p1MoveUp;
+            p1Down = SettingsManager.p1MoveDown;
+            p1Select = SettingsManager.p1PowerUp;
+
+            p2Up = SettingsManager.p2MoveUp;
+            p2Down = SettingsManager.p2MoveDown;
+            p2Select = SettingsManager.p2PowerUp;
 
             togglePlayerConfiguration = 0;
 
@@ -51,6 +61,7 @@ namespace BlockBrawl.Gamehandler.Settings
             p1Buttons.Add("Move Down: " + SettingsManager.p1MoveDown.ToString());
             p1Buttons.Add("Move Left: " + SettingsManager.p1MoveLeft.ToString());
             p1Buttons.Add("Move Right: " + SettingsManager.p1MoveRight.ToString());
+            p1Buttons.Add("Move Up: " + SettingsManager.p1MoveUp.ToString());
             p1Buttons.Add("Power up: " + SettingsManager.p1PowerUp.ToString());
             p1Buttons.Add("Rotate clockwise: " + SettingsManager.p1RotateCC.ToString());
             p1Buttons.Add("Rotate counter clockwise: " + SettingsManager.p1RotateCW.ToString());
@@ -60,6 +71,7 @@ namespace BlockBrawl.Gamehandler.Settings
             p2Buttons.Add("Move Down: " + SettingsManager.p2MoveDown.ToString());
             p2Buttons.Add("Move Left: " + SettingsManager.p2MoveLeft.ToString());
             p2Buttons.Add("Move Right: " + SettingsManager.p2MoveRight.ToString());
+            p2Buttons.Add("Move Up: " + SettingsManager.p2MoveUp.ToString());
             p2Buttons.Add("Power up: " + SettingsManager.p2PowerUp.ToString());
             p2Buttons.Add("Rotate clockwise: " + SettingsManager.p2RotateCC.ToString());
             p2Buttons.Add("Rotate counter clockwise: " + SettingsManager.p2RotateCW.ToString());
@@ -68,7 +80,7 @@ namespace BlockBrawl.Gamehandler.Settings
         public void Update(GameTime gameTime, SettingsManager settingsManager)
         {
             if (!changeButton && (
-                iM.JustPressed(Buttons.Back, playerOneIndex) || iM.JustPressed(Buttons.Back, playerTwoIndex)
+                iM.JustPressed(p1Select, playerOneIndex) || iM.JustPressed(p2Select, playerTwoIndex)
             || iM.JustPressed(Keys.Escape)))
             {
                 GoBack = true;
@@ -149,8 +161,8 @@ namespace BlockBrawl.Gamehandler.Settings
             SetLeftArrowPos(currentSettings);
             SetRightArrowPos(currentSettings);
             BackAndForwardNumber(gameTime);
-            if (!changeButton && (iM.JustPressed(Buttons.DPadDown, playerOneIndex)
-                            || iM.JustPressed(Buttons.DPadDown, playerTwoIndex)
+            if (!changeButton && (iM.JustPressed(p1Down, playerOneIndex)
+                            || iM.JustPressed(p2Down, playerTwoIndex)
                             || iM.JustPressed(Keys.S)
                             || iM.JustPressed(Keys.Down)))
             {
@@ -163,8 +175,8 @@ namespace BlockBrawl.Gamehandler.Settings
                     configureChoice++;
                 }
             }
-            if (!changeButton && (iM.JustPressed(Buttons.DPadUp, playerOneIndex)
-                || iM.JustPressed(Buttons.DPadUp, playerTwoIndex)
+            if (!changeButton && (iM.JustPressed(p1Up, playerOneIndex)
+                || iM.JustPressed(p2Up, playerTwoIndex)
                 || iM.JustPressed(Keys.W)
                 || iM.JustPressed(Keys.Up)))
             {
@@ -250,7 +262,7 @@ namespace BlockBrawl.Gamehandler.Settings
             }
             if (saved)
             {
-                sb.DrawString(FontManager.GeneralText, "Saved gamepadConfig.txt, ready to use!", MiddleText(15, "Saved gamepadConfig.txt, ready to use!", FontManager.GeneralText), Color.White);
+                sb.DrawString(FontManager.GeneralText, "Saved gamepadConfig.txt, ready to use! (Game might need restart)", MiddleText(15, "Saved gamepadConfig.txt, ready to use! (Game might need restart)", FontManager.GeneralText), Color.White);
             }
             sb.DrawString(FontManager.GeneralText, "Hit enter and then button on gamepad to change button binding.", MiddleText(13, "Hit enter and then button on gamepad to change button binding.", FontManager.GeneralText), Color.Purple);
             sb.DrawString(FontManager.GeneralText, "Save Configuration? Hit CTRL + S", MiddleText(14, "Save Configuration? Hit CTRL + S", FontManager.GeneralText), Color.Purple);

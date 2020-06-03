@@ -35,6 +35,7 @@
             this.dontShowAgainlbl = new System.Windows.Forms.CheckBox();
             this.runGamebtn = new System.Windows.Forms.Button();
             this.chkGamePad = new System.Windows.Forms.CheckBox();
+            this.chkResetCtrl = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // SettingsLbl
@@ -85,7 +86,7 @@
             this.dontShowAgainlbl.AutoSize = true;
             this.dontShowAgainlbl.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dontShowAgainlbl.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.dontShowAgainlbl.Location = new System.Drawing.Point(16, 137);
+            this.dontShowAgainlbl.Location = new System.Drawing.Point(16, 156);
             this.dontShowAgainlbl.Name = "dontShowAgainlbl";
             this.dontShowAgainlbl.Size = new System.Drawing.Size(144, 16);
             this.dontShowAgainlbl.TabIndex = 4;
@@ -96,7 +97,7 @@
             // 
             this.runGamebtn.BackColor = System.Drawing.Color.AliceBlue;
             this.runGamebtn.Font = new System.Drawing.Font("Lucida Console", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.runGamebtn.Location = new System.Drawing.Point(166, 114);
+            this.runGamebtn.Location = new System.Drawing.Point(166, 132);
             this.runGamebtn.Name = "runGamebtn";
             this.runGamebtn.Size = new System.Drawing.Size(75, 39);
             this.runGamebtn.TabIndex = 5;
@@ -109,20 +110,33 @@
             this.chkGamePad.AutoSize = true;
             this.chkGamePad.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkGamePad.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.chkGamePad.Location = new System.Drawing.Point(16, 115);
+            this.chkGamePad.Location = new System.Drawing.Point(16, 134);
             this.chkGamePad.Name = "chkGamePad";
             this.chkGamePad.Size = new System.Drawing.Size(144, 16);
             this.chkGamePad.TabIndex = 6;
             this.chkGamePad.Text = "Gamepad Version";
             this.chkGamePad.UseVisualStyleBackColor = true;
             // 
+            // chkResetCtrl
+            // 
+            this.chkResetCtrl.AutoSize = true;
+            this.chkResetCtrl.Font = new System.Drawing.Font("Lucida Console", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkResetCtrl.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.chkResetCtrl.Location = new System.Drawing.Point(16, 113);
+            this.chkResetCtrl.Name = "chkResetCtrl";
+            this.chkResetCtrl.Size = new System.Drawing.Size(224, 16);
+            this.chkResetCtrl.TabIndex = 7;
+            this.chkResetCtrl.Text = "Reset GamePad Control Map";
+            this.chkResetCtrl.UseVisualStyleBackColor = true;
+            // 
             // PreConfigurations
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Navy;
-            this.ClientSize = new System.Drawing.Size(252, 164);
+            this.ClientSize = new System.Drawing.Size(250, 184);
             this.ControlBox = false;
+            this.Controls.Add(this.chkResetCtrl);
             this.Controls.Add(this.chkGamePad);
             this.Controls.Add(this.runGamebtn);
             this.Controls.Add(this.dontShowAgainlbl);
@@ -146,5 +160,6 @@
         private System.Windows.Forms.CheckBox dontShowAgainlbl;
         private System.Windows.Forms.Button runGamebtn;
         private System.Windows.Forms.CheckBox chkGamePad;
+        private System.Windows.Forms.CheckBox chkResetCtrl;
     }
 }

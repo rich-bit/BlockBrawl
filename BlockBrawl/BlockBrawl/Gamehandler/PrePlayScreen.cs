@@ -22,10 +22,20 @@ namespace BlockBrawl
         Typer playerTyping;
         List<GameObject> colorsP1, colorsP2;
 
+        Buttons p1Start, p1MoveLeft, p1MoveRight, p2Start, p2MoveLeft, p2MoveRight;
+
         public PrePlayScreen(int playerOneIndex, int playerTwoIndex)
         {
             this.playerOneIndex = playerOneIndex;
             this.playerTwoIndex = playerTwoIndex;
+
+            p1Start = SettingsManager.p1Start;
+            p1MoveLeft = SettingsManager.p1MoveLeft;
+            p1MoveRight = SettingsManager.p1MoveRight;
+
+            p2Start = SettingsManager.p2Start;
+            p2MoveLeft = SettingsManager.p2MoveLeft;
+            p2MoveRight = SettingsManager.p2MoveRight;
 
             playerTyping = Typer.playerOne;
 
@@ -90,7 +100,7 @@ namespace BlockBrawl
             CreatePlay();
             if (gamePad)
             {
-                if (iM.JustPressed(Buttons.DPadLeft, playerOneIndex) && !playerOneReady)
+                if (iM.JustPressed(p1MoveLeft, playerOneIndex) && !playerOneReady)
                 {
                     if (playerOneChoice == 0) { playerOneChoice = colorsP1.Count - 1; }
                     else
@@ -98,7 +108,7 @@ namespace BlockBrawl
                         playerOneChoice--;
                     }
                 }
-                if (iM.JustPressed(Buttons.DPadRight, playerOneIndex) && !playerOneReady)
+                if (iM.JustPressed(p1MoveRight, playerOneIndex) && !playerOneReady)
                 {
                     if (playerOneChoice == colorsP1.Count - 1)
                     {
@@ -106,8 +116,8 @@ namespace BlockBrawl
                     }
                     else { playerOneChoice++; }
                 }
-                if (iM.JustPressed(Buttons.Start, playerOneIndex) && !playerOneReady) { playerOneReady = true; }
-                if (iM.JustPressed(Buttons.DPadLeft, playerTwoIndex) && !playerTwoReady)
+                if (iM.JustPressed(p1Start, playerOneIndex) && !playerOneReady) { playerOneReady = true; }
+                if (iM.JustPressed(p2MoveLeft, playerTwoIndex) && !playerTwoReady)
                 {
                     if (playerTwoChoice == 0) { playerTwoChoice = colorsP2.Count - 1; }
                     else
@@ -115,7 +125,7 @@ namespace BlockBrawl
                         playerTwoChoice--;
                     }
                 }
-                if (iM.JustPressed(Buttons.DPadRight, playerTwoIndex) && !playerTwoReady)
+                if (iM.JustPressed(p2MoveRight, playerTwoIndex) && !playerTwoReady)
                 {
                     if (playerTwoChoice == colorsP2.Count - 1)
                     {
@@ -123,7 +133,7 @@ namespace BlockBrawl
                     }
                     else { playerTwoChoice++; }
                 }
-                if (iM.JustPressed(Buttons.Start, playerTwoIndex) && !playerTwoReady) { playerTwoReady = true; }
+                if (iM.JustPressed(p2Start, playerTwoIndex) && !playerTwoReady) { playerTwoReady = true; }
             }
             else
             {

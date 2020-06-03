@@ -8,10 +8,17 @@ namespace BlockBrawl.Gamehandler.Play
     {
         public bool GoToMenu { get; set; }
         GameObject pause;
+        Buttons p1Start, p1Select, p2Start, p2Select;
         public Pause()
         {
             pause = new GameObject(Vector2.Zero, TextureManager.pause);
             pause.Pos = AssignPos(pause);
+
+            p1Start = SettingsManager.p1Start;
+            p1Select = SettingsManager.p1PowerUp;
+
+            p2Start = SettingsManager.p2Start;
+            p2Select = SettingsManager.p2PowerUp;
         }
         private Vector2 AssignPos(GameObject gameObject)
         {
@@ -21,7 +28,7 @@ namespace BlockBrawl.Gamehandler.Play
         }
         public void Update(InputManager iM, int playerOneIndex, int playerTwoIndex)
         {
-            if (iM.JustPressed(Buttons.Back, playerOneIndex) || iM.JustPressed(Buttons.Back, playerTwoIndex)
+            if (iM.JustPressed(p1Select, playerOneIndex) || iM.JustPressed(p2Select, playerTwoIndex)
             || iM.JustPressed(Keys.Escape))
             {
                 GoToMenu = true;

@@ -25,8 +25,18 @@ namespace BlockBrawl
         GameObject blockBrawlMenu, settingsMenu, playMenu, highScoreMenu, arrowOneLeft, arrowTwoLeft, arrowOneRight, arrowTwoRight, quit;
 
         List<GameObject> menuObjs = new List<GameObject>();
+
+        Buttons p1Start, p1MoveDown, p1MoveUp, p2Start, p2MoveDown, p2MoveUp;
         public Menu()
         {
+            p1Start = SettingsManager.p1Start;
+            p1MoveDown = SettingsManager.p1MoveDown;
+            p1MoveUp = SettingsManager.p1MoveUp;
+
+            p2Start = SettingsManager.p2Start;
+            p2MoveDown = SettingsManager.p2MoveDown;
+            p2MoveUp = SettingsManager.p2MoveUp;
+
             CurrentMenuChoice = 1;
             marginFromMenuObj = SettingsManager.arrowsInMenuMaxX;
             arrowOneLeft = new GameObject(Vector2.Zero, TextureManager.menuArrowLeft);
@@ -71,8 +81,8 @@ namespace BlockBrawl
             SetLeftArrowPos();
             SetRightArrowPos();
             PresentMenuChoice();
-            if (iM.JustPressed(Buttons.DPadDown, playerOneIndex)
-                    || iM.JustPressed(Buttons.DPadDown, playerTwoIndex)
+            if (iM.JustPressed(p1MoveDown, playerOneIndex)
+                    || iM.JustPressed(p2MoveDown, playerTwoIndex)
                     || iM.JustPressed(Keys.S)
                     || iM.JustPressed(Keys.Down))
             {
@@ -85,8 +95,8 @@ namespace BlockBrawl
                     CurrentMenuChoice++;
                 }
             }
-            if (iM.JustPressed(Buttons.DPadUp, playerOneIndex)
-                || iM.JustPressed(Buttons.DPadUp, playerTwoIndex)
+            if (iM.JustPressed(p1MoveUp, playerOneIndex)
+                || iM.JustPressed(p2MoveUp, playerTwoIndex)
                 || iM.JustPressed(Keys.W)
                 || iM.JustPressed(Keys.Up))
             {
@@ -99,7 +109,7 @@ namespace BlockBrawl
                     CurrentMenuChoice--;
                 }
             }
-            if (iM.JustPressed(Buttons.Start, playerOneIndex) || iM.JustPressed(Buttons.Start, playerTwoIndex)
+            if (iM.JustPressed(p1Start, playerOneIndex) || iM.JustPressed(p1Start, playerTwoIndex)
                 || iM.JustPressed(Keys.Enter) || iM.JustPressed(Keys.Space))
             {
                 EnterChoice = true;

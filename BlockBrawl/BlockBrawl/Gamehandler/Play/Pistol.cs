@@ -17,10 +17,16 @@ namespace BlockBrawl
         public int PlayerIndexPistol { get; set; }
         int playerOneIndex;
         TetrisObject[,] sender, reciever;
+        Buttons firePistol;
         public Pistol(float timeToLive, int qteWinnerIndex, int playerOneIndex, int playerTwoIndex)
         {
             PlayerIndexPistol = qteWinnerIndex;
             this.playerOneIndex = playerOneIndex;
+            if(qteWinnerIndex == playerOneIndex)
+            {
+                firePistol = SettingsManager.p1PowerUp;
+            }
+            else { firePistol = SettingsManager.p2PowerUp; }
 
             speed = SettingsManager.pistolShotSpeed;
 
@@ -45,7 +51,7 @@ namespace BlockBrawl
                 fire = Keys.W;
             }
 
-            if (gamePad && iM.JustPressed(Buttons.Back, PlayerIndexPistol) && !fired)
+            if (gamePad && iM.JustPressed(firePistol, PlayerIndexPistol) && !fired)
             {
                 if (sender != null)
                 {
