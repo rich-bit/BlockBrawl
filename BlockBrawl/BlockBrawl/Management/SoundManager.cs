@@ -11,7 +11,7 @@ namespace BlockBrawl
         private List<SoundEffect> otherSounds;
         private List<SoundEffect> soundEffects;
 
-        public static SoundEffectInstance explosion, rowFilled, menuChoice, laserShot;
+        public static SoundEffectInstance explosion, rowFilled, menuChoice, laserShot, qteWarning;
 
         public SoundManager(ContentManager content)
         {
@@ -65,6 +65,8 @@ namespace BlockBrawl
             menuChoice = soundEffects[2].CreateInstance();
             soundEffects.Add(content.Load<SoundEffect>(@"GameSounds/laserShot"));
             laserShot = soundEffects[3].CreateInstance();
+            soundEffects.Add(content.Load<SoundEffect>(@"GameSounds/qteWarning"));
+            qteWarning = soundEffects[4].CreateInstance();
         }
     }
 }

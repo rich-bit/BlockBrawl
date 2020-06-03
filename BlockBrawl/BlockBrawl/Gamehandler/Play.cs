@@ -163,6 +163,7 @@ namespace BlockBrawl
         {
             playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Time += (float)gameTime.ElapsedGameTime.TotalSeconds;
             float time = playfield[playfield.GetLength(0) - 1, playfield.GetLength(1) - 1].Time;
+            if(time > qteWaitTime - 6 && qte == null) { SoundManager.qteWarning.Play(); }
             if (time > qteWaitTime && qte == null)
             {
                 qte = new QTE();

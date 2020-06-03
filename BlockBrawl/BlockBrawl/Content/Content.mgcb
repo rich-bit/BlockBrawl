@@ -175,6 +175,12 @@
 /processorParam:Quality=Best
 /build:GameSounds/menuChoice.wav
 
+#begin GameSounds/qteWarning.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:GameSounds/qteWarning.wav
+
 #begin GameSounds/rowfilled.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
