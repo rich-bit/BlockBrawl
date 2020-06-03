@@ -1,9 +1,6 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using BlockBrawl.Blocks;
-using BlockBrawl.Objects;
 using System.Collections.Generic;
 
 namespace BlockBrawl

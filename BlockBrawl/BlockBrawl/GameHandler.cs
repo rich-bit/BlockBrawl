@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace BlockBrawl
 {
@@ -9,7 +8,6 @@ namespace BlockBrawl
     {
         SpriteBatch spriteBatch;
         GraphicsDevice graphicsDevice;
-        //GameTime gameTime;
         InputManager iM;
         SettingsManager settingsManager;
         public enum GameState
@@ -88,7 +86,6 @@ namespace BlockBrawl
                     menu.Update(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo, gameTime);
                     break;
             }
-            // this.gameTime = gameTime;
         }
         public void MenuSwitcher()
         {
