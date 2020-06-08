@@ -22,6 +22,7 @@ namespace BlockBrawl
         int badImgMarginFix = 3;
         Point marginFromMenuObj;
         GameObject configureGamePad, viewControls, resetPreConfig, arrowOneRight, arrowTwoRight, arrowOneLeft, arrowTwoLeft;
+        Buttons p1Up, p1Down, p1Select, p1Start, p2Up, p2Down, p2Select, p2Start;
 
         List<GameObject> menuObjs = new List<GameObject>();
 
@@ -29,6 +30,16 @@ namespace BlockBrawl
         ConfigureGamePads configureGamePads;
         public Settings(InputManager iM, int playerOneIndex, int playerTwoIndex)
         {
+            p1Up = SettingsManager.p1MoveUp;
+            p1Down = SettingsManager.p1MoveDown;
+            p1Select = SettingsManager.p1PowerUp;
+            p1Start = SettingsManager.p1Start;
+
+            p2Up = SettingsManager.p2MoveUp;
+            p2Down = SettingsManager.p2MoveDown;
+            p2Select = SettingsManager.p2PowerUp;
+            p2Start = SettingsManager.p2Start;
+
             settingsChoiceSwitcher = SettingsChoice.settings;
 
             CurrentSettingsChoice = 0;
@@ -76,14 +87,14 @@ namespace BlockBrawl
             switch (settingsChoiceSwitcher)
             {
                 case SettingsChoice.settings:
-                    if (iM.JustPressed(Buttons.Start, playerOneIndex) || iM.JustPressed(Buttons.Start, playerTwoIndex)
+                    if (iM.JustPressed(p1Start, playerOneIndex) || iM.JustPressed(p2Start, playerTwoIndex)
                     || iM.JustPressed(Keys.Enter) || iM.JustPressed(Keys.Space))
                     {
                     SoundManager.menuChoice.Play();
                         ToggleChoice();
 
                     }
-                    if (iM.JustPressed(Buttons.Back, playerOneIndex) || iM.JustPressed(Buttons.Back, playerTwoIndex)
+                    if (iM.JustPressed(p1Select, playerOneIndex) || iM.JustPressed(p2Select, playerTwoIndex)
                     || iM.JustPressed(Keys.Escape))
                     {
                         GoToMenu = true;
@@ -92,8 +103,8 @@ namespace BlockBrawl
                     BackAndForwardNumber(gameTime);//Changin the margin from menu objects with time..
                     SetLeftArrowPos();
                     SetRightArrowPos();
-                    if (iM.JustPressed(Buttons.DPadDown, playerOneIndex)
-                            || iM.JustPressed(Buttons.DPadDown, playerTwoIndex)
+                    if (iM.JustPressed(p1Down, playerOneIndex)
+                            || iM.JustPressed(p2Down, playerTwoIndex)
                             || iM.JustPressed(Keys.S)
                             || iM.JustPressed(Keys.Down))
                     {
@@ -106,8 +117,8 @@ namespace BlockBrawl
                             CurrentSettingsChoice++;
                         }
                     }
-                    if (iM.JustPressed(Buttons.DPadUp, playerOneIndex)
-                        || iM.JustPressed(Buttons.DPadUp, playerTwoIndex)
+                    if (iM.JustPressed(p1Up, playerOneIndex)
+                        || iM.JustPressed(p2Up, playerTwoIndex)
                         || iM.JustPressed(Keys.W)
                         || iM.JustPressed(Keys.Up))
                     {

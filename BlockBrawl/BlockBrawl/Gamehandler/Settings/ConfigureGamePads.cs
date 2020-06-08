@@ -62,7 +62,7 @@ namespace BlockBrawl.Gamehandler.Settings
             p1Buttons.Add("Move Left: " + SettingsManager.p1MoveLeft.ToString());
             p1Buttons.Add("Move Right: " + SettingsManager.p1MoveRight.ToString());
             p1Buttons.Add("Move Up: " + SettingsManager.p1MoveUp.ToString());
-            p1Buttons.Add("Power up: " + SettingsManager.p1PowerUp.ToString());
+            p1Buttons.Add("Power up / Select: " + SettingsManager.p1PowerUp.ToString());
             p1Buttons.Add("Rotate clockwise: " + SettingsManager.p1RotateCC.ToString());
             p1Buttons.Add("Rotate counter clockwise: " + SettingsManager.p1RotateCW.ToString());
             p1Buttons.Add("Start / Pause: " + SettingsManager.p1Start.ToString());
@@ -72,7 +72,7 @@ namespace BlockBrawl.Gamehandler.Settings
             p2Buttons.Add("Move Left: " + SettingsManager.p2MoveLeft.ToString());
             p2Buttons.Add("Move Right: " + SettingsManager.p2MoveRight.ToString());
             p2Buttons.Add("Move Up: " + SettingsManager.p2MoveUp.ToString());
-            p2Buttons.Add("Power up: " + SettingsManager.p2PowerUp.ToString());
+            p2Buttons.Add("Power up / Select: " + SettingsManager.p2PowerUp.ToString());
             p2Buttons.Add("Rotate clockwise: " + SettingsManager.p2RotateCC.ToString());
             p2Buttons.Add("Rotate counter clockwise: " + SettingsManager.p2RotateCW.ToString());
             p2Buttons.Add("Start / Pause: " + SettingsManager.p2Start.ToString());
