@@ -9,6 +9,7 @@ namespace BlockBrawl
     {
         public Play Play { get; set; }
         public bool ReadyEnterPlay { get; set; }
+        public bool GoToMenu { get; set; }
         bool playerOneReady, playerTwoReady;
         int playerOneIndex, playerTwoIndex, playerOneChoice, playerTwoChoice;
         string instructionsPlayer1, instructionsPlayer2;
@@ -22,7 +23,7 @@ namespace BlockBrawl
         Typer playerTyping;
         List<GameObject> colorsP1, colorsP2;
 
-        Buttons p1Start, p1MoveLeft, p1MoveRight, p2Start, p2MoveLeft, p2MoveRight;
+        Buttons p1Start, p1Select, p1MoveLeft, p1MoveRight, p2Start, p2Select, p2MoveLeft, p2MoveRight;
 
         public PrePlayScreen(int playerOneIndex, int playerTwoIndex)
         {
@@ -30,10 +31,12 @@ namespace BlockBrawl
             this.playerTwoIndex = playerTwoIndex;
 
             p1Start = SettingsManager.p1Start;
+            p1Select = SettingsManager.p1PowerUp;
             p1MoveLeft = SettingsManager.p1MoveLeft;
             p1MoveRight = SettingsManager.p1MoveRight;
 
             p2Start = SettingsManager.p2Start;
+            p2Select = SettingsManager.p2PowerUp;
             p2MoveLeft = SettingsManager.p2MoveLeft;
             p2MoveRight = SettingsManager.p2MoveRight;
 
@@ -92,6 +95,12 @@ namespace BlockBrawl
         {
             SetNames(iM);
             UpdateNames();
+            if (iM.JustPressed(p1Select, playerOneIndex) || iM.JustPressed(p2Select, playerTwoIndex)
+            || iM.JustPressed(Keys.Escape))
+            {
+                GoToMenu = true;
+                SoundManager.menuChoice.Play();
+            }
             if (iM.JustPressed(Keys.Tab))
             {
                 if (playerTyping == Typer.playerOne) { playerTyping = Typer.playerTwo; }
@@ -233,6 +242,8 @@ namespace BlockBrawl
                 spriteBatch.DrawString(FontManager.GeneralText, "Press start / Enter when ready!",
                 GetScreenAlignment(FontManager.GeneralText.MeasureString("Press start / Space when ready!").X, AlignmentTop(11), playerTwoIndex), Color.White);
             }
+            spriteBatch.DrawString(FontManager.GeneralText, "To go menu? Use ESC / Select", new Vector2(0,
+            SettingsManager.gameHeight - FontManager.GeneralText.MeasureString("To go menu? Use ESC / Select").Y), Color.Yellow);
         }
         private Vector2 GetScreenAlignment(float objectWidth, float marginTop, int playerIndex)
         {

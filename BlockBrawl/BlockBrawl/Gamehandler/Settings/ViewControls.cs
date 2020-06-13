@@ -23,7 +23,7 @@ namespace BlockBrawl.Gamehandler.Settings
                 keyboard.Pos = PicPos(keyboard.Tex);
                 controlMapPlayerOne = "" +
                     "Player one:\n" +
-                    "W - Use Power-Up\n" +
+                    "W - Use Power-Up / Select\n" +
                     "A - Move Left\n" +
                     "D - Move Right\n" +
                     "S - Move Down\n" +
@@ -33,7 +33,7 @@ namespace BlockBrawl.Gamehandler.Settings
                     "Esc - Pause\n";
                 controlMapPlayerTwo = "" +
                     "Player Two:\n" +
-                    "Up - Use Power-Up\n" +
+                    "Up - Use Power-Up / Select\n" +
                     "Left - Move Left\n" +
                     "Right - Move Right\n" +
                     "Down - Move Down\n" +
@@ -48,7 +48,7 @@ namespace BlockBrawl.Gamehandler.Settings
                 gamepad.Pos = PicPos(gamepad.Tex);
                 controlMapPlayerOne = "" +
                 "Player one:\n" +
-                $"{SettingsManager.p1PowerUp.ToString()} - Use Power-Up\n" +
+                $"{SettingsManager.p1PowerUp.ToString()} - Use Power-Up / Select\n" +
                 $"{SettingsManager.p1MoveLeft.ToString()} - Move Left\n" +
                 $"{SettingsManager.p1MoveRight.ToString()} - Move Right\n" +
                 $"{SettingsManager.p1MoveDown.ToString()} - Move Down\n" +
@@ -58,7 +58,7 @@ namespace BlockBrawl.Gamehandler.Settings
                 $"{SettingsManager.p1Start.ToString()} - Pause\n";
                 controlMapPlayerTwo = "" +
                     "Player two:\n" +
-                $"{SettingsManager.p2PowerUp.ToString()} - Use Power-Up\n" +
+                $"{SettingsManager.p2PowerUp.ToString()} - Use Power-Up / Select\n" +
                 $"{SettingsManager.p2MoveLeft.ToString()} - Move Left\n" +
                 $"{SettingsManager.p2MoveRight.ToString()} - Move Right\n" +
                 $"{SettingsManager.p2MoveDown.ToString()} - Move Down\n" +

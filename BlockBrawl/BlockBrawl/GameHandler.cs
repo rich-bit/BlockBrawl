@@ -54,6 +54,7 @@ namespace BlockBrawl
                     if (play == null)
                     {
                         prePlayScreen.Update(iM, SettingsManager.gamePadVersion);
+                        if (prePlayScreen.GoToMenu) { currentGameState = GameState.menu; prePlayScreen.GoToMenu = false; }
                     }
                     if (prePlayScreen.ReadyEnterPlay)
                     {
