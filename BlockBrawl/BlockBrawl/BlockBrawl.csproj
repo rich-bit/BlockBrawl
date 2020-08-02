@@ -83,6 +83,7 @@
     <Compile Include="Gamehandler\Settings.cs" />
     <Compile Include="Gamehandler\Settings\ConfigureGamePads.cs" />
     <Compile Include="Gamehandler\Settings\ViewControls.cs" />
+    <Compile Include="Management\DbLogin.cs" />
     <Compile Include="Management\FontManager.cs" />
     <Compile Include="Management\SoundManager.cs" />
     <Compile Include="Objects\Dataread.cs" />
@@ -202,7 +203,6 @@
       <Link>MonoGame.Framework.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="App.config" />
     <None Include="app.manifest" />
     <None Include="packages.config" />
   </ItemGroup>

@@ -13,7 +13,6 @@ namespace BlockBrawl
 {
     class CheckGameOver
     {
-        string connectionString;
         List<Dataread> dataReads;
         NpgsqlConnection connection;
         bool newHighscore;
@@ -31,7 +30,6 @@ namespace BlockBrawl
             p2A = SettingsManager.p2RotateCW;
             p2Select = SettingsManager.p2PowerUp;
 
-            connectionString = ConfigurationManager.ConnectionStrings["visualstudio"].ConnectionString;
             unsuccesfullDataAccessMsg = "Cannot access Database!";
         }
         public void CheckHighScore(int winnerScore, string winnerName, int looserScore, string looserName, int playedTime, bool gamepad)
@@ -76,7 +74,7 @@ namespace BlockBrawl
         private void UpdateDatabase(int id, int winnerScore, int looserScore, string winnerName, string looserName, int playedTime)
         {
 
-            using (connection = new NpgsqlConnection(connectionString))
+            using (connection = new NpgsqlConnection(SettingsManager.connectionString))
             {
                 connection.Open();
                 for (int i = id; i < dataReads.Count; i++)
@@ -95,7 +93,7 @@ namespace BlockBrawl
             }
 
             string sql = $"update records set name1 = '{winnerName}', name2 = '{looserName}', score1 = {winnerScore}, score2 = {looserScore}, playedtime = {playedTime} where id = {id};";
-            using (connection = new NpgsqlConnection(connectionString))
+            using (connection = new NpgsqlConnection(SettingsManager.connectionString))
             {
                 connection.Open();
                 using (var transaction = connection.BeginTransaction())
@@ -107,7 +105,7 @@ namespace BlockBrawl
         }
         public List<Dataread> PullFromDB()
         {
-            using (connection = new NpgsqlConnection(connectionString))
+            using (connection = new NpgsqlConnection(SettingsManager.connectionString))
             {
                 var output = connection.Query<Dataread>("select * from records order by id asc;").ToList();
                 dataReads = output;

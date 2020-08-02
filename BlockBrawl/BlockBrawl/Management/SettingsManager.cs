@@ -18,6 +18,7 @@ namespace BlockBrawl
         public static Point tiles, arrowsInMenuMaxX;
         public static Buttons p1MoveLeft, p1MoveRight, p1MoveDown, p1MoveUp, p1PowerUp, p1RotateCW, p1RotateCC, p1Start;
         public static Buttons p2MoveLeft, p2MoveRight, p2MoveDown, p2MoveUp, p2PowerUp, p2RotateCW, p2RotateCC, p2Start;
+        public static string connectionString = new DbLogin().connectionString;
         public SettingsManager(GraphicsDeviceManager graphicsDeviceManager, InputManager iM)
         {
             SetDefaultButtons(iM);

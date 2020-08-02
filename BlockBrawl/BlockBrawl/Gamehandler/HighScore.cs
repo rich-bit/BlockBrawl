@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Npgsql;
 using Dapper;
-using System.Configuration;
 using BlockBrawl.Objects;
 using BlockBrawl.GameHandlerObjects.HighScoreObjects;
 using Microsoft.Xna.Framework.Input;
@@ -13,7 +12,6 @@ namespace BlockBrawl
 {
     class HighScore
     {
-        string connectionString;
         List<Dataread> dataReads;
         List<HighScoreEntry> currentRecords;
         NpgsqlConnection connection;
@@ -31,7 +29,6 @@ namespace BlockBrawl
             p2Start = SettingsManager.p2Start;
             p2Select = SettingsManager.p2PowerUp;
 
-            connectionString = ConfigurationManager.ConnectionStrings["visualstudio"].ConnectionString;
             unsuccesfullDataAccessMsg = "Cannot access Database";
             CreateHighScore();
         }
@@ -92,7 +89,7 @@ namespace BlockBrawl
         }
         public List<Dataread> PullFromDB()
         {
-            using (connection = new NpgsqlConnection(connectionString))
+            using (connection = new NpgsqlConnection(SettingsManager.connectionString))
             {
                 var output = connection.Query<Dataread>("select * from records order by id asc;").ToList();
                 dataReads = output;

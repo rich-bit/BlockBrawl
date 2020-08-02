@@ -10,6 +10,7 @@
 
 #Dont want it
 *.csprojAssemblyReference.cache
+DbLogin.cs
 
 # Build results
 [Dd]ebug/
