@@ -54,7 +54,10 @@ namespace BlockBrawl
             viewControls = new GameObject(Vector2.Zero, TextureManager.settingsViewControls);
             resetPreConfig = new GameObject(Vector2.Zero, TextureManager.settingsShowPreConfig);
 
-            menuObjs.Add(configureGamePad); menuObjs.Add(viewControls); menuObjs.Add(resetPreConfig);
+            if (SettingsManager.gamePadVersion) menuObjs.Add(configureGamePad);
+            menuObjs.Add(viewControls);
+            menuObjs.Add(resetPreConfig);
+
             AssignPos();
 
             showControls = new ViewControls();
@@ -90,7 +93,7 @@ namespace BlockBrawl
                     if (iM.JustPressed(p1Start, playerOneIndex) || iM.JustPressed(p2Start, playerTwoIndex)
                     || iM.JustPressed(Keys.Enter) || iM.JustPressed(Keys.Space))
                     {
-                    SoundManager.menuChoice.Play();
+                        SoundManager.menuChoice.Play();
                         ToggleChoice();
 
                     }
@@ -151,9 +154,17 @@ namespace BlockBrawl
         }
         private void ToggleChoice()
         {
-            if (CurrentSettingsChoice == 0) { settingsChoiceSwitcher = SettingsChoice.configureGamePad; }
-            else if (CurrentSettingsChoice == 1) { settingsChoiceSwitcher = SettingsChoice.viewSteerings; }
-            else if (CurrentSettingsChoice == 2) { settingsChoiceSwitcher = SettingsChoice.resetPreConfig; }
+            if (SettingsManager.gamePadVersion)
+            {
+                if (CurrentSettingsChoice == 0) { settingsChoiceSwitcher = SettingsChoice.configureGamePad; }
+                else if (CurrentSettingsChoice == 1) { settingsChoiceSwitcher = SettingsChoice.viewSteerings; }
+                else if (CurrentSettingsChoice == 2) { settingsChoiceSwitcher = SettingsChoice.resetPreConfig; }
+            }
+            else
+            {
+                if (CurrentSettingsChoice == 0) { settingsChoiceSwitcher = SettingsChoice.viewSteerings; }
+                else if (CurrentSettingsChoice == 1) { settingsChoiceSwitcher = SettingsChoice.resetPreConfig; }
+            }
         }
         private void SetLeftArrowPos()
         {

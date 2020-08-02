@@ -53,13 +53,13 @@ namespace BlockBrawl
                             ));
                     }
                 }
-                for(int j = 0; j < currentRecords.Count; j++)
+                for (int j = 0; j < currentRecords.Count; j++)
                 {
                     currentRecords[j].Pos = GetAlignment(FontManager.ScoreText,
-                        Text(currentRecords[j].PlayerOneName, 
-                        currentRecords[j].PlayerTwoName, 
-                        currentRecords[j].PlayerOneScore, 
-                        currentRecords[j].PlayerTwoScore, 
+                        Text(currentRecords[j].PlayerOneName,
+                        currentRecords[j].PlayerTwoName,
+                        currentRecords[j].PlayerOneScore,
+                        currentRecords[j].PlayerTwoScore,
                         currentRecords[j].GameTime)
                         );
                 }
@@ -70,15 +70,15 @@ namespace BlockBrawl
                 unsuccesfullDataAccess = true;
             }
         }
-        public void Update(InputManager iM, int playerOneIndex, int playerTwoIndex) 
+        public void Update(InputManager iM, int playerOneIndex, int playerTwoIndex)
         {
-            if(iM.JustPressed(p1Select, playerOneIndex) || iM.JustPressed(p2Select, playerTwoIndex) || iM.JustPressed(Keys.Escape))
+            if (iM.JustPressed(p1Select, playerOneIndex) || iM.JustPressed(p2Select, playerTwoIndex) || iM.JustPressed(Keys.Escape))
             {
                 GoToMenu = true;
                 UpdateHighScore = true;
                 rowForDraw = 0;
             }
-            if(iM.JustPressed(p1Start, playerOneIndex) || iM.JustPressed(p2Start, playerTwoIndex) || iM.JustPressed(Keys.F5))
+            if (iM.JustPressed(p1Start, playerOneIndex) || iM.JustPressed(p2Start, playerTwoIndex) || iM.JustPressed(Keys.F5))
             {
                 UpdateHighScore = true;
             }
@@ -115,7 +115,20 @@ namespace BlockBrawl
         }
         private string Text(string playerOne, string playerTwo, int score1, int score2, int gameTime)
         {
-            return $"{playerOne} scored {score1} and beat {playerTwo}, score {score2}. Played time {gameTime} seconds.";
+            if(playerOne == "")
+            {
+                playerOne = "Nameless";
+            }
+            if (playerTwo == "")
+            {
+                playerTwo = "Nameless";
+            }
+
+            if (score1 != score2)
+            {
+                return $"{playerOne} scored {score1} and beat {playerTwo}, score {score2}. Played time {gameTime} seconds.";
+            }
+            else return $"{playerOne} and {playerTwo} both scored {score1}. Played time {gameTime} seconds.";
         }
         public void Draw(SpriteBatch spriteBatch)
         {
@@ -136,14 +149,14 @@ namespace BlockBrawl
                             Color.LightYellow);
                     }
                 }
-                if(currentRecords == null || currentRecords.Count == 0)
+                if (currentRecords == null || currentRecords.Count == 0)
                 {
                     spriteBatch.DrawString(FontManager.GeneralText, "No records to show!", GetAlignment(FontManager.GeneralText, "Highscores!", 3), Color.Yellow);
                 }
             }
-            spriteBatch.DrawString(FontManager.GeneralText, "To go menu? Use ESC / Select", new Vector2(0, 
+            spriteBatch.DrawString(FontManager.GeneralText, "To go menu? Use ESC / Select", new Vector2(0,
                 SettingsManager.gameHeight - FontManager.GeneralText.MeasureString("To go menu? Use ESC / Select").Y), Color.Yellow);
-            spriteBatch.DrawString(FontManager.GeneralText, "Refresh with F5/Start", new Vector2(SettingsManager.gameWidth  - FontManager.GeneralText.MeasureString("Refresh with F5/Start").X,
+            spriteBatch.DrawString(FontManager.GeneralText, "Refresh with F5/Start", new Vector2(SettingsManager.gameWidth - FontManager.GeneralText.MeasureString("Refresh with F5/Start").X,
                 SettingsManager.gameHeight - FontManager.GeneralText.MeasureString("Refresh with F5/Start").Y), Color.Yellow);
         }
     }
