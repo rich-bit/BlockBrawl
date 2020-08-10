@@ -7,6 +7,7 @@ using Dapper;
 using BlockBrawl.Objects;
 using BlockBrawl.GameHandlerObjects.HighScoreObjects;
 using Microsoft.Xna.Framework.Input;
+using System.Threading;
 
 namespace BlockBrawl
 {
@@ -15,7 +16,7 @@ namespace BlockBrawl
         List<Dataread> dataReads;
         List<HighScoreEntry> currentRecords;
         NpgsqlConnection connection;
-        bool unsuccesfullDataAccess = false;
+        bool unsuccesfullDataAccess = true;
         string unsuccesfullDataAccessMsg;
         int rowForDraw;
         public bool GoToMenu { get; set; }
@@ -30,7 +31,10 @@ namespace BlockBrawl
             p2Select = SettingsManager.p2PowerUp;
 
             unsuccesfullDataAccessMsg = "Cannot access Database";
-            CreateHighScore();
+            new Thread(() =>
+            {
+                CreateHighScore();
+            }).Start();
         }
         public void CreateHighScore()
         {
@@ -63,7 +67,7 @@ namespace BlockBrawl
                         currentRecords[j].GameTime)
                         );
                 }
-                UpdateHighScore = false;
+                //UpdateHighScore = false;
             }
             catch
             {
@@ -84,7 +88,11 @@ namespace BlockBrawl
             }
             if (UpdateHighScore)
             {
-                CreateHighScore();
+                new Thread(() =>
+                {
+                    CreateHighScore();
+                }).Start();
+                UpdateHighScore = false;
             }
         }
         public List<Dataread> PullFromDB()
@@ -115,7 +123,7 @@ namespace BlockBrawl
         }
         private string Text(string playerOne, string playerTwo, int score1, int score2, int gameTime)
         {
-            if(playerOne == "")
+            if (playerOne == "")
             {
                 playerOne = "Nameless";
             }

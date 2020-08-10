@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -672,18 +673,9 @@ namespace BlockBrawl
                         if (VerifySpawn())
                         {
                             jArray[playerIndex] = new J(playerColors[playerIndex], spawnPositions[playerIndex]);
-                            if (CheckGameOver(jArray[playerIndex].jMatrix))
-                            {
-                                if (score[playerOneIndex] > score[playerTwoIndex])
-                                {
-                                    gameOver.CheckHighScore(score[playerOneIndex], SettingsManager.playerOneName, score[playerTwoIndex], SettingsManager.playerTwoName, (int)playedTime, gamePadVersion);
-                                }
-                                else
-                                {
-                                    gameOver.CheckHighScore(score[playerTwoIndex], SettingsManager.playerTwoName, score[playerOneIndex], SettingsManager.playerOneName, (int)playedTime, gamePadVersion);
-                                }
-                                currentPlayState = PlayState.gameover;
-                            }
+                            new Thread(() => {
+                            HandleGameOver(playerIndex, jArray[playerIndex].jMatrix);
+                            }).Start();
                             spawnPositions[playerIndex] = GetSpawnPos(playerIndex);
                             nextBlock[playerIndex] = null;
                         }
@@ -692,18 +684,9 @@ namespace BlockBrawl
                         if (VerifySpawn())
                         {
                             iArray[playerIndex] = new I(playerColors[playerIndex], spawnPositions[playerIndex]);
-                            if (CheckGameOver(iArray[playerIndex].iMatrix))
-                            {
-                                if (score[playerOneIndex] > score[playerTwoIndex])
-                                {
-                                    gameOver.CheckHighScore(score[playerOneIndex], SettingsManager.playerOneName, score[playerTwoIndex], SettingsManager.playerTwoName, (int)playedTime, gamePadVersion);
-                                }
-                                else
-                                {
-                                    gameOver.CheckHighScore(score[playerTwoIndex], SettingsManager.playerTwoName, score[playerOneIndex], SettingsManager.playerOneName, (int)playedTime, gamePadVersion);
-                                }
-                                currentPlayState = PlayState.gameover;
-                            }
+                            new Thread(() => {
+                                HandleGameOver(playerIndex, iArray[playerIndex].iMatrix);
+                            }).Start();
                             spawnPositions[playerIndex] = GetSpawnPos(playerIndex);
                             nextBlock[playerIndex] = null;
                         }
@@ -712,18 +695,9 @@ namespace BlockBrawl
                         if (VerifySpawn())
                         {
                             tArray[playerIndex] = new T(playerColors[playerIndex], spawnPositions[playerIndex]);
-                            if (CheckGameOver(tArray[playerIndex].tMatrix))
-                            {
-                                if (score[playerOneIndex] > score[playerTwoIndex])
-                                {
-                                    gameOver.CheckHighScore(score[playerOneIndex], SettingsManager.playerOneName, score[playerTwoIndex], SettingsManager.playerTwoName, (int)playedTime, gamePadVersion);
-                                }
-                                else
-                                {
-                                    gameOver.CheckHighScore(score[playerTwoIndex], SettingsManager.playerTwoName, score[playerOneIndex], SettingsManager.playerOneName, (int)playedTime, gamePadVersion);
-                                }
-                                currentPlayState = PlayState.gameover;
-                            }
+                            new Thread(() => {
+                                HandleGameOver(playerIndex, tArray[playerIndex].tMatrix);
+                            }).Start();
                             spawnPositions[playerIndex] = GetSpawnPos(playerIndex);
                             nextBlock[playerIndex] = null;
                         }
@@ -732,18 +706,9 @@ namespace BlockBrawl
                         if (VerifySpawn())
                         {
                             oArray[playerIndex] = new O(playerColors[playerIndex], spawnPositions[playerIndex]);
-                            if (CheckGameOver(oArray[playerIndex].oMatrix))
-                            {
-                                if (score[playerOneIndex] > score[playerTwoIndex])
-                                {
-                                    gameOver.CheckHighScore(score[playerOneIndex], SettingsManager.playerOneName, score[playerTwoIndex], SettingsManager.playerTwoName, (int)playedTime, gamePadVersion);
-                                }
-                                else
-                                {
-                                    gameOver.CheckHighScore(score[playerTwoIndex], SettingsManager.playerTwoName, score[playerOneIndex], SettingsManager.playerOneName, (int)playedTime, gamePadVersion);
-                                }
-                                currentPlayState = PlayState.gameover;
-                            }
+                            new Thread(() => {
+                                HandleGameOver(playerIndex, oArray[playerIndex].oMatrix);
+                            }).Start();
                             spawnPositions[playerIndex] = GetSpawnPos(playerIndex);
                             nextBlock[playerIndex] = null;
                         }
@@ -752,18 +717,9 @@ namespace BlockBrawl
                         if (VerifySpawn())
                         {
                             lArray[playerIndex] = new L(playerColors[playerIndex], spawnPositions[playerIndex]);
-                            if (CheckGameOver(lArray[playerIndex].lMatrix))
-                            {
-                                if (score[playerOneIndex] > score[playerTwoIndex])
-                                {
-                                    gameOver.CheckHighScore(score[playerOneIndex], SettingsManager.playerOneName, score[playerTwoIndex], SettingsManager.playerTwoName, (int)playedTime, gamePadVersion);
-                                }
-                                else
-                                {
-                                    gameOver.CheckHighScore(score[playerTwoIndex], SettingsManager.playerTwoName, score[playerOneIndex], SettingsManager.playerOneName, (int)playedTime, gamePadVersion);
-                                }
-                                currentPlayState = PlayState.gameover;
-                            }
+                            new Thread(() => {
+                                HandleGameOver(playerIndex, lArray[playerIndex].lMatrix);
+                            }).Start();
                             spawnPositions[playerIndex] = GetSpawnPos(playerIndex);
                             nextBlock[playerIndex] = null;
                         }
@@ -772,18 +728,9 @@ namespace BlockBrawl
                         if (VerifySpawn())
                         {
                             sArray[playerIndex] = new S(playerColors[playerIndex], spawnPositions[playerIndex]);
-                            if (CheckGameOver(sArray[playerIndex].sMatrix))
-                            {
-                                if (score[playerOneIndex] > score[playerTwoIndex])
-                                {
-                                    gameOver.CheckHighScore(score[playerOneIndex], SettingsManager.playerOneName, score[playerTwoIndex], SettingsManager.playerTwoName, (int)playedTime, gamePadVersion);
-                                }
-                                else
-                                {
-                                    gameOver.CheckHighScore(score[playerTwoIndex], SettingsManager.playerTwoName, score[playerOneIndex], SettingsManager.playerOneName, (int)playedTime, gamePadVersion);
-                                }
-                                currentPlayState = PlayState.gameover;
-                            }
+                            new Thread(() => {
+                                HandleGameOver(playerIndex, sArray[playerIndex].sMatrix);
+                            }).Start();
                             spawnPositions[playerIndex] = GetSpawnPos(playerIndex);
                             nextBlock[playerIndex] = null;
                         }
@@ -792,18 +739,9 @@ namespace BlockBrawl
                         if (VerifySpawn())
                         {
                             zArray[playerIndex] = new Z(playerColors[playerIndex], spawnPositions[playerIndex]);
-                            if (CheckGameOver(zArray[playerIndex].zMatrix))
-                            {
-                                if (score[playerOneIndex] > score[playerTwoIndex])
-                                {
-                                    gameOver.CheckHighScore(score[playerOneIndex], SettingsManager.playerOneName, score[playerTwoIndex], SettingsManager.playerTwoName, (int)playedTime, gamePadVersion);
-                                }
-                                else
-                                {
-                                    gameOver.CheckHighScore(score[playerTwoIndex], SettingsManager.playerTwoName, score[playerOneIndex], SettingsManager.playerOneName, (int)playedTime, gamePadVersion);
-                                }
-                                currentPlayState = PlayState.gameover;
-                            }
+                            new Thread(() => {
+                                HandleGameOver(playerIndex, zArray[playerIndex].zMatrix);
+                            }).Start();
                             spawnPositions[playerIndex] = GetSpawnPos(playerIndex);
                             nextBlock[playerIndex] = null;
                         }
@@ -812,6 +750,23 @@ namespace BlockBrawl
             }
             if (nextBlock[playerIndex] == null) { nextBlock[playerIndex] = RandomBlock(); }
         }
+
+        private void HandleGameOver(int playerIndex, TetrisObject[,] tetrisObjects)
+        {
+            if (CheckGameOver(tetrisObjects))
+            {
+                currentPlayState = PlayState.gameover;
+                if (score[playerOneIndex] > score[playerTwoIndex])
+                {
+                    gameOver.CheckHighScore(score[playerOneIndex], SettingsManager.playerOneName, score[playerTwoIndex], SettingsManager.playerTwoName, (int)playedTime, gamePadVersion);
+                }
+                else
+                {
+                    gameOver.CheckHighScore(score[playerTwoIndex], SettingsManager.playerTwoName, score[playerOneIndex], SettingsManager.playerOneName, (int)playedTime, gamePadVersion);
+                }
+            }
+        }
+
         private bool CheckGameOver(TetrisObject[,] tetrisObjects)
         {
             foreach (TetrisObject aliveTetrisObject in tetrisObjects)

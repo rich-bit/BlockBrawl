@@ -8,6 +8,7 @@ using BlockBrawl.Objects;
 using Npgsql;
 using System.Configuration;
 using Dapper;
+using System.Threading;
 
 namespace BlockBrawl
 {
@@ -15,8 +16,10 @@ namespace BlockBrawl
     {
         List<Dataread> dataReads;
         NpgsqlConnection connection;
+        int databaseWaitTime = 20000;
+        bool newDbAttempt = true;
         bool newHighscore;
-        bool unsuccesfullDataAccess = false;
+        bool unsuccesfullDataAccess = true;
         string unsuccesfullDataAccessMsg;
         int winnerScore, looserScore, playedTime;
         string winnerName, looserName, scoreProcessed;
@@ -30,7 +33,8 @@ namespace BlockBrawl
             p2A = SettingsManager.p2RotateCW;
             p2Select = SettingsManager.p2PowerUp;
 
-            unsuccesfullDataAccessMsg = "Cannot access Database!";
+            scoreProcessed = "wait for highscore check...";
+            unsuccesfullDataAccessMsg = "Cannot access highscore server!";
         }
         public void CheckHighScore(int winnerScore, string winnerName, int looserScore, string looserName, int playedTime, bool gamepad)
         {
@@ -118,16 +122,42 @@ namespace BlockBrawl
             {
                 if (gamepad)
                 {
-                    if (iM.JustPressed(p1A, playerOneIndex) || iM.JustPressed(p2A, playerTwoIndex))
+                    if ((iM.JustPressed(p1A, playerOneIndex) || iM.JustPressed(p2A, playerTwoIndex)) && newDbAttempt)
                     {
-                        CheckHighScore(winnerScore, winnerName, looserScore, looserName, playedTime, gamepad);
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(databaseWaitTime);
+                            newDbAttempt = true;
+                        }).Start();
+
+                        scoreProcessed = "wait for highscore check...";
+
+                        new Thread(() =>
+                        {
+                            CheckHighScore(winnerScore, winnerName, looserScore, looserName, playedTime, gamepad);
+                        }).Start();
+
+                        newDbAttempt = false;
                     }
                 }
                 else
                 {
-                    if (iM.JustPressed(Keys.F5))
+                    if (iM.JustPressed(Keys.F5) && newDbAttempt)
                     {
-                        CheckHighScore(winnerScore, winnerName, looserScore, looserName, playedTime, gamepad);
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(databaseWaitTime);
+                            newDbAttempt = true;
+                        }).Start();
+
+                        scoreProcessed = "wait for highscore check...";
+
+                        new Thread(() =>
+                        {
+                            CheckHighScore(winnerScore, winnerName, looserScore, looserName, playedTime, gamepad);
+                        }).Start();
+
+                        newDbAttempt = false;
                     }
                 }
             }
