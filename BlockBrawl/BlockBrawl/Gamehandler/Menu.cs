@@ -12,6 +12,7 @@ namespace BlockBrawl
             play,
             settings,
             highscore,
+            credits,
             quit,
         }
         public MenuChoice menuChoiceSwitch;
@@ -19,7 +20,7 @@ namespace BlockBrawl
         public bool EnterChoice { get; set; }
         int badImgMarginFix = 3;
         Point marginFromMenuObj;
-        GameObject blockBrawlMenu, settingsMenu, playMenu, highScoreMenu, arrowOneLeft, arrowTwoLeft, arrowOneRight, arrowTwoRight, quit;
+        GameObject blockBrawlMenu, settingsMenu, playMenu, highScoreMenu, arrowOneLeft, arrowTwoLeft, arrowOneRight, arrowTwoRight, quit, creditsMenu;
 
         List<GameObject> menuObjs = new List<GameObject>();
 
@@ -46,8 +47,14 @@ namespace BlockBrawl
             playMenu = new GameObject(Vector2.Zero, TextureManager.menuPlay);
             settingsMenu = new GameObject(Vector2.Zero, TextureManager.menuSettings);
             highScoreMenu = new GameObject(Vector2.Zero, TextureManager.menuHighScore);
+            creditsMenu = new GameObject(Vector2.Zero, TextureManager.menuCredits);
             quit = new GameObject(Vector2.Zero, TextureManager.menuQuit);
-            menuObjs.Add(blockBrawlMenu); menuObjs.Add(playMenu); menuObjs.Add(settingsMenu); menuObjs.Add(highScoreMenu); menuObjs.Add(quit);
+            menuObjs.Add(blockBrawlMenu); 
+            menuObjs.Add(playMenu); 
+            menuObjs.Add(settingsMenu); 
+            menuObjs.Add(highScoreMenu); 
+            menuObjs.Add(creditsMenu); 
+            menuObjs.Add(quit);
             AssignPos();
         }
         private void AssignPos()
@@ -106,7 +113,7 @@ namespace BlockBrawl
                     CurrentMenuChoice--;
                 }
             }
-            if (iM.JustPressed(p1Start, playerOneIndex) || iM.JustPressed(p1Start, playerTwoIndex)
+            if (iM.JustPressed(p1Start, playerOneIndex) || iM.JustPressed(p2Start, playerTwoIndex)
                 || iM.JustPressed(Keys.Enter) || iM.JustPressed(Keys.Space))
             {
                 EnterChoice = true;
@@ -119,7 +126,8 @@ namespace BlockBrawl
             if(CurrentMenuChoice == 1) { menuChoiceSwitch = MenuChoice.play; }
             else if (CurrentMenuChoice == 2) { menuChoiceSwitch = MenuChoice.settings; }
             else if (CurrentMenuChoice == 3) { menuChoiceSwitch = MenuChoice.highscore; }
-            else if (CurrentMenuChoice == 4) { menuChoiceSwitch = MenuChoice.quit; }
+            else if (CurrentMenuChoice == 4) { menuChoiceSwitch = MenuChoice.credits; }
+            else if (CurrentMenuChoice == 5) { menuChoiceSwitch = MenuChoice.quit; }
         }
         private void SetLeftArrowPos()
         {

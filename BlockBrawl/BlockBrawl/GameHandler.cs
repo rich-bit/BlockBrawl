@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BlockBrawl.Gamehandler;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,6 +16,7 @@ namespace BlockBrawl
             play,
             settings,
             highscore,
+            credits,
             controlls,
             menu,
         }
@@ -24,6 +26,7 @@ namespace BlockBrawl
         Play play;
         Settings settings;
         Menu menu;
+        Credits credits;
         HighScore highScore;
         public GameHandler(GraphicsDeviceManager graphicsDeviceManager, GraphicsDevice graphicsDevice, ContentManager contentManager)
         {
@@ -42,6 +45,7 @@ namespace BlockBrawl
             menu = new Menu();
             settings = new Settings(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
             highScore = new HighScore();
+            credits = new Credits();
             currentGameState = GameState.menu;
         }
         public void Update(GameTime gameTime)
@@ -81,6 +85,10 @@ namespace BlockBrawl
                     highScore.Update(iM, SettingsManager.playerIndexOne, SettingsManager.playerIndexTwo);
                     if (highScore.GoToMenu) { currentGameState = GameState.menu; highScore.GoToMenu = false; }
                     break;
+                case GameState.credits:
+                    credits.Update(iM);
+                    if (credits.GoToMenu) { currentGameState = GameState.menu; credits.GoToMenu = false; }
+                    break;
                 case GameState.controlls:
                     break;
                 case GameState.menu:
@@ -105,6 +113,11 @@ namespace BlockBrawl
                 else if (menu.menuChoiceSwitch == Menu.MenuChoice.highscore)
                 {
                     currentGameState = GameState.highscore;
+                    menu.EnterChoice = false;
+                }
+                else if (menu.menuChoiceSwitch == Menu.MenuChoice.credits)
+                {
+                    currentGameState = GameState.credits;
                     menu.EnterChoice = false;
                 }
                 else if (menu.menuChoiceSwitch == Menu.MenuChoice.quit)
@@ -134,6 +147,9 @@ namespace BlockBrawl
                     break;
                 case GameState.highscore:
                     highScore.Draw(spriteBatch);
+                    break;
+                case GameState.credits:
+                    credits.Draw(spriteBatch);
                     break;
                 case GameState.controlls:
                     break;

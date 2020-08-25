@@ -6,7 +6,7 @@ namespace BlockBrawl
     class TextureManager
     {
         public static Texture2D emptyBlock, transBlock, menuArrowLeft, menuArrowRight,
-            menuPlay, menuSettings, menuHighScore, menuBlockBrawl, menuQuit, qteColor, qteDotted,
+            menuPlay, menuSettings, menuCredits, menuHighScore, menuBlockBrawl, menuQuit, qteColor, qteDotted,
             settingsConfigureGamePad, settingsShowPreConfig, settingsViewControls, pause, keyboard, gamepad, playMusic,
             blueBlock1920, greenBlock1920, yellowBlock1920, purpleBlock1920, lightBlueBlock1920, orangeBlock1920, redBlock1920,
             bazookaShot, spriteSheetExplosion, spritesheetBlodSpatter1920x1080, spriteSheetExplosion1920x1080, spriteSheetShot;
@@ -27,6 +27,7 @@ namespace BlockBrawl
             transBlock = content.Load<Texture2D>(@"transparentblock");
             menuPlay = content.Load<Texture2D>(@"Menu.Images/play");
             menuQuit = content.Load<Texture2D>(@"Menu.Images/quit");
+            menuCredits = content.Load<Texture2D>(@"Menu.Images/credits");
             menuSettings = content.Load<Texture2D>(@"Menu.Images/settings");
             menuHighScore = content.Load<Texture2D>(@"Menu.Images/highscore");
             menuBlockBrawl = content.Load<Texture2D>(@"Menu.Images/blockbrawl1");

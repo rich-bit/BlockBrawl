@@ -69,6 +69,7 @@
     <Compile Include="Blocks\T-block.cs" />
     <Compile Include="Fileread.cs" />
     <Compile Include="Blocks\Z-block.cs" />
+    <Compile Include="Gamehandler\Credits.cs" />
     <Compile Include="Gamehandler\Highscore.cs" />
     <Compile Include="Gamehandler\Highscore\HighScoreEntry.cs" />
     <Compile Include="Gamehandler\Menu.cs" />

@@ -23,6 +23,7 @@
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/GameSounds/rowfilled.wav</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/gameText.spritefont</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/blockbrawl1.png</File>
+    <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/credits.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/highscore.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/menuArrowLeft.png</File>
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/Menu.Images/menuArrowRight.png</File>
@@ -49,6 +50,7 @@
     <File>C:/Users/Richard/Documents/GitHub/BlockBrawl/BlockBrawl/BlockBrawl/Content/transparentblock.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
