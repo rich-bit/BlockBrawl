@@ -20,7 +20,7 @@ namespace BlockBrawl
                 SettingsManager.gameHeight),
                 TextureManager.menuCredits);
             credits = new List<string>();
-            creditsTex.PosY = SettingsManager.gameHeight - 500;
+            //creditsTex.PosY = SettingsManager.gameHeight - 500;
 
             p1Select = SettingsManager.p1PowerUp;
 
@@ -31,7 +31,15 @@ namespace BlockBrawl
             AddCredit("'Big Explosion' sound by PWN, at opengameart.org/\nLicensed CC BY 3.0\nopengameart.org/content/big-explosion\n");
             AddCredit("'Collaboration / Sound Effects Shooting sounds 002' sound effects by jalastram, at opengameart.org/\nLicensed CC BY 3.0\nopengameart.org/content/collaboration-sound-effects-shooting-sounds-002\n");
             AddCredit("'Level up, power up, Coin get (13 Sounds)' sound effects by wobbleboxx, at opengameart.org/\nLicensed CC0 1.0\nopengameart.org/content/level-up-power-up-coin-get-13-sounds\n");
-            AddCredit("'RetroKiller' font by Woodcutter\nPersonal permission to use his art in my game.\nThank you!");
+            AddCredit("'RetroKiller' font by Woodcutter\nPersonal permission to use his art in this game.\nThank you!");
+        }
+        public void Reset()
+        {
+            creditsTex = new GameObject(
+        new Vector2(
+        SettingsManager.gameWidth / 2 - TextureManager.menuCredits.Width / 2,
+        SettingsManager.gameHeight),
+        TextureManager.menuCredits);
         }
         public void Update(InputManager iM)
         {
@@ -43,6 +51,7 @@ namespace BlockBrawl
             || iM.JustPressed(Keys.Escape))
             {
                 GoToMenu = true;
+                Reset();
                 SoundManager.menuChoice.Play();
             }
         }
